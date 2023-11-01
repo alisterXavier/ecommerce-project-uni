@@ -1,0 +1,14 @@
+{
+  "name": "@xavier/app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:client": "cd app && pnpm dev",
+    "dev:server": "cd server && pnpm dev",
+    "dev": "concurrently \"cd app && pnpm dev\" \"cd server && npm run dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
