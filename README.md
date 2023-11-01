@@ -3,9 +3,11 @@
 This project includes both client and server
 
 ## Client
+
 Client is made using NextJS, Tailwind css
 
 ## Server
+
 Server is made using ExpressJS
 
 To run both server and client:
