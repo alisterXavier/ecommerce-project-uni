@@ -10,14 +10,14 @@ Client is made using NextJS, Tailwind css
 
 Server is made using ExpressJS
 
-To run both server and client:
+If pnpm is not installed on your pc then install it with `npm i -g pnpm`
 
-`` npm run dev ``
+First all the packages have to be installed use  `pnpm i` to install them 
+
+To run both server and client: `pnpm dev`
 
 To run only client:
-
-`` npm run dev:client ``
+`pnpm dev:client`
 
 To run only server:
-
-`` npm run dev:server ``
+`pnpm dev:server`
