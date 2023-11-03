@@ -10,6 +10,8 @@ Client is made using NextJS, Tailwind css
 
 Server is made using ExpressJS
 
+##
+
 If pnpm is not installed on your pc then install it with `npm i -g pnpm`
 
 First all the packages have to be installed use  `pnpm i` to install them 
