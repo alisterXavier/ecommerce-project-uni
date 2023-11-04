@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Products
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      responses:
+        "200":
+          description: "List of Products"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Products"
+  /customer/{id}:
+    get:
+      responses:
+        "200":
+          description: "update user"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Users"
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true 
+        schema:
+          type: string
+      requestBody:
+        description: "More Updates"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Users"
+      responses:
+        "200":
+          description: "Updated user"    
+  /update-cart/{id}:
+    patch:
+      parameters:
+      - name: id
+        in: path
+        required: true 
+        schema:
+          type: string
+      requestBody:
+        description: "More Updates"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Carts"
+      responses:
+        "200":
+          description: "Updated user"    
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "customerId" 
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Cart id"
+      responses:
+        "200":
+          description: "Updated user"    
+  /get-cart/{id}:
+    get:
+      responses:
+        "200":
+          description: "Customer Cart"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Carts"
+  /get-orders/{id}:
+    get:
+      responses:
+        "200":
+          description: "Customer Orders"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Orders"
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        category:
+          type: string | null
+        created_at:
+          type: string
+        id:
+          type: number
+        Name:
+          type: string | null
+        price:
+          type: number | null
+    Users:
+      type: object
+      properties:
+        id:
+          type: string | null
+        created_at:
+          type: string
+        displayName:
+          type: string
+        cart:
+          type: array
+          items: string
+    Carts:
+      type: object
+      properties:
+        id:
+          type: number
+        userId:
+          type: string
+        productsList:
+          type: array
+          items: string
+        created_at:
+          type: string
+        total:
+          type: number | null
+    Orders:
+      type: object
+      properties:
+        id:
+          type: number
+        userId:
+          type: string
+        productsList:
+          type: array
+          items: string
+        total:
+          type: number | null
+        created_at:
+          type: string

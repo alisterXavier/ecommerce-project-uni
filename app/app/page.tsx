@@ -1,7 +1,6 @@
 'use client';
 import { createContext, useState } from 'react';
-import Products from './Components/Product/Products';
-import '@mantine/carousel/styles.css';
+import Products from './Components/Products';
 import womensCover from '@/public/images/womens-cover.jpg';
 import mensCover from '@/public/images/mens-cover.jpeg';
 import electronics from '@/public/images/electronics-cover.jpg';

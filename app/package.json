@@ -9,11 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/carousel": "^7.1.5",
-    "@mantine/core": "^7.1.5",
-    "@mantine/dates": "^7.1.5",
-    "@mantine/hooks": "^7.1.5",
-    "@mantine/nprogress": "^7.1.5",
     "@tabler/icons-react": "^2.39.0",
     "concurrently": "^8.2.2",
     "dayjs": "^1.11.10",

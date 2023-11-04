@@ -95,9 +95,8 @@ h6 {
   margin: 5px;
   cursor: pointer;
   overflow: hidden;
-  background: var(--card-bg);
   box-shadow: none;
-  border: 1px solid transparent;
+  border: 1px solid var(--army);
   scale: 1;
   transition: all 200ms ease;
 }
@@ -163,7 +162,6 @@ h6 {
   height: 350px;
   cursor: pointer;
   overflow: hidden;
-  background: var(--card-bg);
   border: 1px solid transparent;
   box-shadow: none;
   transition: all 100ms ease;

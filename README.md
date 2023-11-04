@@ -1,23 +1,31 @@
-# project-ecommerce-uni
+# ecommerce-project-uni
 
 This project includes both client and server
 
-## Client
+### Client and Server
 
 Client is made using NextJS, Tailwind css
 
-## Server
-
 Server is made using ExpressJS
+
+### Workspace
+Open the folder in vs code and click on **Application.code-workspace** and 
+click on **open workspace** at the bottom right
+
+### PNPM installation
 
 If pnpm is not installed on your pc then install it with `npm i -g pnpm`
 
-First all the packages have to be installed use  `pnpm i` to install them 
+### Install the required packages
+To install all the packages use `npm i`
+
+#### Run server and client
 
 To run both server and client: `pnpm dev`
 
-To run only client:
+#### Run them seperately
+##### Only client:
 `pnpm dev:client`
 
-To run only server:
+##### Only server:
 `pnpm dev:server`

@@ -4,7 +4,7 @@ import products from '@/public/productList.json';
 import { useContext, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Small from '@/app/Components/Product/small-product';
+import Small from '@/app/Components/Product-type/small-product';
 import { CarouselComp } from '@/app/Components/Carousel';
 import { SwiperSlide } from 'swiper/react';
 

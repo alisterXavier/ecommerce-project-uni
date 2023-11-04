@@ -1,10 +1,8 @@
 'use client';
 import * as React from 'react';
-import './styles.css';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-// Import Swiper React components
 import { Swiper } from 'swiper/react';
-import { Autoplay, Mousewheel, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -38,12 +36,12 @@ const MainCarousel = ({ children }: CarouselProps) => {
         },
         800: {
           slidesPerView: 2,
-          spaceBetween: 50,
+          spaceBetween: 40,
         },
         1024: {
           width: 1350,
           slidesPerView: 4,
-          spaceBetween: 50,
+          spaceBetween: 40,
         },
       }}
       className="mySwiper transition-all duration-75"

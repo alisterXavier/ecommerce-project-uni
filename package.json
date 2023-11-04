@@ -10,13 +10,14 @@
   "scripts": {
     "dev:client": "cd ./app && pnpm dev",
     "dev:server": "cd ./server && npm run dev",
-    "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\""
+    "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\"",
+    "generate-types": "openapi-typescript openapi/spec.yaml --output app/types/api.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "openapi-typescript": "^6.7.0"
   },
   "dependencies": {
     "concurrently": "^8.2.2"

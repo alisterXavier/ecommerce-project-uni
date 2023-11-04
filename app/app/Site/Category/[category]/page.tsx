@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import products from '@/public/productList.json';
-import Small from '@/app/Components/Product/small-product';
+import Small from '@/app/Components/Product-type/small-product';
 
 const Category = ({ params }: { params: { category: string } }) => {
   return (

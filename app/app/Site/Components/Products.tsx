@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
 import products from '@/public/productList.json';
-import Medium from './mid-product';
-import Small from './small-product';
-import { CarouselComp } from '../Carousel';
+import Medium from './Product-type/mid-product';
+import Small from './Product-type/small-product';
+import { CarouselComp } from './Carousel';
 import { SwiperSlide } from 'swiper/react';
 
 const Products = () => {
