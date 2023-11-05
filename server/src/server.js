@@ -1,32 +1,34 @@
-import { json, urlencoded } from "body-parser";
-import cors from "cors";
-import express, { Express } from "express";
-import morgan from "morgan";
+import { json, urlencoded } from 'body-parser';
+import cors from 'cors';
+import express, { Express } from 'express';
+import morgan from 'morgan';
+
+import { cartRoute } from './routes/cart.js';
+import { userRoute } from './routes/user';
+import { productRoute } from './routes/product';
+import { orderRoute } from './routes/order';
 
 export const createServer = () => {
   const app = express();
   app
-    .disable("x-powered-by")
-    .use(morgan("dev"))
+    .disable('x-powered-by')
+    .use(morgan('dev'))
     .use(
       urlencoded({
         extended: true,
       })
     )
     .use(json())
+
     .use(cors())
-    .get("/check", (req, res) => {
+    .use(cartRoute)
+    .use(productRoute)
+    .use(userRoute)
+    .use(orderRoute)
+    .get('/check', (req, res) => {
       return res.json({
         ok: true,
       });
-    })
-    .get("/check/:name", (req, res) => {
-      return res.json({
-        message: `hello ${req.params.name}`,
-      });
-    })
-    .get("/check/nested", (req, res) => {
-      return res.json({ nested: "mentions" });
-    })
+    });
   return app;
 };

@@ -1,12 +1,13 @@
 'use client';
 import { selectedProduct } from '@/app/page';
 import products from '@/public/productList.json';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Small from '@/app/Components/Product-type/small-product';
 import { CarouselComp } from '@/app/Components/Carousel';
 import { SwiperSlide } from 'swiper/react';
+import axios from 'axios'
 
 type ISingleProduct = {
   layoutId: number | null;
@@ -14,7 +15,14 @@ type ISingleProduct = {
 
 const SingleProduct = ({ params }: { params: { productId: string } }) => {
   const router = useRouter();
-  
+  const [data, setData] = useState(null)
+  const getData = () => {
+    axios.get(`http://localhost:5001/products/${params.productId}`)
+  }
+
+  useEffect(() => {
+    getData()
+  })
   const newArrivals = products.map((product, index) => (
     <SwiperSlide key={index}>
       <Small layoutId={index}>

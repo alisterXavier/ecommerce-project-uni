@@ -36,12 +36,12 @@ const MainCarousel = ({ children }: CarouselProps) => {
         },
         800: {
           slidesPerView: 2,
-          spaceBetween: 40,
+          spaceBetween:10,
         },
         1024: {
           width: 1350,
-          slidesPerView: 4,
-          spaceBetween: 40,
+          slidesPerView: 4.3,
+          spaceBetween: 10,
         },
       }}
       className="mySwiper transition-all duration-75"

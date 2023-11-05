@@ -3,7 +3,7 @@
     z-index: 99;
     top: 0%;
     width: 100%;
-    height: var(--nav-height);
+    /* height: var(--nav-height); */
     display: flex;
     backdrop-filter: blur(20px);
 }

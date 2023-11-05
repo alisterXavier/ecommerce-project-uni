@@ -1,13 +1,27 @@
 'use client';
-import { useEffect, useRef } from 'react';
-import { Account, Buttons, Header } from './Header';
+import { useEffect, useRef, useState } from 'react';
+import { Account, Buttons, Logo } from './Header';
 import './styles.css';
 import { usePathname } from 'next/navigation';
+import {
+  useScroll,
+  useAnimationFrame,
+  useTransform,
+  useSpring,
+  motion,
+} from 'framer-motion';
 
 export const Navbar = ({ auth }: { auth: boolean }) => {
   const path = usePathname();
   const sliderRef = useRef(null);
   const pathArr = path.split('/');
+
+  const { scrollY } = useScroll();
+  const yTransform = useTransform(
+    scrollY,
+    [7, 8, 8.5, 8.9, 9, 9.5, 9.9, 10],
+    ['10vh', '9.9vh', '9.5vh', '9vh', '8.9vh', '8.5vh', '8vh', '7vh']
+  );
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const { id } = e.currentTarget.querySelector('a') as HTMLElement;
@@ -15,9 +29,9 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
     const translate =
       id === 'home'
         ? '0px'
-        : id === 'mens'
+        : id === 'men'
         ? '90px 0px'
-        : id === 'womens'
+        : id === 'women'
         ? '180px 0px'
         : id === 'kids'
         ? '270px 0px'
@@ -33,7 +47,7 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
       (sliderRef.current as HTMLElement).removeAttribute('style');
     }
   };
-  
+
   const navChangeOnPath = () => {
     if (pathArr) {
       var translate;
@@ -41,9 +55,9 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
         translate =
           i === 'Electronics'
             ? '360px 0px'
-            : i === 'Mens'
+            : i === 'Men'
             ? '90px 0px'
-            : i === 'Womens'
+            : i === 'Women'
             ? '180px 0px'
             : i === 'Kids'
             ? '270px 0px'
@@ -60,8 +74,12 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
   }, []);
 
   return (
-    <nav className="navbar-container">
-      <Header />
+    <motion.nav
+      className="navbar-container"
+      style={{
+        height: yTransform,
+      }}
+    >
       <div className="navbar-items">
         <Buttons
           type={path === '/'}
@@ -73,21 +91,21 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
           </a>
         </Buttons>
         <Buttons
-          type={path === '/Mens'}
+          type={path === '/Men'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a id="mens" className="armyText" href="/Category/Mens">
-            Mens
+          <a id="men" className="armyText" href="/Category/Men">
+            Men
           </a>
         </Buttons>
         <Buttons
-          type={path === '/Womens'}
+          type={path === '/Women'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a className="armyText" id="womens" href="/Category/Womens">
-            Womens
+          <a className="armyText" id="women" href="/Category/Women">
+            Women
           </a>
         </Buttons>
         <Buttons
@@ -110,7 +128,8 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
         </Buttons>
         <span className="navbar-item-slider" ref={sliderRef} />
       </div>
+      <Logo />
       <Account auth={auth} />
-    </nav>
+    </motion.nav>
   );
 };

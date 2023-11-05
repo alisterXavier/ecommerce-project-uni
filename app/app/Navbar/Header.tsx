@@ -9,9 +9,9 @@ interface IButton {
   onMouseLeave: (e: React.MouseEvent) => void;
 }
 
-export const Header = () => {
+export const Logo = () => {
   return (
-    <div className="navbar-item">
+    <div className="navbar-item ml-auto mr-auto">
       <a href="/" className="navbar-item-header armyText">
         Store
       </a>
@@ -39,8 +39,8 @@ export const Buttons = ({
 
 export const Account = ({ auth }: { auth: boolean }) => {
   return auth ? (
-    <div className="navbar-item navbar-item-account ">
-      <a className="armyText" href="/">
+    <div className="navbar-item navbar-item-account">
+      <a className="armyText" href="/Account">
         Account
       </a>
     </div>

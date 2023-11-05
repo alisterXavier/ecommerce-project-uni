@@ -75,11 +75,11 @@ const Products = () => {
   return (
     <div className="products-container">
       <div className="small-products-container">
-        <h1 className="new-arrivals w-full text-[25px] uppercase text-center">New Arrivals</h1>
+        <h1 className="new-arrivals w-full text-[25px] uppercase text-center text-[var(--army)]">New Arrivals</h1>
         <CarouselComp>{newArrivals}</CarouselComp>
       </div>
       <div className="medium-products-wrapper">
-        <h1 className="new-arrivals uppercase text-[25px] text-center cursor-default">
+        <h1 className="new-arrivals uppercase text-[25px] text-[var(--army)] text-center cursor-default">
           Discover our categories
         </h1>
         <div className="medium-products-container">
@@ -87,7 +87,7 @@ const Products = () => {
         </div>
       </div>
       <div className="">
-        <h1 className="deals uppercase w-full text-[25px] text-center">Deals</h1>
+        <h1 className="deals uppercase w-full text-[25px] text-center text-[var(--army)]">Deals</h1>
         <div className="small-products-container">
           <Deals />
         </div>

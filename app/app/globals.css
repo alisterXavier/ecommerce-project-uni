@@ -36,9 +36,10 @@
 }
 
 :root {
-  --army: #454b1b !important;
+  /* --army: #454b1b !important; */
+  --army: rgb(37, 60, 49) !important;
   --card-bg: #e3e6e64c;
-  --nav-height: 7vh;
+  --nav-height: 10vh;
 }
 * {
   font-family: 'Montblac-reg';
@@ -61,7 +62,7 @@ h6 {
   font-family: 'Montblac-Med';
   font-size: 20px;
   margin: 25px 0px 0px 0px;
-  color: var(--army);
+  color: white;
 } 
 .main-header{
   height:calc(100vh - var(--nav-height));
@@ -76,8 +77,8 @@ h6 {
   position: absolute;
   z-index: 1;
   bottom: 0%;
-  background: rgb(255,255,255);
-  background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgba(0,212,255,0) 100%); 
+  background: rgba(37, 60, 49, .6);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgb(37, 60, 49,0) 100%); 
 }
 .small-products-container {
   display: flex;

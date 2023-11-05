@@ -3,8 +3,18 @@
 import Image from 'next/image';
 import products from '@/public/productList.json';
 import Small from '@/app/Components/Product-type/small-product';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 
 const Category = ({ params }: { params: { category: string } }) => {
+  const [data, setData] = useState(null)
+  const getData = () => {
+    axios.get(`http://localhost:5001/products/${params.category.toLocaleLowerCase()}`)
+  }
+
+  useEffect(() => {
+    getData()
+  })
   return (
     <div className="p-[10px]">
       <h2 className='uppercase'>{params.category}</h2>

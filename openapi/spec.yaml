@@ -131,6 +131,9 @@ components:
         cart:
           type: array
           items: string
+        orders:
+          type: array
+          items: string
     Carts:
       type: object
       properties:
