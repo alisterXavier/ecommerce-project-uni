@@ -9,8 +9,8 @@ Client is made using NextJS, Tailwind css
 Server is made using ExpressJS
 
 ### Workspace
-Open the folder in vs code and click on **Application.code-workspace** and 
-click on **open workspace** at the bottom right
+Open the folder in vs code and open **Application.code-workspace** file and 
+hit **open workspace** at the bottom right
 
 ### PNPM installation
 
