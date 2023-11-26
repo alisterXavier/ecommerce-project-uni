@@ -1,8 +1,13 @@
-FROM node:20-alpine
-RUN mkdir -p /app
-WORKDIR /app
+FROM node:21 AS BUILD
+RUN apk update && apk add npm
+RUN mkdir -p /dockerApp
+WORKDIR /dockerApp
 COPY . .
+RUN npm i -g pnpm
 RUN pnpm install
 RUN pnpm run build
+
+FROM nginx:alpine
 EXPOSE 3000
-CMD ["npm", "start"]
+EXPOSE 5001
+CMD ["pnpm", "start"]

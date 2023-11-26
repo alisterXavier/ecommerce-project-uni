@@ -1,5 +1,6 @@
 import express from 'express';
-import { supabase } from '../supabaseConfig';
+import { supabase } from '../../supabaseConfig';
+
 import dayjs from 'dayjs';
 
 const app = express();
@@ -51,7 +52,7 @@ app.get('/products/:category', async (req, res) => {
     .select()
     .eq('type', category);
 
-  if (categoryList.length > 0) {
+  if (categoryList && categoryList.length > 0) {
     try {
       let data, error;
 
@@ -69,6 +70,7 @@ app.get('/products/:category', async (req, res) => {
           break;
         }
         case 'deals': {
+          // select * from products where discount > 0
           let { data: deals, error: dealsError } = await supabase
             .from('Products')
             .select('*')
@@ -78,6 +80,7 @@ app.get('/products/:category', async (req, res) => {
           break;
         }
         default: {
+          // select * from products where category = category_user
           let { data: categoryData, error: categoryError } = await supabase
             .from('Products')
             .select('*')
@@ -95,7 +98,32 @@ app.get('/products/:category', async (req, res) => {
       console.log(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-  } else return res.status(403).json({ error: 'No such Category' });
+  } else return res.status(400).json({ error: 'Category does not exist' });
+});
+
+//endpoint for a specific product
+app.get('/product/:productId', async (req, res) => {
+  const { productId } = req.params;
+
+  if (!productId) {
+    return res.status(400).json({ error: 'Product ID is required' });
+  }
+
+  try {
+    let { data: productData, error: productError } = await supabase
+      .from('Products')
+      .select()
+      .eq('id', productId);
+
+    if (productData.length > 0) {
+      return res.status(200).json({ data: productData[0] });
+    } else {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 export { app as productRoute };

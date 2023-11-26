@@ -11,7 +11,13 @@
     "dev:client": "cd ./app && pnpm dev",
     "dev:server": "cd ./server && npm run dev",
     "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\"",
-    "generate-types": "openapi-typescript openapi/spec.yaml --output app/types/api.ts"
+    "generate-types": "openapi-typescript openapi/spec.yaml --output app/shared/types/api.ts",
+    "build:server": "cd ./server && npm run build",
+    "build:client": "cd ./app && pnpm build",
+    "build": "concurrently \"pnpm build:client\" \"npm run build:server\"",
+    "start:server": "cd ./server && npm run start",
+    "start:client": "cd ./app && pnpm start",
+    "start": "concurrently \"pnpm start:client\" \"npm run start:server\""
   },
   "keywords": [],
   "author": "",
@@ -20,9 +26,13 @@
     "openapi-typescript": "^6.7.0"
   },
   "dependencies": {
+    "@mantine/core": "^7.2.0",
+    "@mantine/hooks": "^7.2.0",
+    "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.38.4",
     "axios": "^1.6.0",
     "concurrently": "^8.2.2",
-    "dayjs": "^1.11.10"
+    "dayjs": "^1.11.10",
+    "swr": "^2.2.4"
   }
 }

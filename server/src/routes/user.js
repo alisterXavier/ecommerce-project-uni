@@ -1,5 +1,5 @@
 import express from 'express';
-import { supabase } from '../supabaseConfig';
+import { supabase } from '../../supabaseConfig';
 
 const app = express();
 
@@ -41,6 +41,24 @@ app.post('/login', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.get('/customer/:id', async (req, res) => {
+  const { id } = req.params;
+
+  if (id.length > 5)
+    try {
+      if (error) {
+        return res.status(400).json({ error: error.message });
+      }
+
+      return res
+        .status(200)
+        .json({ message: 'Login successful', user, session });
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  return res.status(500).json({ error: 'Incorrect id' });
 });
 
 export { app as userRoute };

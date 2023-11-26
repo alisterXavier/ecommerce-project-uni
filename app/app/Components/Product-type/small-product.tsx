@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
-import { selectedProduct } from '@/app/page';
+
 import { useRouter } from 'next/navigation';
+
 
 interface SmallProps {
   children: React.ReactNode;
-  layoutId: number;
+  id: number;
 }
-const Small: React.FC<SmallProps> = ({ children, layoutId }) => {
-  const { selectedId, setSelectedId } = useContext(selectedProduct);
+const Small: React.FC<SmallProps> = ({ children, id }) => {
   const router = useRouter();
   const handleClick = () => {
-    // setSelectedId(`${layoutId}`);
-    router.push(`/Product/${layoutId}`);
+    router.push(`/Product/${id}`);
   };
 
   return (
@@ -21,7 +20,7 @@ const Small: React.FC<SmallProps> = ({ children, layoutId }) => {
       }}
       className="small-product-container"
     >
-      <div className="small-transition-container">{children}</div>
+      <div className="small-transition-container w-full h-full">{children}</div>
     </div>
   );
 };

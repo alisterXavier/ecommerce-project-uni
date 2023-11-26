@@ -1,6 +1,6 @@
 import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
-import express, { Express } from 'express';
+import express from 'express';
 import morgan from 'morgan';
 
 import { cartRoute } from './routes/cart.js';
