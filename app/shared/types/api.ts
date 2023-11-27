@@ -17,13 +17,25 @@ export interface paths {
       };
     };
   };
+  "/product/{id}": {
+    get: {
+      responses: {
+        /** @description Get Product by id */
+        200: {
+          content: {
+            "application/json": components["schemas"]["Products"];
+          };
+        };
+      };
+    };
+  };
   "/customer/{id}": {
     get: {
       responses: {
         /** @description update user */
         200: {
           content: {
-            "application/json": components["schemas"]["Users"];
+            "application/json": components["schemas"]["Customers"];
           };
         };
       };
@@ -37,7 +49,7 @@ export interface paths {
       /** @description More Updates */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["Users"];
+          "application/json": components["schemas"]["Customers"];
         };
       };
       responses: {
@@ -122,17 +134,21 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     Products: {
-      category?: Record<string, never>;
-      created_at?: string;
-      id?: number;
-      Name?: Record<string, never>;
-      price?: Record<string, never>;
+      id: number;
+      created_at: string;
+      productName: string;
+      description: string;
+      productImages: string[];
+      category: string;
+      price: number;
+      discount: number;
     };
-    Users: {
+    Customers: {
       id?: Record<string, never>;
       created_at?: string;
       displayName?: string;
       cart?: string[];
+      orders?: string[];
     };
     Carts: {
       id?: number;

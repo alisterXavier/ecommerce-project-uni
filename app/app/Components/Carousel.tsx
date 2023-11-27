@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Swiper } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
 

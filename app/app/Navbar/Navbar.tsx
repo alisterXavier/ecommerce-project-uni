@@ -1,27 +1,30 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import { Account, Buttons, Logo } from './Header';
 import './styles.css';
+import { useEffect, useRef, useState } from 'react';
+import { Account, Buttons, LoginSignUp, Logo } from './Header';
 import { usePathname } from 'next/navigation';
-import {
-  useScroll,
-  useAnimationFrame,
-  useTransform,
-  useSpring,
-  motion,
-} from 'framer-motion';
+import { motion } from 'framer-motion';
+import { UserResponse } from '@supabase/supabase-js';
+import Link from 'next/link';
+import { selectAuthState, setAuthState } from '@/shared/redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { supabase } from '@/shared/supabaseConfig';
 
-export const Navbar = ({ auth }: { auth: boolean }) => {
+export const Navbar = () => {
   const path = usePathname();
   const sliderRef = useRef(null);
   const pathArr = path.split('/');
+  const authState = useSelector(selectAuthState);
+  const dispatch = useDispatch();
+  const [user, setUser] = useState<UserResponse | null>();
 
-  const { scrollY } = useScroll();
-  const yTransform = useTransform(
-    scrollY,
-    [7, 8, 8.5, 8.9, 9, 9.5, 9.9, 10],
-    ['10vh', '9.9vh', '9.5vh', '9vh', '8.9vh', '8.5vh', '8vh', '7vh']
-  );
+  const getUser = async () => {
+    const user = await authState?.auth.getUser();
+    setUser(user);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [authState]);
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const { id } = e.currentTarget.querySelector('a') as HTMLElement;
@@ -42,13 +45,13 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
   };
 
   const onMouseLeave = (e: React.MouseEvent) => {
-    if (pathArr) navChangeOnPath();
+    if (pathArr) navChangeOnPath.current();
     else if (sliderRef.current) {
       (sliderRef.current as HTMLElement).removeAttribute('style');
     }
   };
 
-  const navChangeOnPath = () => {
+  const navChangeOnPath = useRef(() => {
     if (pathArr) {
       var translate;
       pathArr.map((i) => {
@@ -67,69 +70,67 @@ export const Navbar = ({ auth }: { auth: boolean }) => {
         (sliderRef.current as HTMLElement).style.translate = translate;
       }
     }
-  };
-
+  });
   useEffect(() => {
-    navChangeOnPath();
-  }, []);
+    navChangeOnPath.current();
+  }, [navChangeOnPath]);
 
   return (
-    <motion.nav
-      className="navbar-container"
-      style={{
-        height: yTransform,
-      }}
-    >
+    <motion.nav className="navbar-container">
       <div className="navbar-items">
         <Buttons
           type={path === '/'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a className="armyText" id="home" href="/">
+          <Link className="armyText" id="home" href="/">
             Home
-          </a>
+          </Link>
         </Buttons>
         <Buttons
           type={path === '/Men'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a id="men" className="armyText" href="/Category/Men">
+          <Link id="men" className="armyText" href="/Category/Men">
             Men
-          </a>
+          </Link>
         </Buttons>
         <Buttons
           type={path === '/Women'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a className="armyText" id="women" href="/Category/Women">
+          <Link className="armyText" id="women" href="/Category/Women">
             Women
-          </a>
+          </Link>
         </Buttons>
         <Buttons
           type={path === '/Kids'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a className="armyText" id="kids" href="/Category/Kids">
+          <Link className="armyText" id="kids" href="/Category/Kids">
             Kids
-          </a>
+          </Link>
         </Buttons>
         <Buttons
           type={path === '/Electronics'}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <a className="armyText" id="electronics" href="/Category/Electronics">
+          <Link
+            className="armyText"
+            id="electronics"
+            href="/Category/Electronics"
+          >
             Electronics
-          </a>
+          </Link>
         </Buttons>
         <span className="navbar-item-slider" ref={sliderRef} />
       </div>
       <Logo />
-      <Account auth={auth} />
+      {user?.data.user ? <Account user={user.data.user} /> : <LoginSignUp />}
     </motion.nav>
   );
 };

@@ -14,6 +14,16 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Products"
+  /product/{id}:
+    get:
+      responses:
+        "200":
+          description: "Get Product by id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+  
   /customer/{id}:
     get:
       responses:
@@ -23,14 +33,14 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/Users"
+                $ref: "#/components/schemas/Customers"
     patch:
       parameters:
-      - name: id
-        in: path
-        required: true 
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         description: "More Updates"
         required: true
@@ -38,18 +48,18 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/Users"
+              $ref: "#/components/schemas/Customers"
       responses:
         "200":
-          description: "Updated user"    
+          description: "Updated user"
   /update-cart/{id}:
     patch:
       parameters:
-      - name: id
-        in: path
-        required: true 
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         description: "More Updates"
         required: true
@@ -60,15 +70,15 @@ paths:
               $ref: "#/components/schemas/Carts"
       responses:
         "200":
-          description: "Updated user"    
+          description: "Updated user"
     delete:
       parameters:
-      - name: id
-        in: path
-        required: true
-        description: "customerId" 
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          description: "customerId"
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -81,7 +91,7 @@ paths:
                   description: "Cart id"
       responses:
         "200":
-          description: "Updated user"    
+          description: "Updated user"
   /get-cart/{id}:
     get:
       responses:
@@ -109,17 +119,25 @@ components:
     Products:
       type: object
       properties:
-        category:
-          type: string | null
-        created_at:
-          type: string
         id:
           type: number
-        Name:
-          type: string | null
+        created_at:
+          type: string
+        productName:
+          type: string
+        description:
+          type: string
+        productImages:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
         price:
-          type: number | null
-    Users:
+          type: number
+        discount:
+          type: number 
+    Customers:
       type: object
       properties:
         id:

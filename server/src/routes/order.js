@@ -1,5 +1,6 @@
 import express from 'express';
-import { supabase } from '../supabaseConfig';
+import { supabase } from '../../supabaseConfig';
+
 
 const app = express();
 

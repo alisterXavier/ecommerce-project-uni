@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://louijifajkwpwukxvhda.supabase.co';

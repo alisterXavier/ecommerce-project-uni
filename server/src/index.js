@@ -1,7 +1,7 @@
-    
+require('dotenv').config();
 import { createServer } from './server';
 
-const port = 5001;
+const port = process.env.PORT;
 const server = createServer();
 
 // Check if the server is running

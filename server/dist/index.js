@@ -289,30 +289,30 @@ var require_depd = __commonJS({
       Object.defineProperty(obj, prop, descriptor);
     }
     function DeprecationError(namespace, message, stack) {
-      var error = new Error();
+      var error2 = new Error();
       var stackString;
-      Object.defineProperty(error, "constructor", {
+      Object.defineProperty(error2, "constructor", {
         value: DeprecationError
       });
-      Object.defineProperty(error, "message", {
+      Object.defineProperty(error2, "message", {
         configurable: true,
         enumerable: false,
         value: message,
         writable: true
       });
-      Object.defineProperty(error, "name", {
+      Object.defineProperty(error2, "name", {
         enumerable: false,
         configurable: true,
         value: "DeprecationError",
         writable: true
       });
-      Object.defineProperty(error, "namespace", {
+      Object.defineProperty(error2, "namespace", {
         configurable: true,
         enumerable: false,
         value: namespace,
         writable: true
       });
-      Object.defineProperty(error, "stack", {
+      Object.defineProperty(error2, "stack", {
         configurable: true,
         enumerable: false,
         get: function() {
@@ -325,7 +325,7 @@ var require_depd = __commonJS({
           stackString = val;
         }
       });
-      return error;
+      return error2;
     }
   }
 });
@@ -5202,11 +5202,11 @@ var require_on_finished = __commonJS({
       var eeMsg;
       var eeSocket;
       var finished = false;
-      function onFinish(error) {
+      function onFinish(error2) {
         eeMsg.cancel();
         eeSocket.cancel();
         finished = true;
-        callback(error);
+        callback(error2);
       }
       eeMsg = eeSocket = first([[msg, "end", "finish"]], onFinish);
       function onSocket(socket) {
@@ -5313,16 +5313,16 @@ var require_read = __commonJS({
         }));
       }
       debug("read body");
-      getBody(stream, opts, function(error, body) {
-        if (error) {
+      getBody(stream, opts, function(error2, body) {
+        if (error2) {
           var _error;
-          if (error.type === "encoding.unsupported") {
+          if (error2.type === "encoding.unsupported") {
             _error = createError(415, 'unsupported charset "' + encoding.toUpperCase() + '"', {
               charset: encoding.toLowerCase(),
               type: "charset.unsupported"
             });
           } else {
-            _error = createError(400, error);
+            _error = createError(400, error2);
           }
           if (stream !== req) {
             unpipe(req);
@@ -14371,17 +14371,17 @@ var require_json = __commonJS({
         return void 0;
       }
     }
-    function normalizeJsonSyntaxError(error, obj) {
-      var keys = Object.getOwnPropertyNames(error);
+    function normalizeJsonSyntaxError(error2, obj) {
+      var keys = Object.getOwnPropertyNames(error2);
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key !== "stack" && key !== "message") {
-          delete error[key];
+          delete error2[key];
         }
       }
-      error.stack = obj.stack.replace(error.message, obj.message);
-      error.message = obj.message;
-      return error;
+      error2.stack = obj.stack.replace(error2.message, obj.message);
+      error2.message = obj.message;
+      return error2;
     }
     function typeChecker(type) {
       return function checkType(req) {
@@ -17362,16 +17362,16 @@ var require_read2 = __commonJS({
         }));
       }
       debug("read body");
-      getBody(stream, opts, function(error, body) {
-        if (error) {
+      getBody(stream, opts, function(error2, body) {
+        if (error2) {
           var _error;
-          if (error.type === "encoding.unsupported") {
+          if (error2.type === "encoding.unsupported") {
             _error = createError(415, 'unsupported charset "' + encoding.toUpperCase() + '"', {
               charset: encoding.toLowerCase(),
               type: "charset.unsupported"
             });
           } else {
-            _error = createError(400, error);
+            _error = createError(400, error2);
           }
           if (stream !== req) {
             unpipe(req);
@@ -17558,17 +17558,17 @@ var require_json2 = __commonJS({
         return void 0;
       }
     }
-    function normalizeJsonSyntaxError(error, obj) {
-      var keys = Object.getOwnPropertyNames(error);
+    function normalizeJsonSyntaxError(error2, obj) {
+      var keys = Object.getOwnPropertyNames(error2);
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key !== "stack" && key !== "message") {
-          delete error[key];
+          delete error2[key];
         }
       }
-      error.stack = obj.stack.replace(error.message, obj.message);
-      error.message = obj.message;
-      return error;
+      error2.stack = obj.stack.replace(error2.message, obj.message);
+      error2.message = obj.message;
+      return error2;
     }
     function typeChecker(type) {
       return function checkType(req) {
@@ -18384,13 +18384,13 @@ var require_layer = __commonJS({
       this.regexp.fast_star = path === "*";
       this.regexp.fast_slash = path === "/" && opts.end === false;
     }
-    Layer.prototype.handle_error = function handle_error(error, req, res, next) {
+    Layer.prototype.handle_error = function handle_error(error2, req, res, next) {
       var fn = this.handle;
       if (fn.length !== 4) {
-        return next(error);
+        return next(error2);
       }
       try {
-        fn(error, req, res, next);
+        fn(error2, req, res, next);
       } catch (err) {
         next(err);
       }
@@ -19839,7 +19839,7 @@ var require_send = __commonJS({
       debug("max-age %d", this._maxage);
       return this;
     }, "send.maxage: pass maxAge as option");
-    SendStream.prototype.error = function error(status, err) {
+    SendStream.prototype.error = function error2(status, err) {
       if (hasListeners(this, "error")) {
         return this.emit("error", createHttpError(status, err));
       }
@@ -19904,15 +19904,15 @@ var require_send = __commonJS({
       var statusCode = this.res.statusCode;
       return statusCode >= 200 && statusCode < 300 || statusCode === 304;
     };
-    SendStream.prototype.onStatError = function onStatError(error) {
-      switch (error.code) {
+    SendStream.prototype.onStatError = function onStatError(error2) {
+      switch (error2.code) {
         case "ENAMETOOLONG":
         case "ENOENT":
         case "ENOTDIR":
-          this.error(404, error);
+          this.error(404, error2);
           break;
         default:
-          this.error(500, error);
+          this.error(500, error2);
           break;
       }
     };
@@ -20858,7 +20858,7 @@ var require_ipaddr = __commonJS({
         return new this(octets);
       };
       ipaddr.IPv4.broadcastAddressFromCIDR = function(string) {
-        var cidr, error, i, ipInterfaceOctets, octets, subnetMaskOctets;
+        var cidr, error2, i, ipInterfaceOctets, octets, subnetMaskOctets;
         try {
           cidr = this.parseCIDR(string);
           ipInterfaceOctets = cidr[0].toByteArray();
@@ -20871,12 +20871,12 @@ var require_ipaddr = __commonJS({
           }
           return new this(octets);
         } catch (error1) {
-          error = error1;
+          error2 = error1;
           throw new Error("ipaddr: the address does not have IPv4 CIDR format");
         }
       };
       ipaddr.IPv4.networkAddressFromCIDR = function(string) {
-        var cidr, error, i, ipInterfaceOctets, octets, subnetMaskOctets;
+        var cidr, error2, i, ipInterfaceOctets, octets, subnetMaskOctets;
         try {
           cidr = this.parseCIDR(string);
           ipInterfaceOctets = cidr[0].toByteArray();
@@ -20889,7 +20889,7 @@ var require_ipaddr = __commonJS({
           }
           return new this(octets);
         } catch (error1) {
-          error = error1;
+          error2 = error1;
           throw new Error("ipaddr: the address does not have IPv4 CIDR format");
         }
       };
@@ -23063,7 +23063,7 @@ var require_serve_static = __commonJS({
             forwardError = true;
           });
         }
-        stream.on("error", function error(err) {
+        stream.on("error", function error2(err) {
           if (forwardError || !(err.statusCode < 500)) {
             next(err);
             return;
@@ -23327,11 +23327,11 @@ var require_on_finished2 = __commonJS({
       var eeMsg;
       var eeSocket;
       var finished = false;
-      function onFinish(error) {
+      function onFinish(error2) {
         eeMsg.cancel();
         eeSocket.cancel();
         finished = true;
-        callback(error);
+        callback(error2);
       }
       eeMsg = eeSocket = first([[msg, "end", "finish"]], onFinish);
       function onSocket(socket) {
@@ -23944,21 +23944,21 @@ var require_tr46 = __commonJS({
         label = punycode.toUnicode(label);
         processing_option = PROCESSING_OPTIONS.NONTRANSITIONAL;
       }
-      var error = false;
+      var error2 = false;
       if (normalize(label) !== label || label[3] === "-" && label[4] === "-" || label[0] === "-" || label[label.length - 1] === "-" || label.indexOf(".") !== -1 || label.search(combiningMarksRegex) === 0) {
-        error = true;
+        error2 = true;
       }
       var len = countSymbols(label);
       for (var i = 0; i < len; ++i) {
         var status = findStatus(label.codePointAt(i));
         if (processing === PROCESSING_OPTIONS.TRANSITIONAL && status[1] !== "valid" || processing === PROCESSING_OPTIONS.NONTRANSITIONAL && status[1] !== "valid" && status[1] !== "deviation") {
-          error = true;
+          error2 = true;
           break;
         }
       }
       return {
         label,
-        error
+        error: error2
       };
     }
     function processing(domain_name, useSTD3, processing_option) {
@@ -25606,8 +25606,8 @@ var require_lib5 = __commonJS({
       this.timeout = timeout;
       if (body instanceof Stream) {
         body.on("error", function(err) {
-          const error = err.name === "AbortError" ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, "system", err);
-          _this[INTERNALS].error = error;
+          const error2 = err.name === "AbortError" ? err : new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, "system", err);
+          _this[INTERNALS].error = error2;
         });
       }
     }
@@ -26455,14 +26455,14 @@ var require_lib5 = __commonJS({
         const signal = request.signal;
         let response = null;
         const abort = function abort2() {
-          let error = new AbortError("The user aborted a request.");
-          reject(error);
+          let error2 = new AbortError("The user aborted a request.");
+          reject(error2);
           if (request.body && request.body instanceof Stream.Readable) {
-            destroyStream(request.body, error);
+            destroyStream(request.body, error2);
           }
           if (!response || !response.body)
             return;
-          response.body.emit("error", error);
+          response.body.emit("error", error2);
         };
         if (signal && signal.aborted) {
           abort();
@@ -26882,8 +26882,8 @@ var require_FunctionsClient = __commonJS({
               data = yield response.text();
             }
             return { data, error: null };
-          } catch (error) {
-            return { data: null, error };
+          } catch (error2) {
+            return { data: null, error: error2 };
           }
         });
       }
@@ -26974,7 +26974,7 @@ var require_PostgrestBuilder = __commonJS({
           signal: this.signal
         }).then(async (res2) => {
           var _a, _b, _c;
-          let error = null;
+          let error2 = null;
           let data = null;
           let count = null;
           let status = res2.status;
@@ -26998,7 +26998,7 @@ var require_PostgrestBuilder = __commonJS({
             }
             if (this.isMaybeSingle && this.method === "GET" && Array.isArray(data)) {
               if (data.length > 1) {
-                error = {
+                error2 = {
                   // https://github.com/PostgREST/postgrest/blob/a867d79c42419af16c18c3fb019eba8df992626f/src/PostgREST/Error.hs#L553
                   code: "PGRST116",
                   details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
@@ -27018,10 +27018,10 @@ var require_PostgrestBuilder = __commonJS({
           } else {
             const body = await res2.text();
             try {
-              error = JSON.parse(body);
-              if (Array.isArray(error) && res2.status === 404) {
+              error2 = JSON.parse(body);
+              if (Array.isArray(error2) && res2.status === 404) {
                 data = [];
-                error = null;
+                error2 = null;
                 status = 200;
                 statusText = "OK";
               }
@@ -27030,22 +27030,22 @@ var require_PostgrestBuilder = __commonJS({
                 status = 204;
                 statusText = "No Content";
               } else {
-                error = {
+                error2 = {
                   message: body
                 };
               }
             }
-            if (error && this.isMaybeSingle && ((_c = error === null || error === void 0 ? void 0 : error.details) === null || _c === void 0 ? void 0 : _c.includes("0 rows"))) {
-              error = null;
+            if (error2 && this.isMaybeSingle && ((_c = error2 === null || error2 === void 0 ? void 0 : error2.details) === null || _c === void 0 ? void 0 : _c.includes("0 rows"))) {
+              error2 = null;
               status = 200;
               statusText = "OK";
             }
-            if (error && this.shouldThrowOnError) {
-              throw error;
+            if (error2 && this.shouldThrowOnError) {
+              throw error2;
             }
           }
           const postgrestResponse = {
-            error,
+            error: error2,
             data,
             count,
             status,
@@ -29026,19 +29026,19 @@ var require_WebSocketConnection = __commonJS({
         setImmediateImpl(this.receivedDataHandler);
       }
     };
-    WebSocketConnection.prototype.handleSocketError = function(error) {
-      this._debug("handleSocketError: %j", error);
+    WebSocketConnection.prototype.handleSocketError = function(error2) {
+      this._debug("handleSocketError: %j", error2);
       if (this.state === STATE_CLOSED) {
         this._debug("  --- Socket 'error' after 'close'");
         return;
       }
       this.closeReasonCode = WebSocketConnection.CLOSE_REASON_ABNORMAL;
-      this.closeDescription = "Socket Error: " + error.syscall + " " + error.code;
+      this.closeDescription = "Socket Error: " + error2.syscall + " " + error2.code;
       this.connected = false;
       this.state = STATE_CLOSED;
       this.fragmentationSize = 0;
       if (utils.eventEmitterListenerCount(this, "error") > 0) {
-        this.emit("error", error);
+        this.emit("error", error2);
       }
       this.socket.destroy();
       this._debug.printOutput();
@@ -29871,8 +29871,8 @@ var require_WebSocketRequest = __commonJS({
       if (this._socketIsClosing) {
         cleanupFailedConnection(connection);
       } else {
-        this.socket.write(response, "ascii", function(error) {
-          if (error) {
+        this.socket.write(response, "ascii", function(error2) {
+          if (error2) {
             cleanupFailedConnection(connection);
             return;
           }
@@ -30316,9 +30316,9 @@ var require_WebSocketClient = __commonJS({
       } else {
         pathAndQuery = "/";
       }
-      function handleRequestError(error) {
+      function handleRequestError(error2) {
         self2._req = null;
-        self2.emit("connectFailed", error);
+        self2.emit("connectFailed", error2);
       }
       var requestOptions = {
         agent: false
@@ -30700,7 +30700,7 @@ var require_EventTarget = __commonJS({
         event.stopImmediatePropagation = function() {
           stopImmediatePropagation = true;
         };
-      } catch (error) {
+      } catch (error2) {
       }
       type = event.type;
       listenersType = this._listeners[type] || [];
@@ -31622,8 +31622,8 @@ var require_transformers = __commonJS({
       if (typeof value === "string") {
         try {
           return JSON.parse(value);
-        } catch (error) {
-          console.log(`JSON parse error: ${error}`);
+        } catch (error2) {
+          console.log(`JSON parse error: ${error2}`);
           return value;
         }
       }
@@ -31828,8 +31828,8 @@ var require_RealtimeChannel = __commonJS({
               callback && callback("SUBSCRIBED");
               return;
             }
-          }).receive("error", (error) => {
-            callback && callback("CHANNEL_ERROR", new Error(JSON.stringify(Object.values(error).join(", ") || "error")));
+          }).receive("error", (error2) => {
+            callback && callback("CHANNEL_ERROR", new Error(JSON.stringify(Object.values(error2).join(", ") || "error")));
             return;
           }).receive("timeout", () => {
             callback && callback("TIMED_OUT");
@@ -31889,8 +31889,8 @@ var require_RealtimeChannel = __commonJS({
             } else {
               return "error";
             }
-          } catch (error) {
-            if (error.name === "AbortError") {
+          } catch (error2) {
+            if (error2.name === "AbortError") {
               return "timed out";
             } else {
               return "error";
@@ -31996,8 +31996,8 @@ var require_RealtimeChannel = __commonJS({
       _trigger(type, payload, ref) {
         var _a, _b;
         const typeLower = type.toLocaleLowerCase();
-        const { close, error, leave, join } = constants_1.CHANNEL_EVENTS;
-        const events = [close, error, leave, join];
+        const { close, error: error2, leave, join } = constants_1.CHANNEL_EVENTS;
+        const events = [close, error2, leave, join];
         if (ref && events.indexOf(typeLower) >= 0 && ref !== this._joinRef()) {
           return;
         }
@@ -32295,7 +32295,7 @@ var require_RealtimeClient = __commonJS({
         if (this.conn) {
           this.conn.binaryType = "arraybuffer";
           this.conn.onopen = () => this._onConnOpen();
-          this.conn.onerror = (error) => this._onConnError(error);
+          this.conn.onerror = (error2) => this._onConnError(error2);
           this.conn.onmessage = (event) => this._onConnMessage(event);
           this.conn.onclose = (event) => this._onConnClose(event);
         }
@@ -32487,10 +32487,10 @@ var require_RealtimeClient = __commonJS({
         this.stateChangeCallbacks.close.forEach((callback) => callback(event));
       }
       /** @internal */
-      _onConnError(error) {
-        this.log("transport", error.message);
+      _onConnError(error2) {
+        this.log("transport", error2.message);
         this._triggerChanError();
-        this.stateChangeCallbacks.error.forEach((callback) => callback(error));
+        this.stateChangeCallbacks.error.forEach((callback) => callback(error2));
       }
       /** @internal */
       _triggerChanError() {
@@ -32617,8 +32617,8 @@ var require_errors = __commonJS({
       }
     };
     exports.StorageError = StorageError;
-    function isStorageError(error) {
-      return typeof error === "object" && error !== null && "__isStorageError" in error;
+    function isStorageError(error2) {
+      return typeof error2 === "object" && error2 !== null && "__isStorageError" in error2;
     }
     exports.isStorageError = isStorageError;
     var StorageApiError = class extends StorageError {
@@ -32770,16 +32770,16 @@ var require_fetch = __commonJS({
     var errors_1 = require_errors();
     var helpers_1 = require_helpers();
     var _getErrorMessage = (err) => err.msg || err.message || err.error_description || err.error || JSON.stringify(err);
-    var handleError = (error, reject) => __awaiter(void 0, void 0, void 0, function* () {
+    var handleError = (error2, reject) => __awaiter(void 0, void 0, void 0, function* () {
       const Res = yield (0, helpers_1.resolveResponse)();
-      if (error instanceof Res) {
-        error.json().then((err) => {
-          reject(new errors_1.StorageApiError(_getErrorMessage(err), error.status || 500));
+      if (error2 instanceof Res) {
+        error2.json().then((err) => {
+          reject(new errors_1.StorageApiError(_getErrorMessage(err), error2.status || 500));
         }).catch((err) => {
           reject(new errors_1.StorageUnknownError(_getErrorMessage(err), err));
         });
       } else {
-        reject(new errors_1.StorageUnknownError(_getErrorMessage(error), error));
+        reject(new errors_1.StorageUnknownError(_getErrorMessage(error2), error2));
       }
     });
     var _getRequestParams = (method, options, parameters, body) => {
@@ -32800,7 +32800,7 @@ var require_fetch = __commonJS({
             if (options === null || options === void 0 ? void 0 : options.noResolveJson)
               return result;
             return result.json();
-          }).then((data) => resolve(data)).catch((error) => handleError(error, reject));
+          }).then((data) => resolve(data)).catch((error2) => handleError(error2, reject));
         });
       });
     }
@@ -32920,14 +32920,14 @@ var require_StorageFileApi = __commonJS({
                 error: null
               };
             } else {
-              const error = yield res.json();
-              return { data: null, error };
+              const error2 = yield res.json();
+              return { data: null, error: error2 };
             }
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -32981,14 +32981,14 @@ var require_StorageFileApi = __commonJS({
                 error: null
               };
             } else {
-              const error = yield res.json();
-              return { data: null, error };
+              const error2 = yield res.json();
+              return { data: null, error: error2 };
             }
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33009,11 +33009,11 @@ var require_StorageFileApi = __commonJS({
               throw new errors_1.StorageError("No token returned by API");
             }
             return { data: { signedUrl: url.toString(), path, token }, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33039,11 +33039,11 @@ var require_StorageFileApi = __commonJS({
           try {
             const data = yield (0, fetch_1.post)(this.fetch, `${this.url}/object/move`, { bucketId: this.bucketId, sourceKey: fromPath, destinationKey: toPath }, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33058,11 +33058,11 @@ var require_StorageFileApi = __commonJS({
           try {
             const data = yield (0, fetch_1.post)(this.fetch, `${this.url}/object/copy`, { bucketId: this.bucketId, sourceKey: fromPath, destinationKey: toPath }, { headers: this.headers });
             return { data: { path: data.Key }, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33083,11 +33083,11 @@ var require_StorageFileApi = __commonJS({
             const signedUrl = encodeURI(`${this.url}${data.signedURL}${downloadQueryParam}`);
             data = { signedUrl };
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33107,11 +33107,11 @@ var require_StorageFileApi = __commonJS({
               data: data.map((datum) => Object.assign(Object.assign({}, datum), { signedUrl: datum.signedURL ? encodeURI(`${this.url}${datum.signedURL}${downloadQueryParam}`) : null })),
               error: null
             };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33135,11 +33135,11 @@ var require_StorageFileApi = __commonJS({
             });
             const data = yield res.blob();
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33182,11 +33182,11 @@ var require_StorageFileApi = __commonJS({
           try {
             const data = yield (0, fetch_1.remove)(this.fetch, `${this.url}/object/${this.bucketId}`, { prefixes: paths }, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33259,11 +33259,11 @@ var require_StorageFileApi = __commonJS({
             const body = Object.assign(Object.assign(Object.assign({}, DEFAULT_SEARCH_OPTIONS), options), { prefix: path || "" });
             const data = yield (0, fetch_1.post)(this.fetch, `${this.url}/object/list/${this.bucketId}`, body, { headers: this.headers }, parameters);
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33368,11 +33368,11 @@ var require_StorageBucketApi = __commonJS({
           try {
             const data = yield (0, fetch_1.get)(this.fetch, `${this.url}/bucket`, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33386,11 +33386,11 @@ var require_StorageBucketApi = __commonJS({
           try {
             const data = yield (0, fetch_1.get)(this.fetch, `${this.url}/bucket/${id}`, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33420,11 +33420,11 @@ var require_StorageBucketApi = __commonJS({
               allowed_mime_types: options.allowedMimeTypes
             }, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33451,11 +33451,11 @@ var require_StorageBucketApi = __commonJS({
               allowed_mime_types: options.allowedMimeTypes
             }, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33469,11 +33469,11 @@ var require_StorageBucketApi = __commonJS({
           try {
             const data = yield (0, fetch_1.post)(this.fetch, `${this.url}/bucket/${id}/empty`, {}, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -33488,11 +33488,11 @@ var require_StorageBucketApi = __commonJS({
           try {
             const data = yield (0, fetch_1.remove)(this.fetch, `${this.url}/bucket/${id}`, {}, { headers: this.headers });
             return { data, error: null };
-          } catch (error) {
-            if ((0, errors_1.isStorageError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isStorageError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -34015,8 +34015,8 @@ var require_errors2 = __commonJS({
       }
     };
     exports.AuthError = AuthError;
-    function isAuthError(error) {
-      return typeof error === "object" && error !== null && "__isAuthError" in error;
+    function isAuthError(error2) {
+      return typeof error2 === "object" && error2 !== null && "__isAuthError" in error2;
     }
     exports.isAuthError = isAuthError;
     var AuthApiError = class extends AuthError {
@@ -34034,8 +34034,8 @@ var require_errors2 = __commonJS({
       }
     };
     exports.AuthApiError = AuthApiError;
-    function isAuthApiError(error) {
-      return isAuthError(error) && error.name === "AuthApiError";
+    function isAuthApiError(error2) {
+      return isAuthError(error2) && error2.name === "AuthApiError";
     }
     exports.isAuthApiError = isAuthApiError;
     var AuthUnknownError = class extends AuthError {
@@ -34117,8 +34117,8 @@ var require_errors2 = __commonJS({
       }
     };
     exports.AuthRetryableFetchError = AuthRetryableFetchError;
-    function isAuthRetryableFetchError(error) {
-      return isAuthError(error) && error.name === "AuthRetryableFetchError";
+    function isAuthRetryableFetchError(error2) {
+      return isAuthError(error2) && error2.name === "AuthRetryableFetchError";
     }
     exports.isAuthRetryableFetchError = isAuthRetryableFetchError;
   }
@@ -34146,20 +34146,20 @@ var require_fetch3 = __commonJS({
     var errors_1 = require_errors2();
     var _getErrorMessage = (err) => err.msg || err.message || err.error_description || err.error || JSON.stringify(err);
     var NETWORK_ERROR_CODES = [502, 503, 504];
-    async function handleError(error) {
-      if (!(0, helpers_1.looksLikeFetchResponse)(error)) {
-        throw new errors_1.AuthRetryableFetchError(_getErrorMessage(error), 0);
+    async function handleError(error2) {
+      if (!(0, helpers_1.looksLikeFetchResponse)(error2)) {
+        throw new errors_1.AuthRetryableFetchError(_getErrorMessage(error2), 0);
       }
-      if (NETWORK_ERROR_CODES.includes(error.status)) {
-        throw new errors_1.AuthRetryableFetchError(_getErrorMessage(error), error.status);
+      if (NETWORK_ERROR_CODES.includes(error2.status)) {
+        throw new errors_1.AuthRetryableFetchError(_getErrorMessage(error2), error2.status);
       }
       let data;
       try {
-        data = await error.json();
+        data = await error2.json();
       } catch (e) {
         throw new errors_1.AuthUnknownError(_getErrorMessage(e), e);
       }
-      throw new errors_1.AuthApiError(_getErrorMessage(data), error.status || 500);
+      throw new errors_1.AuthApiError(_getErrorMessage(data), error2.status || 500);
     }
     var _getRequestParams = (method, options, parameters, body) => {
       const params = { method, headers: (options === null || options === void 0 ? void 0 : options.headers) || {} };
@@ -34208,21 +34208,21 @@ var require_fetch3 = __commonJS({
     }
     function _sessionResponse(data) {
       var _a;
-      let session = null;
+      let session2 = null;
       if (hasSession(data)) {
-        session = Object.assign({}, data);
+        session2 = Object.assign({}, data);
         if (!data.expires_at) {
-          session.expires_at = (0, helpers_1.expiresAt)(data.expires_in);
+          session2.expires_at = (0, helpers_1.expiresAt)(data.expires_in);
         }
       }
-      const user = (_a = data.user) !== null && _a !== void 0 ? _a : data;
-      return { data: { session, user }, error: null };
+      const user2 = (_a = data.user) !== null && _a !== void 0 ? _a : data;
+      return { data: { session: session2, user: user2 }, error: null };
     }
     exports._sessionResponse = _sessionResponse;
     function _userResponse(data) {
       var _a;
-      const user = (_a = data.user) !== null && _a !== void 0 ? _a : data;
-      return { data: { user }, error: null };
+      const user2 = (_a = data.user) !== null && _a !== void 0 ? _a : data;
+      return { data: { user: user2 }, error: null };
     }
     exports._userResponse = _userResponse;
     function _ssoResponse(data) {
@@ -34238,11 +34238,11 @@ var require_fetch3 = __commonJS({
         redirect_to,
         verification_type
       };
-      const user = Object.assign({}, rest);
+      const user2 = Object.assign({}, rest);
       return {
         data: {
           properties,
-          user
+          user: user2
         },
         error: null
       };
@@ -34301,11 +34301,11 @@ var require_GoTrueAdminApi = __commonJS({
             noResolveJson: true
           });
           return { data: null, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34321,11 +34321,11 @@ var require_GoTrueAdminApi = __commonJS({
             redirectTo: options.redirectTo,
             xform: fetch_1._userResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34349,17 +34349,17 @@ var require_GoTrueAdminApi = __commonJS({
             xform: fetch_1._generateLinkResponse,
             redirectTo: options === null || options === void 0 ? void 0 : options.redirectTo
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
             return {
               data: {
                 properties: null,
                 user: null
               },
-              error
+              error: error2
             };
           }
-          throw error;
+          throw error2;
         }
       }
       // User Admin API
@@ -34374,11 +34374,11 @@ var require_GoTrueAdminApi = __commonJS({
             headers: this.headers,
             xform: fetch_1._userResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34414,11 +34414,11 @@ var require_GoTrueAdminApi = __commonJS({
             pagination.total = parseInt(total);
           }
           return { data: Object.assign(Object.assign({}, users), pagination), error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { users: [] }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { users: [] }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34434,11 +34434,11 @@ var require_GoTrueAdminApi = __commonJS({
             headers: this.headers,
             xform: fetch_1._userResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34455,11 +34455,11 @@ var require_GoTrueAdminApi = __commonJS({
             headers: this.headers,
             xform: fetch_1._userResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34480,27 +34480,27 @@ var require_GoTrueAdminApi = __commonJS({
             },
             xform: fetch_1._userResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       async _listFactors(params) {
         try {
-          const { data, error } = await (0, fetch_1._request)(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/factors`, {
+          const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "GET", `${this.url}/admin/users/${params.userId}/factors`, {
             headers: this.headers,
             xform: (factors) => {
               return { data: { factors }, error: null };
             }
           });
-          return { data, error };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+          return { data, error: error2 };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       async _deleteFactor(params) {
@@ -34509,11 +34509,11 @@ var require_GoTrueAdminApi = __commonJS({
             headers: this.headers
           });
           return { data, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
     };
@@ -34846,32 +34846,32 @@ var require_GoTrueClient = __commonJS({
           const isPKCEFlow = (0, helpers_1.isBrowser)() ? await this._isPKCEFlow() : false;
           this._debug("#_initialize()", "begin", "is PKCE flow", isPKCEFlow);
           if (isPKCEFlow || this.detectSessionInUrl && this._isImplicitGrantFlow()) {
-            const { data, error } = await this._getSessionFromURL(isPKCEFlow);
-            if (error) {
-              this._debug("#_initialize()", "error detecting session from URL", error);
+            const { data, error: error2 } = await this._getSessionFromURL(isPKCEFlow);
+            if (error2) {
+              this._debug("#_initialize()", "error detecting session from URL", error2);
               await this._removeSession();
-              return { error };
+              return { error: error2 };
             }
-            const { session, redirectType } = data;
-            this._debug("#_initialize()", "detected session in URL", session, "redirect type", redirectType);
-            await this._saveSession(session);
+            const { session: session2, redirectType } = data;
+            this._debug("#_initialize()", "detected session in URL", session2, "redirect type", redirectType);
+            await this._saveSession(session2);
             setTimeout(async () => {
               if (redirectType === "recovery") {
-                await this._notifyAllSubscribers("PASSWORD_RECOVERY", session);
+                await this._notifyAllSubscribers("PASSWORD_RECOVERY", session2);
               } else {
-                await this._notifyAllSubscribers("SIGNED_IN", session);
+                await this._notifyAllSubscribers("SIGNED_IN", session2);
               }
             }, 0);
             return { error: null };
           }
           await this._recoverAndRefresh();
           return { error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { error: error2 };
           }
           return {
-            error: new errors_1.AuthUnknownError("Unexpected error during initialization", error)
+            error: new errors_1.AuthUnknownError("Unexpected error during initialization", error2)
           };
         } finally {
           await this._handleVisibilityChange();
@@ -34932,22 +34932,22 @@ var require_GoTrueClient = __commonJS({
           } else {
             throw new errors_1.AuthInvalidCredentialsError("You must provide either an email or phone number and a password");
           }
-          const { data, error } = res;
-          if (error || !data) {
-            return { data: { user: null, session: null }, error };
+          const { data, error: error2 } = res;
+          if (error2 || !data) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          const session = data.session;
-          const user = data.user;
+          const session2 = data.session;
+          const user2 = data.user;
           if (data.session) {
             await this._saveSession(data.session);
-            await this._notifyAllSubscribers("SIGNED_IN", session);
+            await this._notifyAllSubscribers("SIGNED_IN", session2);
           }
-          return { data: { user, session }, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+          return { data: { user: user2, session: session2 }, error: null };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -34987,9 +34987,9 @@ var require_GoTrueClient = __commonJS({
           } else {
             throw new errors_1.AuthInvalidCredentialsError("You must provide either an email or phone number and a password");
           }
-          const { data, error } = res;
-          if (error) {
-            return { data: { user: null, session: null }, error };
+          const { data, error: error2 } = res;
+          if (error2) {
+            return { data: { user: null, session: null }, error: error2 };
           } else if (!data || !data.session || !data.user) {
             return { data: { user: null, session: null }, error: new errors_1.AuthInvalidTokenResponseError() };
           }
@@ -34997,12 +34997,12 @@ var require_GoTrueClient = __commonJS({
             await this._saveSession(data.session);
             await this._notifyAllSubscribers("SIGNED_IN", data.session);
           }
-          return { data: { user: data.user, session: data.session }, error };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+          return { data: { user: data.user, session: data.session }, error: error2 };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35030,7 +35030,7 @@ var require_GoTrueClient = __commonJS({
       }
       async _exchangeCodeForSession(authCode) {
         const codeVerifier = await (0, helpers_1.getItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
-        const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/token?grant_type=pkce`, {
+        const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/token?grant_type=pkce`, {
           headers: this.headers,
           body: {
             auth_code: authCode,
@@ -35039,8 +35039,8 @@ var require_GoTrueClient = __commonJS({
           xform: fetch_1._sessionResponse
         });
         await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
-        if (error) {
-          return { data: { user: null, session: null }, error };
+        if (error2) {
+          return { data: { user: null, session: null }, error: error2 };
         } else if (!data || !data.session || !data.user) {
           return { data: { user: null, session: null }, error: new errors_1.AuthInvalidTokenResponseError() };
         }
@@ -35048,7 +35048,7 @@ var require_GoTrueClient = __commonJS({
           await this._saveSession(data.session);
           await this._notifyAllSubscribers("SIGNED_IN", data.session);
         }
-        return { data, error };
+        return { data, error: error2 };
       }
       /**
        * Allows signing in with an OIDC ID token. The authentication provider used
@@ -35069,9 +35069,9 @@ var require_GoTrueClient = __commonJS({
             },
             xform: fetch_1._sessionResponse
           });
-          const { data, error } = res;
-          if (error) {
-            return { data: { user: null, session: null }, error };
+          const { data, error: error2 } = res;
+          if (error2) {
+            return { data: { user: null, session: null }, error: error2 };
           } else if (!data || !data.session || !data.user) {
             return {
               data: { user: null, session: null },
@@ -35082,12 +35082,12 @@ var require_GoTrueClient = __commonJS({
             await this._saveSession(data.session);
             await this._notifyAllSubscribers("SIGNED_IN", data.session);
           }
-          return { data, error };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+          return { data, error: error2 };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35121,7 +35121,7 @@ var require_GoTrueClient = __commonJS({
               codeChallenge = await (0, helpers_1.generatePKCEChallenge)(codeVerifier);
               codeChallengeMethod = codeVerifier === codeChallenge ? "plain" : "s256";
             }
-            const { error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/otp`, {
+            const { error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/otp`, {
               headers: this.headers,
               body: {
                 email,
@@ -35133,11 +35133,11 @@ var require_GoTrueClient = __commonJS({
               },
               redirectTo: options === null || options === void 0 ? void 0 : options.emailRedirectTo
             });
-            return { data: { user: null, session: null }, error };
+            return { data: { user: null, session: null }, error: error2 };
           }
           if ("phone" in credentials) {
             const { phone, options } = credentials;
-            const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/otp`, {
+            const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/otp`, {
               headers: this.headers,
               body: {
                 phone,
@@ -35147,14 +35147,14 @@ var require_GoTrueClient = __commonJS({
                 channel: (_e = options === null || options === void 0 ? void 0 : options.channel) !== null && _e !== void 0 ? _e : "sms"
               }
             });
-            return { data: { user: null, session: null, messageId: data === null || data === void 0 ? void 0 : data.message_id }, error };
+            return { data: { user: null, session: null, messageId: data === null || data === void 0 ? void 0 : data.message_id }, error: error2 };
           }
           throw new errors_1.AuthInvalidCredentialsError("You must provide either an email or phone number.");
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35172,30 +35172,30 @@ var require_GoTrueClient = __commonJS({
             redirectTo = (_a = params.options) === null || _a === void 0 ? void 0 : _a.redirectTo;
             captchaToken = (_b = params.options) === null || _b === void 0 ? void 0 : _b.captchaToken;
           }
-          const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/verify`, {
+          const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/verify`, {
             headers: this.headers,
             body: Object.assign(Object.assign({}, params), { gotrue_meta_security: { captcha_token: captchaToken } }),
             redirectTo,
             xform: fetch_1._sessionResponse
           });
-          if (error) {
-            throw error;
+          if (error2) {
+            throw error2;
           }
           if (!data) {
             throw new Error("An error occurred on token verification.");
           }
-          const session = data.session;
-          const user = data.user;
-          if (session === null || session === void 0 ? void 0 : session.access_token) {
-            await this._saveSession(session);
-            await this._notifyAllSubscribers("SIGNED_IN", session);
+          const session2 = data.session;
+          const user2 = data.user;
+          if (session2 === null || session2 === void 0 ? void 0 : session2.access_token) {
+            await this._saveSession(session2);
+            await this._notifyAllSubscribers("SIGNED_IN", session2);
           }
-          return { data: { user, session }, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+          return { data: { user: user2, session: session2 }, error: null };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35229,11 +35229,11 @@ var require_GoTrueClient = __commonJS({
             headers: this.headers,
             xform: fetch_1._ssoResponse
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35249,22 +35249,22 @@ var require_GoTrueClient = __commonJS({
       async _reauthenticate() {
         try {
           return await this._useSession(async (result) => {
-            const { data: { session }, error: sessionError } = result;
+            const { data: { session: session2 }, error: sessionError } = result;
             if (sessionError)
               throw sessionError;
-            if (!session)
+            if (!session2)
               throw new errors_1.AuthSessionMissingError();
-            const { error } = await (0, fetch_1._request)(this.fetch, "GET", `${this.url}/reauthenticate`, {
+            const { error: error2 } = await (0, fetch_1._request)(this.fetch, "GET", `${this.url}/reauthenticate`, {
               headers: this.headers,
-              jwt: session.access_token
+              jwt: session2.access_token
             });
-            return { data: { user: null, session: null }, error };
+            return { data: { user: null, session: null }, error: error2 };
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35278,7 +35278,7 @@ var require_GoTrueClient = __commonJS({
           const endpoint = `${this.url}/resend`;
           if ("email" in credentials) {
             const { email, type, options } = credentials;
-            const { error } = await (0, fetch_1._request)(this.fetch, "POST", endpoint, {
+            const { error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", endpoint, {
               headers: this.headers,
               body: {
                 email,
@@ -35287,10 +35287,10 @@ var require_GoTrueClient = __commonJS({
               },
               redirectTo: options === null || options === void 0 ? void 0 : options.emailRedirectTo
             });
-            return { data: { user: null, session: null }, error };
+            return { data: { user: null, session: null }, error: error2 };
           } else if ("phone" in credentials) {
             const { phone, type, options } = credentials;
-            const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", endpoint, {
+            const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", endpoint, {
               headers: this.headers,
               body: {
                 phone,
@@ -35298,14 +35298,14 @@ var require_GoTrueClient = __commonJS({
                 gotrue_meta_security: { captcha_token: options === null || options === void 0 ? void 0 : options.captchaToken }
               }
             });
-            return { data: { user: null, session: null, messageId: data === null || data === void 0 ? void 0 : data.message_id }, error };
+            return { data: { user: null, session: null, messageId: data === null || data === void 0 ? void 0 : data.message_id }, error: error2 };
           }
           throw new errors_1.AuthInvalidCredentialsError("You must provide either an email or phone number and a type");
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35412,11 +35412,11 @@ var require_GoTrueClient = __commonJS({
           if (!hasExpired) {
             return { data: { session: currentSession }, error: null };
           }
-          const { session, error } = await this._callRefreshToken(currentSession.refresh_token);
-          if (error) {
-            return { data: { session: null }, error };
+          const { session: session2, error: error2 } = await this._callRefreshToken(currentSession.refresh_token);
+          if (error2) {
+            return { data: { session: null }, error: error2 };
           }
-          return { data: { session }, error: null };
+          return { data: { session: session2 }, error: null };
         } finally {
           this._debug("#__loadSession()", "end");
         }
@@ -35445,9 +35445,9 @@ var require_GoTrueClient = __commonJS({
           }
           return await this._useSession(async (result) => {
             var _a, _b;
-            const { data, error } = result;
-            if (error) {
-              throw error;
+            const { data, error: error2 } = result;
+            if (error2) {
+              throw error2;
             }
             return await (0, fetch_1._request)(this.fetch, "GET", `${this.url}/user`, {
               headers: this.headers,
@@ -35455,11 +35455,11 @@ var require_GoTrueClient = __commonJS({
               xform: fetch_1._userResponse
             });
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35481,7 +35481,7 @@ var require_GoTrueClient = __commonJS({
             if (!sessionData.session) {
               throw new errors_1.AuthSessionMissingError();
             }
-            const session = sessionData.session;
+            const session2 = sessionData.session;
             let codeChallenge = null;
             let codeChallengeMethod = null;
             if (this.flowType === "pkce" && attributes.email != null) {
@@ -35494,21 +35494,21 @@ var require_GoTrueClient = __commonJS({
               headers: this.headers,
               redirectTo: options === null || options === void 0 ? void 0 : options.emailRedirectTo,
               body: Object.assign(Object.assign({}, attributes), { code_challenge: codeChallenge, code_challenge_method: codeChallengeMethod }),
-              jwt: session.access_token,
+              jwt: session2.access_token,
               xform: fetch_1._userResponse
             });
             if (userError)
               throw userError;
-            session.user = data.user;
-            await this._saveSession(session);
-            await this._notifyAllSubscribers("USER_UPDATED", session);
-            return { data: { user: session.user }, error: null };
+            session2.user = data.user;
+            await this._saveSession(session2);
+            await this._notifyAllSubscribers("USER_UPDATED", session2);
+            return { data: { user: session2.user }, error: null };
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35536,27 +35536,27 @@ var require_GoTrueClient = __commonJS({
           const timeNow = Date.now() / 1e3;
           let expiresAt = timeNow;
           let hasExpired = true;
-          let session = null;
+          let session2 = null;
           const payload = (0, helpers_1.decodeJWTPayload)(currentSession.access_token);
           if (payload.exp) {
             expiresAt = payload.exp;
             hasExpired = expiresAt <= timeNow;
           }
           if (hasExpired) {
-            const { session: refreshedSession, error } = await this._callRefreshToken(currentSession.refresh_token);
-            if (error) {
-              return { data: { user: null, session: null }, error };
+            const { session: refreshedSession, error: error2 } = await this._callRefreshToken(currentSession.refresh_token);
+            if (error2) {
+              return { data: { user: null, session: null }, error: error2 };
             }
             if (!refreshedSession) {
               return { data: { user: null, session: null }, error: null };
             }
-            session = refreshedSession;
+            session2 = refreshedSession;
           } else {
-            const { data, error } = await this._getUser(currentSession.access_token);
-            if (error) {
-              throw error;
+            const { data, error: error2 } = await this._getUser(currentSession.access_token);
+            if (error2) {
+              throw error2;
             }
-            session = {
+            session2 = {
               access_token: currentSession.access_token,
               refresh_token: currentSession.refresh_token,
               user: data.user,
@@ -35564,15 +35564,15 @@ var require_GoTrueClient = __commonJS({
               expires_in: expiresAt - timeNow,
               expires_at: expiresAt
             };
-            await this._saveSession(session);
-            await this._notifyAllSubscribers("SIGNED_IN", session);
+            await this._saveSession(session2);
+            await this._notifyAllSubscribers("SIGNED_IN", session2);
           }
-          return { data: { user: session.user, session }, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { session: null, user: null }, error };
+          return { data: { user: session2.user, session: session2 }, error: null };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { session: null, user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35592,29 +35592,29 @@ var require_GoTrueClient = __commonJS({
           return await this._useSession(async (result) => {
             var _a;
             if (!currentSession) {
-              const { data, error: error2 } = result;
-              if (error2) {
-                throw error2;
+              const { data, error: error3 } = result;
+              if (error3) {
+                throw error3;
               }
               currentSession = (_a = data.session) !== null && _a !== void 0 ? _a : void 0;
             }
             if (!(currentSession === null || currentSession === void 0 ? void 0 : currentSession.refresh_token)) {
               throw new errors_1.AuthSessionMissingError();
             }
-            const { session, error } = await this._callRefreshToken(currentSession.refresh_token);
-            if (error) {
-              return { data: { user: null, session: null }, error };
+            const { session: session2, error: error2 } = await this._callRefreshToken(currentSession.refresh_token);
+            if (error2) {
+              return { data: { user: null, session: null }, error: error2 };
             }
-            if (!session) {
+            if (!session2) {
               return { data: { user: null, session: null }, error: null };
             }
-            return { data: { user: session.user, session }, error: null };
+            return { data: { user: session2.user, session: session2 }, error: null };
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { user: null, session: null }, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { user: null, session: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35633,9 +35633,9 @@ var require_GoTrueClient = __commonJS({
           if (isPKCEFlow) {
             if (!params.code)
               throw new errors_1.AuthPKCEGrantCodeExchangeError("No code detected.");
-            const { data: data2, error: error2 } = await this._exchangeCodeForSession(params.code);
-            if (error2)
-              throw error2;
+            const { data: data2, error: error3 } = await this._exchangeCodeForSession(params.code);
+            if (error3)
+              throw error3;
             const url = new URL(window.location.href);
             url.searchParams.delete("code");
             window.history.replaceState(window.history.state, "", url.toString());
@@ -35667,10 +35667,10 @@ var require_GoTrueClient = __commonJS({
           } else if (timeNow - issuedAt < 0) {
             console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued in the future? Check the device clok for skew", issuedAt, expiresAt, timeNow);
           }
-          const { data, error } = await this._getUser(access_token);
-          if (error)
-            throw error;
-          const session = {
+          const { data, error: error2 } = await this._getUser(access_token);
+          if (error2)
+            throw error2;
+          const session2 = {
             provider_token,
             provider_refresh_token,
             access_token,
@@ -35682,12 +35682,12 @@ var require_GoTrueClient = __commonJS({
           };
           window.location.hash = "";
           this._debug("#_getSessionFromURL()", "clearing window.location.hash");
-          return { data: { session, redirectType: params.type }, error: null };
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { session: null, redirectType: null }, error };
+          return { data: { session: session2, redirectType: params.type }, error: null };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { session: null, redirectType: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35729,10 +35729,10 @@ var require_GoTrueClient = __commonJS({
           }
           const accessToken = (_a = data.session) === null || _a === void 0 ? void 0 : _a.access_token;
           if (accessToken) {
-            const { error } = await this.admin.signOut(accessToken, scope);
-            if (error) {
-              if (!((0, errors_1.isAuthApiError)(error) && (error.status === 404 || error.status === 401))) {
-                return { error };
+            const { error: error2 } = await this.admin.signOut(accessToken, scope);
+            if (error2) {
+              if (!((0, errors_1.isAuthApiError)(error2) && (error2.status === 404 || error2.status === 401))) {
+                return { error: error2 };
               }
             }
           }
@@ -35772,11 +35772,11 @@ var require_GoTrueClient = __commonJS({
         return await this._useSession(async (result) => {
           var _a, _b;
           try {
-            const { data: { session }, error } = result;
-            if (error)
-              throw error;
-            await ((_a = this.stateChangeEmitters.get(id)) === null || _a === void 0 ? void 0 : _a.callback("INITIAL_SESSION", session));
-            this._debug("INITIAL_SESSION", "callback id", id, "session", session);
+            const { data: { session: session2 }, error: error2 } = result;
+            if (error2)
+              throw error2;
+            await ((_a = this.stateChangeEmitters.get(id)) === null || _a === void 0 ? void 0 : _a.callback("INITIAL_SESSION", session2));
+            this._debug("INITIAL_SESSION", "callback id", id, "session", session2);
           } catch (err) {
             await ((_b = this.stateChangeEmitters.get(id)) === null || _b === void 0 ? void 0 : _b.callback("INITIAL_SESSION", null));
             this._debug("INITIAL_SESSION", "callback id", id, "error", err);
@@ -35811,11 +35811,11 @@ var require_GoTrueClient = __commonJS({
             headers: this.headers,
             redirectTo: options.redirectTo
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -35837,12 +35837,12 @@ var require_GoTrueClient = __commonJS({
             });
           }, (attempt, _, result) => result && result.error && (0, errors_1.isAuthRetryableFetchError)(result.error) && // retryable only if the request can be sent before the backoff overflows the tick duration
           Date.now() + (attempt + 1) * 200 - startedAt < AUTO_REFRESH_TICK_DURATION);
-        } catch (error) {
-          this._debug(debugName, "error", error);
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: { session: null, user: null }, error };
+        } catch (error2) {
+          this._debug(debugName, "error", error2);
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: { session: null, user: null }, error: error2 };
           }
-          throw error;
+          throw error2;
         } finally {
           this._debug(debugName, "end");
         }
@@ -35886,11 +35886,11 @@ var require_GoTrueClient = __commonJS({
           this._debug(debugName, `session has${expiresWithMargin ? "" : " not"} expired with margin of ${constants_1.EXPIRY_MARGIN}s`);
           if (expiresWithMargin) {
             if (this.autoRefreshToken && currentSession.refresh_token) {
-              const { error } = await this._callRefreshToken(currentSession.refresh_token);
-              if (error) {
-                console.error(error);
-                if (!(0, errors_1.isAuthRetryableFetchError)(error)) {
-                  this._debug(debugName, "refresh failed with a non-retryable error, removing the session", error);
+              const { error: error2 } = await this._callRefreshToken(currentSession.refresh_token);
+              if (error2) {
+                console.error(error2);
+                if (!(0, errors_1.isAuthRetryableFetchError)(error2)) {
+                  this._debug(debugName, "refresh failed with a non-retryable error, removing the session", error2);
                   await this._removeSession();
                 }
               }
@@ -35918,9 +35918,9 @@ var require_GoTrueClient = __commonJS({
         this._debug(debugName, "begin");
         try {
           this.refreshingDeferred = new helpers_1.Deferred();
-          const { data, error } = await this._refreshAccessToken(refreshToken);
-          if (error)
-            throw error;
+          const { data, error: error2 } = await this._refreshAccessToken(refreshToken);
+          if (error2)
+            throw error2;
           if (!data.session)
             throw new errors_1.AuthSessionMissingError();
           await this._saveSession(data.session);
@@ -35928,31 +35928,31 @@ var require_GoTrueClient = __commonJS({
           const result = { session: data.session, error: null };
           this.refreshingDeferred.resolve(result);
           return result;
-        } catch (error) {
-          this._debug(debugName, "error", error);
-          if ((0, errors_1.isAuthError)(error)) {
-            const result = { session: null, error };
+        } catch (error2) {
+          this._debug(debugName, "error", error2);
+          if ((0, errors_1.isAuthError)(error2)) {
+            const result = { session: null, error: error2 };
             (_a = this.refreshingDeferred) === null || _a === void 0 ? void 0 : _a.resolve(result);
             return result;
           }
-          (_b = this.refreshingDeferred) === null || _b === void 0 ? void 0 : _b.reject(error);
-          throw error;
+          (_b = this.refreshingDeferred) === null || _b === void 0 ? void 0 : _b.reject(error2);
+          throw error2;
         } finally {
           this.refreshingDeferred = null;
           this._debug(debugName, "end");
         }
       }
-      async _notifyAllSubscribers(event, session, broadcast = true) {
+      async _notifyAllSubscribers(event, session2, broadcast = true) {
         const debugName = `#_notifyAllSubscribers(${event})`;
-        this._debug(debugName, "begin", session, `broadcast = ${broadcast}`);
+        this._debug(debugName, "begin", session2, `broadcast = ${broadcast}`);
         try {
           if (this.broadcastChannel && broadcast) {
-            this.broadcastChannel.postMessage({ event, session });
+            this.broadcastChannel.postMessage({ event, session: session2 });
           }
           const errors = [];
           const promises = Array.from(this.stateChangeEmitters.values()).map(async (x) => {
             try {
-              await x.callback(event, session);
+              await x.callback(event, session2);
             } catch (e) {
               errors.push(e);
             }
@@ -35972,9 +35972,9 @@ var require_GoTrueClient = __commonJS({
        * set currentSession and currentUser
        * process to _startAutoRefreshToken if possible
        */
-      async _saveSession(session) {
-        this._debug("#_saveSession()", session);
-        await this._persistSession(session);
+      async _saveSession(session2) {
+        this._debug("#_saveSession()", session2);
+        await this._persistSession(session2);
       }
       _persistSession(currentSession) {
         this._debug("#_persistSession()", currentSession);
@@ -36082,15 +36082,15 @@ var require_GoTrueClient = __commonJS({
               const now = Date.now();
               try {
                 return await this._useSession(async (result) => {
-                  const { data: { session } } = result;
-                  if (!session || !session.refresh_token || !session.expires_at) {
+                  const { data: { session: session2 } } = result;
+                  if (!session2 || !session2.refresh_token || !session2.expires_at) {
                     this._debug("#_autoRefreshTokenTick()", "no session");
                     return;
                   }
-                  const expiresInTicks = Math.floor((session.expires_at * 1e3 - now) / AUTO_REFRESH_TICK_DURATION);
+                  const expiresInTicks = Math.floor((session2.expires_at * 1e3 - now) / AUTO_REFRESH_TICK_DURATION);
                   this._debug("#_autoRefreshTokenTick()", `access token expires in ${expiresInTicks} ticks, a tick lasts ${AUTO_REFRESH_TICK_DURATION}ms, refresh threshold is ${AUTO_REFRESH_TICK_THRESHOLD} ticks`);
                   if (expiresInTicks <= AUTO_REFRESH_TICK_THRESHOLD) {
-                    await this._callRefreshToken(session.refresh_token);
+                    await this._callRefreshToken(session2.refresh_token);
                   }
                 });
               } catch (e) {
@@ -36125,8 +36125,8 @@ var require_GoTrueClient = __commonJS({
           this.visibilityChangedCallback = async () => await this._onVisibilityChanged(false);
           window === null || window === void 0 ? void 0 : window.addEventListener("visibilitychange", this.visibilityChangedCallback);
           await this._onVisibilityChanged(true);
-        } catch (error) {
-          console.error("_handleVisibilityChange", error);
+        } catch (error2) {
+          console.error("_handleVisibilityChange", error2);
         }
       }
       /**
@@ -36200,11 +36200,11 @@ var require_GoTrueClient = __commonJS({
               jwt: (_a = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a === void 0 ? void 0 : _a.access_token
             });
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -36218,7 +36218,7 @@ var require_GoTrueClient = __commonJS({
             if (sessionError) {
               return { data: null, error: sessionError };
             }
-            const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/factors`, {
+            const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/factors`, {
               body: {
                 friendly_name: params.friendlyName,
                 factor_type: params.factorType,
@@ -36227,19 +36227,19 @@ var require_GoTrueClient = __commonJS({
               headers: this.headers,
               jwt: (_a = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a === void 0 ? void 0 : _a.access_token
             });
-            if (error) {
-              return { data: null, error };
+            if (error2) {
+              return { data: null, error: error2 };
             }
             if ((_b = data === null || data === void 0 ? void 0 : data.totp) === null || _b === void 0 ? void 0 : _b.qr_code) {
               data.totp.qr_code = `data:image/svg+xml;utf-8,${data.totp.qr_code}`;
             }
             return { data, error: null };
           });
-        } catch (error) {
-          if ((0, errors_1.isAuthError)(error)) {
-            return { data: null, error };
+        } catch (error2) {
+          if ((0, errors_1.isAuthError)(error2)) {
+            return { data: null, error: error2 };
           }
-          throw error;
+          throw error2;
         }
       }
       /**
@@ -36254,23 +36254,23 @@ var require_GoTrueClient = __commonJS({
               if (sessionError) {
                 return { data: null, error: sessionError };
               }
-              const { data, error } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/factors/${params.factorId}/verify`, {
+              const { data, error: error2 } = await (0, fetch_1._request)(this.fetch, "POST", `${this.url}/factors/${params.factorId}/verify`, {
                 body: { code: params.code, challenge_id: params.challengeId },
                 headers: this.headers,
                 jwt: (_a = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a === void 0 ? void 0 : _a.access_token
               });
-              if (error) {
-                return { data: null, error };
+              if (error2) {
+                return { data: null, error: error2 };
               }
               await this._saveSession(Object.assign({ expires_at: Math.round(Date.now() / 1e3) + data.expires_in }, data));
               await this._notifyAllSubscribers("MFA_CHALLENGE_VERIFIED", data);
-              return { data, error };
+              return { data, error: error2 };
             });
-          } catch (error) {
-            if ((0, errors_1.isAuthError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isAuthError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -36291,11 +36291,11 @@ var require_GoTrueClient = __commonJS({
                 jwt: (_a = sessionData === null || sessionData === void 0 ? void 0 : sessionData.session) === null || _a === void 0 ? void 0 : _a.access_token
               });
             });
-          } catch (error) {
-            if ((0, errors_1.isAuthError)(error)) {
-              return { data: null, error };
+          } catch (error2) {
+            if ((0, errors_1.isAuthError)(error2)) {
+              return { data: null, error: error2 };
             }
-            throw error;
+            throw error2;
           }
         });
       }
@@ -36319,11 +36319,11 @@ var require_GoTrueClient = __commonJS({
        * {@see GoTrueMFAApi#listFactors}
        */
       async _listFactors() {
-        const { data: { user }, error: userError } = await this.getUser();
+        const { data: { user: user2 }, error: userError } = await this.getUser();
         if (userError) {
           return { data: null, error: userError };
         }
-        const factors = (user === null || user === void 0 ? void 0 : user.factors) || [];
+        const factors = (user2 === null || user2 === void 0 ? void 0 : user2.factors) || [];
         const totp = factors.filter((factor) => factor.factor_type === "totp" && factor.status === "verified");
         return {
           data: {
@@ -36340,23 +36340,23 @@ var require_GoTrueClient = __commonJS({
         return this._acquireLock(-1, async () => {
           return await this._useSession(async (result) => {
             var _a, _b;
-            const { data: { session }, error: sessionError } = result;
+            const { data: { session: session2 }, error: sessionError } = result;
             if (sessionError) {
               return { data: null, error: sessionError };
             }
-            if (!session) {
+            if (!session2) {
               return {
                 data: { currentLevel: null, nextLevel: null, currentAuthenticationMethods: [] },
                 error: null
               };
             }
-            const payload = this._decodeJWT(session.access_token);
+            const payload = this._decodeJWT(session2.access_token);
             let currentLevel = null;
             if (payload.aal) {
               currentLevel = payload.aal;
             }
             let nextLevel = currentLevel;
-            const verifiedFactors = (_b = (_a = session.user.factors) === null || _a === void 0 ? void 0 : _a.filter((factor) => factor.status === "verified")) !== null && _b !== void 0 ? _b : [];
+            const verifiedFactors = (_b = (_a = session2.user.factors) === null || _a === void 0 ? void 0 : _a.filter((factor) => factor.status === "verified")) !== null && _b !== void 0 ? _b : [];
             if (verifiedFactors.length > 0) {
               nextLevel = "aal2";
             }
@@ -36660,8 +36660,8 @@ var require_SupabaseClient = __commonJS({
         return new realtime_js_1.RealtimeClient(this.realtimeUrl, Object.assign(Object.assign({}, options), { params: Object.assign({ apikey: this.supabaseKey }, options === null || options === void 0 ? void 0 : options.params) }));
       }
       _listenForAuthEvents() {
-        let data = this.auth.onAuthStateChange((event, session) => {
-          this._handleTokenChanged(event, "CLIENT", session === null || session === void 0 ? void 0 : session.access_token);
+        let data = this.auth.onAuthStateChange((event, session2) => {
+          this._handleTokenChanged(event, "CLIENT", session2 === null || session2 === void 0 ? void 0 : session2.access_token);
         });
         return data;
       }
@@ -36851,9 +36851,9 @@ var require_main7 = __commonJS({
           const attrs = _instructions(result, key);
           decrypted = DotenvModule.decrypt(attrs.ciphertext, attrs.key);
           break;
-        } catch (error) {
+        } catch (error2) {
           if (i + 1 >= length) {
-            throw error;
+            throw error2;
           }
         }
       }
@@ -36881,11 +36881,11 @@ var require_main7 = __commonJS({
       let uri;
       try {
         uri = new URL(dotenvKey);
-      } catch (error) {
-        if (error.code === "ERR_INVALID_URL") {
+      } catch (error2) {
+        if (error2.code === "ERR_INVALID_URL") {
           throw new Error("INVALID_DOTENV_KEY: Wrong format. Must be in valid uri format like dotenv://:key_1234@dotenv.org/vault/.env.vault?environment=development");
         }
-        throw error;
+        throw error2;
       }
       const key = uri.password;
       if (!key) {
@@ -36970,10 +36970,10 @@ var require_main7 = __commonJS({
         const aesgcm = crypto2.createDecipheriv("aes-256-gcm", key, nonce);
         aesgcm.setAuthTag(authTag);
         return `${aesgcm.update(ciphertext)}${aesgcm.final()}`;
-      } catch (error) {
-        const isRange = error instanceof RangeError;
-        const invalidKeyLength = error.message === "Invalid key length";
-        const decryptionFailed = error.message === "Unsupported state or unable to authenticate data";
+      } catch (error2) {
+        const isRange = error2 instanceof RangeError;
+        const invalidKeyLength = error2.message === "Invalid key length";
+        const decryptionFailed = error2.message === "Unsupported state or unable to authenticate data";
         if (isRange || invalidKeyLength) {
           const msg = "INVALID_DOTENV_KEY: It must be 64 characters long (or more)";
           throw new Error(msg);
@@ -36981,9 +36981,9 @@ var require_main7 = __commonJS({
           const msg = "DECRYPTION_FAILED: Please check your DOTENV_KEY";
           throw new Error(msg);
         } else {
-          console.error("Error: ", error.code);
-          console.error("Error: ", error.message);
-          throw error;
+          console.error("Error: ", error2.code);
+          console.error("Error: ", error2.message);
+          throw error2;
         }
       }
     }
@@ -37333,7 +37333,7 @@ var import_morgan = __toESM(require_morgan());
 // src/routes/cart.js
 var import_express = __toESM(require_express2());
 
-// src/supabaseConfig/index.js
+// supabaseConfig/index.js
 var import_supabase_js = __toESM(require_main6());
 require_main7().config();
 var supabaseUrl = "https://louijifajkwpwukxvhda.supabase.co";
@@ -37345,29 +37345,45 @@ var app = (0, import_express.default)();
 app.post("/add-to-cart", async (req, res) => {
   const { CustomerId, products } = req.body;
   try {
-    const { data, error } = await supabase.from("Carts").upsert([
+    const { data, error: error2 } = await supabase.from("Carts").upsert([
       {
         CustomerId,
         products
       }
     ]);
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
     }
     return res.status(200).json({ message: "Product added to cart", data });
-  } catch (error) {
+  } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.post("/remove-from-cart", async (req, res, next) => {
+  const { CustomerId, productId } = req.body;
+  try {
+    const { data, error: error2 } = supabase.from("Carts");
+    const newdata = data[0].products.filter(
+      (item) => item !== productId.eq("CustomerId", CustomerId)
+    );
+    const { error: updateError } = await supabase.from("Carts").update({ products: newdata }).eq("CustomerId", CustomerId);
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
+    }
+    return res.status(200).json({ message: "Product removed from cart", data });
+  } catch (error2) {
+    next(error2);
   }
 });
 app.get("/get-cart", async (req, res) => {
   const { CustomerId } = req.query;
   try {
-    const { data, error } = await supabase.from("Carts").select().eq("CustomerId", CustomerId);
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    const { data, error: error2 } = await supabase.from("Carts").select().eq("CustomerId", CustomerId);
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
     }
     return res.status(200).json({ cart: data });
-  } catch (error) {
+  } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -37378,32 +37394,45 @@ var app2 = (0, import_express2.default)();
 app2.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const { user, error } = await supabase.auth.signUp({
+    const { user: user2, error: error2 } = await supabase.auth.signUp({
       email,
       password
     });
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
     }
-    return res.status(200).json({ message: "Registration successful", user });
-  } catch (error) {
+    return res.status(200).json({ message: "Registration successful", user: user2 });
+  } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 app2.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const { user, session, error } = await supabase.auth.signIn({
+    const { user: user2, session: session2, error: error2 } = await supabase.auth.signIn({
       email,
       password
     });
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
     }
-    return res.status(200).json({ message: "Login successful", user, session });
-  } catch (error) {
+    return res.status(200).json({ message: "Login successful", user: user2, session: session2 });
+  } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
+});
+app2.get("/customer/:id", async (req, res) => {
+  const { id } = req.params;
+  if (id.length > 5)
+    try {
+      if (error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(200).json({ message: "Login successful", user, session });
+    } catch (error2) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  return res.status(500).json({ error: "Incorrect id" });
 });
 
 // src/routes/product.js
@@ -37414,9 +37443,9 @@ app3.get("/products/:category", async (req, res) => {
   const { category } = req.params;
   const currWeek = (0, import_dayjs.default)().startOf("week").format();
   let { data: categoryList, error: categoryListError } = await supabase.from("Categories").select().eq("type", category);
-  if (categoryList.length > 0) {
+  if (categoryList && categoryList.length > 0) {
     try {
-      let data, error;
+      let data, error2;
       switch (category) {
         case "new": {
           let { data: newArrival, error: newArrivalError } = await supabase.from("Products").select("*");
@@ -37426,31 +37455,48 @@ app3.get("/products/:category", async (req, res) => {
               return item;
           });
           data = newArrival;
-          error = newArrivalError;
+          error2 = newArrivalError;
           break;
         }
         case "deals": {
           let { data: deals, error: dealsError } = await supabase.from("Products").select("*").gt("discount", 0);
           data = deals;
-          error = dealsError;
+          error2 = dealsError;
           break;
         }
         default: {
           let { data: categoryData, error: categoryError } = await supabase.from("Products").select("*").eq("category", category);
           data = categoryData;
-          error = categoryError;
+          error2 = categoryError;
           break;
         }
       }
-      if (error)
-        return res.status(500).json({ error: error.message });
+      if (error2)
+        return res.status(500).json({ error: error2.message });
       return res.status(200).json({ data });
-    } catch (error) {
-      console.log(error);
+    } catch (error2) {
+      console.log(error2);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   } else
-    return res.status(403).json({ error: "No such Category" });
+    return res.status(400).json({ error: "Category does not exist" });
+});
+app3.get("/product/:productId", async (req, res) => {
+  const { productId } = req.params;
+  if (!productId) {
+    return res.status(400).json({ error: "Product ID is required" });
+  }
+  try {
+    let { data: productData, error: productError } = await supabase.from("Products").select().eq("id", productId);
+    if (productData.length > 0) {
+      return res.status(200).json({ data: productData[0] });
+    } else {
+      return res.status(404).json({ error: "Product not found" });
+    }
+  } catch (error2) {
+    console.log(error2);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // src/routes/order.js
@@ -37459,12 +37505,12 @@ var app4 = (0, import_express4.default)();
 app4.post("/orders", async (req, res) => {
   const { cartId } = req.body;
   try {
-    const { data, error } = await supabase.from("Carts").select().eq("id", cartId);
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    const { data, error: error2 } = await supabase.from("Carts").select().eq("id", cartId);
+    if (error2) {
+      return res.status(400).json({ error: error2.message });
     }
     return res.status(200).json({ message: "Order created", data });
-  } catch (error) {
+  } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -37485,7 +37531,8 @@ var createServer = () => {
 };
 
 // src/index.js
-var port = 5001;
+require_main7().config();
+var port = process.env.PORT;
 var server = createServer();
 server.listen(port, () => {
   console.log(`api running on http://localhost:${port}/`);
