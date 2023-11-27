@@ -118,7 +118,7 @@ const Login = () => {
             }}
             variant="Light"
           >
-            {isSignUp ? 'Sign Up' : 'Login'}
+            Login
           </Button>
           <div className="w-full">
             <Divider
