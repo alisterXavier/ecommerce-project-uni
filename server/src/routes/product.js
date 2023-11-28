@@ -45,6 +45,8 @@ const app = express();
 
 app.get('/products/:category', async (req, res) => {
   const { category } = req.params;
+  const { filter } = req.query
+  console.log(filter)
   const currWeek = dayjs().startOf('week').format();
 
   let { data: categoryList, error: categoryListError } = await supabase

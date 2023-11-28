@@ -50,11 +50,11 @@ export const Account = ({ user }: { user: User }) => {
 
   const combOptions = [
     {
-      name: 'settings',
+      name: 'Settings',
       url: '',
     },
     {
-      name: 'signOut',
+      name: 'Sign Out',
       url: '',
     },
   ];

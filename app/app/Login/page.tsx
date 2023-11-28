@@ -52,12 +52,11 @@ const GoogleIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   );
 };
 
-const Login = () => {
-  const credentialsRef = useRef<null | HTMLDivElement>(null);
-  const imageRef = useRef<null | HTMLDivElement>(null);
-  const [isSignUp, setIsSignUp] = useState<boolean>(false);
+const LoginInputs = ({ isSignUp }: { isSignUp: boolean }) => {
   const dispatch = useDispatch();
-
+  console.log(isSignUp);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const googleAuth = async () => {
     await supabase.auth
       .signInWithOAuth({
@@ -84,57 +83,83 @@ const Login = () => {
     );
   };
 
-  const LoginInputs = () => {
-    return (
-      <div className="w-[300px] h-[45%] flex flex-col items-start justify-center">
-        <TextInput
-          style={{
-            outline: 'none',
-            background: 'transparent',
-          }}
-          leftSectionPointerEvents="none"
-          leftSection={<IconUser />}
-          // label="Your email"
-          variant="unstyled"
-          placeholder="Your email"
-          className="my-2 login-input-field"
-          w={'100%'}
-        />
-        <PasswordInput
-          className="my-2 login-input-field"
-          w={'100%'}
-          variant="unstyled"
-          leftSection={<IconLock />}
-          placeholder="Password"
-          defaultValue=""
-        />
-        <div className="w-full flex flex-col items-center justify-center">
-          <Button
-            w={'80%'}
-            className="my-2 login-button"
-            style={{
-              background: 'var(--nightBlue)',
-              border: '1px solid white',
-            }}
-            variant="Light"
-          >
-            Login
-          </Button>
-          <div className="w-full">
-            <Divider
-              w={'100%'}
-              my="xs"
-              label="Or"
-              variant="dashed"
-              color="white"
-              labelPosition="center"
-            />
-          </div>
-          <GoogleButton>Continue with Google</GoogleButton>
-        </div>
-      </div>
-    );
+  const onLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
   };
+
+  const onSignUp = async () => {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: 'https//localhost:3000/',
+      },
+    });
+  };
+
+  return (
+    <div className="w-[300px] h-[45%] flex flex-col items-start justify-center">
+      <TextInput
+        style={{
+          outline: 'none',
+          background: 'transparent',
+        }}
+        leftSectionPointerEvents="none"
+        leftSection={<IconUser />}
+        // label="Your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        variant="unstyled"
+        placeholder="Your email"
+        className="my-2 login-input-field"
+        w={'100%'}
+      />
+      <PasswordInput
+        className="my-2 login-input-field"
+        w={'100%'}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        variant="unstyled"
+        leftSection={<IconLock />}
+        placeholder="Password"
+        defaultValue=""
+      />
+      <div className="w-full flex flex-col items-center justify-center">
+        <Button
+          w={'80%'}
+          className="my-2 login-button"
+          style={{
+            background: 'var(--nightBlue)',
+            border: '1px solid white',
+          }}
+          variant="Light"
+          onClick={isSignUp ? onSignUp : onLogin}
+        >
+          {isSignUp ? 'Sign up' : 'Login'}
+        </Button>
+        <div className="w-full">
+          <Divider
+            w={'100%'}
+            my="xs"
+            label="Or"
+            variant="dashed"
+            color="white"
+            labelPosition="center"
+          />
+        </div>
+        <GoogleButton>Continue with Google</GoogleButton>
+      </div>
+    </div>
+  );
+};
+
+const Login = () => {
+  const credentialsRef = useRef<null | HTMLDivElement>(null);
+  const imageRef = useRef<null | HTMLDivElement>(null);
+  const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
   return (
     <div className="login-container w-screen h-screen">
@@ -164,7 +189,7 @@ const Login = () => {
             >
               <div className="w-fit">
                 <h1 className=" text-[30px] uppercase text-white">Login</h1>
-                <LoginInputs />
+                <LoginInputs isSignUp={isSignUp} />
                 <div>
                   <p
                     className=" my-5 flex items-end text-white uppercase cursor-pointer"
@@ -193,7 +218,7 @@ const Login = () => {
             >
               <div className="w-fit flex flex-col justify-center items-start">
                 <h1 className=" text-[30px] uppercase text-white">Sign Up</h1>
-                <LoginInputs />
+                <LoginInputs isSignUp={isSignUp} />
                 <div>
                   <p
                     className=" my-5 flex items-end text-white uppercase cursor-pointer"

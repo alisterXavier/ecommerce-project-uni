@@ -7,7 +7,7 @@ interface SmallProps {
   children: React.ReactNode;
   id: number;
 }
-const Small: React.FC<SmallProps> = ({ children, id }) => {
+const Small = ({ children, id } : SmallProps) => {
   const router = useRouter();
   const handleClick = () => {
     router.push(`/Product/${id}`);

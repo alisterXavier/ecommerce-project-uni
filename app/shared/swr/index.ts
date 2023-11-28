@@ -5,6 +5,7 @@ import {
   CustomerResponse,
   OrderResponse,
   ProductsResponse,
+  SingleProductResponse,
 } from '../types/responseTypes';
 
 export type Requests = ReturnType<typeof makeRequests>;
@@ -15,12 +16,10 @@ export type Response<Test extends keyof Requests> = Awaited<
 function request(requests: Requests) {
   return {
     useGetProducts: (
-      category: string,
+      params: { category: string; filterOptions?: string[] },
       options?: SWRConfiguration
     ): SWRResponse<ProductsResponse> => {
-      return useSwr(['useGetProducts'], () =>
-        requests.useGetProducts(category)
-      );
+      return useSwr(['useGetProducts'], () => requests.useGetProducts(params));
     },
     useGetCustomerByCustomerId: (
       id: string | null
@@ -44,7 +43,9 @@ function request(requests: Requests) {
         requests.useUpdateCartByCartId(id, data)
       );
     },
-    useGetProductByProductId: (id: string): SWRResponse<ProductsResponse> => {
+    useGetProductByProductId: (
+      id: string
+    ): SWRResponse<SingleProductResponse> => {
       return useSwr(['useGetProductByProductId'], () =>
         requests.useGetProductByProductId(id)
       );
@@ -54,11 +55,16 @@ function request(requests: Requests) {
 
 function makeRequests(axios: AxiosInstance) {
   return {
-    useGetProducts: (category: string) =>
+    useGetProducts: (params: { category: string; filterOptions?: string[] }) =>
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/products/${category}`,
+          url: `http://localhost:5001/products/${params.category.toLowerCase()}`,
+          params: {
+            ...(params.filterOptions !== undefined
+              ? { filter: params.filterOptions.filter((x) => x.length > 3) }
+              : undefined),
+          },
         })
         .then((res) => res.data),
     useGetCustomerByCustomerId: (id: string | null) =>

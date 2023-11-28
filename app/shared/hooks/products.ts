@@ -10,17 +10,24 @@ import { useSwrInstance } from '../swr/swrInit';
 //   Authorization: `Bearer ${user?.tokenData?.accessToken ?? null}`,
 // }
 
-export const useProducts = (category: string) => {
+type useProductsProps = {
+  parameters: {
+    category: string;
+    filterOptions?: string[];
+  };
+};
+export const useProducts = ({ parameters }: useProductsProps) => {
   const [data, setData] = useState<ProductsResponse>({
     data: [],
   });
+  console.log(parameters)
   const { requests } = useSwrInstance();
 
   const {
     data: productsGetData,
     error: productsError,
     isLoading: productsIsLoading,
-  } = requests.useGetProducts(category);
+  } = requests.useGetProducts(parameters);
 
   useEffect(() => {
     if (!productsIsLoading) {
