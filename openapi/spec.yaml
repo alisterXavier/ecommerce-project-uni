@@ -120,7 +120,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: string
         created_at:
           type: string
         productName:
@@ -141,7 +141,7 @@ components:
       type: object
       properties:
         id:
-          type: string | null
+          type: string
         created_at:
           type: string
         displayName:
@@ -152,14 +152,16 @@ components:
         orders:
           type: array
           items: string
+        email:
+          type: string
     Carts:
       type: object
       properties:
         id:
-          type: number
+          type: string
         userId:
           type: string
-        productsList:
+        products:
           type: array
           items: string
         created_at:
@@ -170,10 +172,10 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: string
         userId:
           type: string
-        productsList:
+        products:
           type: array
           items: string
         total:

@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/shared/supabaseConfig';
 import { useGetUser } from '@/shared/hooks/products';
 import { useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import { User, UserMetadata } from '@supabase/supabase-js';
 
 interface IButton {
+  customClassName?: string;
   children: React.ReactNode;
   type: boolean;
   onMouseEnter: (e: React.MouseEvent) => void;
@@ -32,10 +33,11 @@ export const Buttons = ({
   type,
   onMouseEnter,
   onMouseLeave,
+  customClassName,
 }: IButton) => {
   return (
     <div
-      className="navbar-item"
+      className={`navbar-item ${customClassName}`}
       data-active={type}
       onMouseEnter={(event: React.MouseEvent) => onMouseEnter(event)}
       onMouseLeave={(event: React.MouseEvent) => onMouseLeave(event)}
@@ -45,7 +47,7 @@ export const Buttons = ({
   );
 };
 
-export const Account = ({ user }: { user: User }) => {
+export const Account = ({ user }: { user: UserMetadata }) => {
   const { data, customerError, customerIsLoading } = useGetUser(user?.id);
 
   const combOptions = [
@@ -65,6 +67,7 @@ export const Account = ({ user }: { user: User }) => {
 
   const signOut = async () => {
     if (supabase) await supabase.auth.signOut();
+    console.log('signout');
     router.refresh();
   };
 
@@ -74,7 +77,7 @@ export const Account = ({ user }: { user: User }) => {
       value={item as unknown as string}
       key={index}
       onClick={() => {
-        if (item.name === 'signOut') signOut();
+        if (item.name === 'Sign Out') signOut();
       }}
     >
       {item.name === 'signOut' ? <p>{item.name}</p> : <p>{item.name}</p>}
@@ -82,7 +85,7 @@ export const Account = ({ user }: { user: User }) => {
   ));
 
   return (
-    <div className="navbar-item navbar-item-account w-[400px]">
+    <div className="navbar-item navbar-right-item navbar-item-account w-[400px]">
       <Combobox
         variant=""
         width={'200px'}
@@ -96,12 +99,8 @@ export const Account = ({ user }: { user: User }) => {
             className="navbar-account-logo"
             onClick={() => combobox.toggleDropdown()}
           >
-            {user?.user_metadata.avatar_url ? (
-              <Image
-                src={user?.user_metadata.avatar_url}
-                alt={'UserProfile'}
-                fill
-              />
+            {user.avatar_url ? (
+              <Image src={user.avatar_url} alt={'UserProfile'} fill />
             ) : (
               <IconUser />
             )}

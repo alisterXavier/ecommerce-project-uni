@@ -5,12 +5,18 @@ import { Inter } from 'next/font/google';
 import { Navbar } from './Navbar/Navbar';
 import { usePathname } from 'next/navigation';
 import { MantineProvider, createTheme } from '@mantine/core';
-import { store, wrapper } from '@/shared/redux/store';
+import { AppDispatch, store, wrapper } from '@/shared/redux/store';
 import { Provider, useDispatch } from 'react-redux';
-import { setAuthState } from '@/shared/redux/authSlice';
+// import { setAuthState } from '@/shared/redux/authSlice';
 import { supabase } from '@/shared/supabaseConfig';
 import router from 'next/router';
 import { useEffect } from 'react';
+import { fetchUser } from '@/shared/redux/authSlice';
+import { AuthError, SupabaseClient, User } from '@supabase/supabase-js';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { CustomerResponse } from '@/shared/types/responseTypes';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
 const metadata: Metadata = {
@@ -25,6 +31,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster  position="top-right" />
         <Provider store={store}>
           <MantineProvider theme={theme}>
             <InnerRoot>
@@ -47,15 +54,15 @@ function RootLayout({ children }: { children: React.ReactNode }) {
 }
 
 const InnerRoot = ({ children }: { children: React.ReactNode }) => {
-  const dispatch = useDispatch();
+  const dispatch= useDispatch<AppDispatch>();
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
-        dispatch(setAuthState(supabase));
+        dispatch(fetchUser(supabase));
       } else if (event === 'SIGNED_OUT') {
-        dispatch(setAuthState(null));
+        dispatch(fetchUser(null));
       }
     });
 

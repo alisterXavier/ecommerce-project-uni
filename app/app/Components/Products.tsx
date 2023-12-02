@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import products from '@/public/productList.json';
 import Medium from './Product-type/mid-product';
 import Small from './Product-type/small-product';
@@ -10,7 +9,6 @@ import womenImage from '@/public/images/categorySection/women-fashion-Category-C
 import electronics from '@/public/images/categorySection/electronics-Category-Cover.jpg';
 import { useEffect, useRef, useState } from 'react';
 import { useProducts } from '@/shared/hooks/products';
-import { calculateDiscountedPrice } from '@/shared/helpers/utils';
 import { SkeletonContainer } from './SkeletonComp';
 
 const Products = () => {
@@ -37,38 +35,7 @@ const Products = () => {
 
   const newArrivals = data?.data.map((product, index) => (
     <SwiperSlide key={index}>
-      <Small id={product.id}>
-        <div className="small-product-image">
-          <figure>
-            <Image
-              alt=""
-              src={product.productImages ? product.productImages[0] : ''}
-              fill
-              quality={100}
-              objectFit="contain"
-            />
-          </figure>
-        </div>
-        <div className="small-product-details">
-          <p className="small-product-description">{product.productName}</p>
-          <div className="small-product-price-cart">
-            <div>
-              <p className="price">
-                ${calculateDiscountedPrice(product.price, product.discount)}
-              </p>
-              {product.discount && product.discount > 0 && (
-                <div className="relative flex flex-col justify-center items-center h-[15px]">
-                  <span className="w-[2px] h-[35px] absolute bg-[#d1d1d1] rotate-[110deg]" />
-                  <p className={`discount m-0`}>${product.price}</p>
-                </div>
-              )}
-            </div>
-            <a href={`/Product/${product.id}`} className="text-[15px]">
-              View product
-            </a>
-          </div>
-        </div>
-      </Small>
+      <Small id={product.id} product={product} />
     </SwiperSlide>
   ));
 
@@ -107,27 +74,7 @@ const Products = () => {
     <CarouselComp>
       {products.map((product, index) => (
         <SwiperSlide key={index}>
-          <Small id={index}>
-            <div className="small-product-image">
-              <figure>
-                <Image
-                  alt=""
-                  src={product.image}
-                  fill
-                  quality={100}
-                  sizes="100%"
-                />
-              </figure>
-            </div>
-            <div className="small-product-details">
-              {/* <h1>Razer Blade 14 </h1> */}
-              <p className="small-product-description">{product.description}</p>
-              <div className="small-product-price-cart">
-                <p className="price">{product.price}</p>
-                {/* <button>Add to cart</button> */}
-              </div>
-            </div>
-          </Small>
+          <Small id={index} product={product}/>
         </SwiperSlide>
       ))}
     </CarouselComp>

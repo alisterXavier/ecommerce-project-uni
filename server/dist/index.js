@@ -37375,14 +37375,14 @@ app.post("/remove-from-cart", async (req, res, next) => {
     next(error2);
   }
 });
-app.get("/get-cart", async (req, res) => {
-  const { CustomerId } = req.query;
+app.get("/get-cart/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const { data, error: error2 } = await supabase.from("Carts").select().eq("CustomerId", CustomerId);
+    const { data, error: error2 } = await supabase.from("Carts").select().eq("customerId", id).single();
     if (error2) {
       return res.status(400).json({ error: error2.message });
     }
-    return res.status(200).json({ cart: data });
+    return res.status(200).json(data);
   } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -37403,7 +37403,7 @@ app2.post("/register", async (req, res) => {
     }
     return res.status(200).json({ message: "Registration successful", user: user2 });
   } catch (error2) {
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error2 });
   }
 });
 app2.post("/login", async (req, res) => {

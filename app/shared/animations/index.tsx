@@ -18,7 +18,7 @@ export const LoginSwitch: Variants = {
 export const RegSwitch: Variants = {
   default: {
     opacity: 0,
-    zIndex: '0',
+    zIndex: '-1',
     transition: { duration: 0 },
   },
   switchToReg: {

@@ -134,33 +134,34 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     Products: {
-      id: number;
-      created_at: string;
-      productName: string;
-      description: string;
-      productImages: string[];
-      category: string;
-      price: number;
-      discount: number;
+      id?: string;
+      created_at?: string;
+      productName?: string;
+      description?: string;
+      productImages?: string[];
+      category?: string;
+      price?: number;
+      discount?: number;
     };
     Customers: {
-      id?: Record<string, never>;
+      id?: string;
       created_at?: string;
       displayName?: string;
       cart?: string[];
       orders?: string[];
+      email?: string;
     };
     Carts: {
-      id?: number;
+      id?: string;
       userId?: string;
-      productsList?: string[];
+      products?: string[];
       created_at?: string;
       total?: Record<string, never>;
     };
     Orders: {
-      id?: number;
+      id?: string;
       userId?: string;
-      productsList?: string[];
+      products?: string[];
       total?: Record<string, never>;
       created_at?: string;
     };

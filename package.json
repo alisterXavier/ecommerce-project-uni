@@ -10,6 +10,7 @@
   "scripts": {
     "dev:client": "cd ./app && pnpm dev",
     "dev:server": "cd ./server && npm run dev",
+    "dev:test": "cd ./testnext && npm run dev",
     "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\"",
     "generate-types": "openapi-typescript openapi/spec.yaml --output app/shared/types/api.ts",
     "build:server": "cd ./server && npm run build",
@@ -33,6 +34,8 @@
     "axios": "^1.6.0",
     "concurrently": "^8.2.2",
     "dayjs": "^1.11.10",
-    "swr": "^2.2.4"
+    "react-hot-toast": "^2.4.1",
+    "swr": "^2.2.4",
+    "uuid": "^9.0.1"
   }
 }

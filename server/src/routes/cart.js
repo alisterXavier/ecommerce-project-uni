@@ -1,5 +1,6 @@
 import express from 'express';
 import { supabase } from '../../supabaseConfig';
+// import { v4 as uuidv4, parse as uuidParse } from 'uuid';
 
 const app = express();
 
@@ -49,20 +50,22 @@ app.post('/remove-from-cart', async (req, res, next) => {
 });
 
 // Get user's cart
-app.get('/get-cart', async (req, res) => {
-  const { CustomerId } = req.query;
+app.get('/get-cart/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // console.log(uuidParse(id));
 
   try {
     const { data, error } = await supabase
       .from('Carts')
       .select()
-      .eq('CustomerId', CustomerId);
+      .eq('customerId', id).single();
 
     if (error) {
       return res.status(400).json({ error: error.message });
     }
 
-    return res.status(200).json({ cart: data });
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }

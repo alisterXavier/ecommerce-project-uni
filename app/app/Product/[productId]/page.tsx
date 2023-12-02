@@ -12,11 +12,11 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
   const router = useRouter();
   const { data, productIsLoading, productError } = useProduct(params.productId);
 
-  // const { data, productIsLoading, productError} = useProducts()
+  // const { data: products, productIsLoading, productError} = useProducts()
 
   const similarProducts = products.map((product, index) => (
     <SwiperSlide key={index}>
-      <Small id={index}>
+      <Small id={index} product={product}>
         <div className="small-product-image">
           <figure>
             <Image alt="" src={product.image} fill quality={100} sizes="100%" />

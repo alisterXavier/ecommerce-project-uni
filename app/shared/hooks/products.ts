@@ -11,18 +11,20 @@ import { useSwrInstance } from '../swr/swrInit';
 // }
 
 type useProductsProps = {
-  parameters: {
-    category: string;
-    filterOptions?: string[];
+  category: string;
+  filterOptions?: {
+    type: string;
+    price: string;
+    priceMin: number;
+    priceMax: number;
   };
 };
-export const useProducts = ({ parameters }: useProductsProps) => {
+export const useProducts = (parameters: useProductsProps) => {
   const [data, setData] = useState<ProductsResponse>({
     data: [],
   });
-  console.log(parameters)
   const { requests } = useSwrInstance();
-
+  
   const {
     data: productsGetData,
     error: productsError,

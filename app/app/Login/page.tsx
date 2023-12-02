@@ -13,15 +13,18 @@ import {
   Button,
   ButtonProps,
   Divider,
+  InputError,
   PasswordInput,
   TextInput,
 } from '@mantine/core';
+import { useRouter } from 'next/navigation';
 import '@mantine/core/styles.css';
 import { useRef, useState } from 'react';
 import { LoginSwitch, BoxSwitch, RegSwitch } from '@/shared/animations';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAuthState, setAuthState } from '@/shared/redux/authSlice';
+import { useDispatch } from 'react-redux';
 import { supabase } from '@/shared/supabaseConfig';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const GoogleIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return (
@@ -52,56 +55,97 @@ const GoogleIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   );
 };
 
-const LoginInputs = ({ isSignUp }: { isSignUp: boolean }) => {
+const LoginInputs = ({
+  isSignUp,
+  setIsSignUp,
+}: {
+  isSignUp: boolean;
+  setIsSignUp: (temp: boolean) => void;
+}) => {
   const dispatch = useDispatch();
-  console.log(isSignUp);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const googleAuth = async () => {
-    await supabase.auth
-      .signInWithOAuth({
-        provider: 'google',
-        // options: {
-        //     // redirectTo: getURL() // function to get your URL
-        // }
-      })
-      .then((res) => dispatch(setAuthState(res.data)));
-  };
+  const [error, setError] = useState<string>();
+  const router = useRouter();
+  // const googleAuth = async () => {
+  //   await supabase.auth
+  //     .signInWithOAuth({
+  //       provider: 'google',
+  //       // options: {
+  //       //     // redirectTo: getURL() // function to get your URL
+  //       // }
+  //     })
+  // };
 
-  const GoogleButton = (
-    props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
-  ) => {
-    return (
-      <Button
-        fullWidth
-        leftSection={<GoogleIcon />}
-        variant="default"
-        className="my-2"
-        {...props}
-        onClick={googleAuth}
-      />
-    );
-  };
+  // const GoogleButton = (
+  //   props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
+  // ) => {
+  //   return (
+  //     <Button
+  //       fullWidth
+  //       leftSection={<GoogleIcon />}
+  //       variant="default"
+  //       className="my-2"
+  //       {...props}
+  //       onClick={googleAuth}
+  //     />
+  //   );
+  // };
 
   const onLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
+    await supabase.auth
+      .signInWithPassword({
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        if (res.data.user) {
+          toast.success('Logged in successfully', {
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          });
+          router.push('http://localhost:3000');
+        }
+        if (res.error) {
+          if (res.error.message == 'Email not confirmed')
+            toast.error('Verify your email to login', {
+              style: {
+                borderRadius: '10px',
+                background: '#333',
+                color: '#fff',
+              },
+            });
+          else setError('Invalid login credentials');
+        }
+      });
   };
 
   const onSignUp = async () => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        emailRedirectTo: 'https//localhost:3000/',
-      },
-    });
+    axios
+      .post('http://localhost:5001/register', {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        if (res.data) {
+          toast.success('Registered successfully', {
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          });
+          setIsSignUp(false);
+        }
+      });
   };
 
   return (
     <div className="w-[300px] h-[45%] flex flex-col items-start justify-center">
+      <InputError h={'10px'}>{error}</InputError>
       <TextInput
         style={{
           outline: 'none',
@@ -109,13 +153,13 @@ const LoginInputs = ({ isSignUp }: { isSignUp: boolean }) => {
         }}
         leftSectionPointerEvents="none"
         leftSection={<IconUser />}
-        // label="Your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         variant="unstyled"
         placeholder="Your email"
         className="my-2 login-input-field"
         w={'100%'}
+        h={'45px'}
       />
       <PasswordInput
         className="my-2 login-input-field"
@@ -140,7 +184,9 @@ const LoginInputs = ({ isSignUp }: { isSignUp: boolean }) => {
         >
           {isSignUp ? 'Sign up' : 'Login'}
         </Button>
-        <div className="w-full">
+
+        {/* ToDo Create support for google auth */}
+        {/* <div className="w-full">
           <Divider
             w={'100%'}
             my="xs"
@@ -150,7 +196,7 @@ const LoginInputs = ({ isSignUp }: { isSignUp: boolean }) => {
             labelPosition="center"
           />
         </div>
-        <GoogleButton>Continue with Google</GoogleButton>
+        <GoogleButton>Continue with Google</GoogleButton> */}
       </div>
     </div>
   );
@@ -181,6 +227,7 @@ const Login = () => {
               </figure>
             </motion.div>
 
+            {/* Sign Up */}
             <motion.div
               className="bg-transparent absolute right-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
@@ -189,7 +236,7 @@ const Login = () => {
             >
               <div className="w-fit">
                 <h1 className=" text-[30px] uppercase text-white">Login</h1>
-                <LoginInputs isSignUp={isSignUp} />
+                <LoginInputs isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
                 <div>
                   <p
                     className=" my-5 flex items-end text-white uppercase cursor-pointer"
@@ -209,6 +256,7 @@ const Login = () => {
               variants={BoxSwitch}
             ></motion.div>
 
+            {/* Sign In */}
             <motion.div
               className="bg-[var(--nightBlue)] absolute left-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
@@ -218,7 +266,7 @@ const Login = () => {
             >
               <div className="w-fit flex flex-col justify-center items-start">
                 <h1 className=" text-[30px] uppercase text-white">Sign Up</h1>
-                <LoginInputs isSignUp={isSignUp} />
+                <LoginInputs isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
                 <div>
                   <p
                     className=" my-5 flex items-end text-white uppercase cursor-pointer"

@@ -13,10 +13,20 @@ export type Response<Test extends keyof Requests> = Awaited<
   ReturnType<Requests[Test]>
 >;
 
+type productFilterOption = {
+  type: string;
+  price: string;
+  priceMin: number;
+  priceMax: number;
+};
+
 function request(requests: Requests) {
   return {
     useGetProducts: (
-      params: { category: string; filterOptions?: string[] },
+      params: {
+        category: string;
+        filterOptions?: productFilterOption;
+      },
       options?: SWRConfiguration
     ): SWRResponse<ProductsResponse> => {
       return useSwr(['useGetProducts'], () => requests.useGetProducts(params));
@@ -50,20 +60,33 @@ function request(requests: Requests) {
         requests.useGetProductByProductId(id)
       );
     },
+    useGetCartByUserId: (id?: string): SWRResponse<CartResponse> => {
+      return useSwr(
+        id && ['useGetCartByUserId'],
+        () => id && requests.useGetCartByUserId(id)
+      );
+    },
   };
 }
 
 function makeRequests(axios: AxiosInstance) {
   return {
-    useGetProducts: (params: { category: string; filterOptions?: string[] }) =>
+    useGetProducts: (params: {
+      category: string;
+      filterOptions?: productFilterOption;
+    }) =>
       axios
         .request({
           method: 'get',
           url: `http://localhost:5001/products/${params.category.toLowerCase()}`,
           params: {
-            ...(params.filterOptions !== undefined
-              ? { filter: params.filterOptions.filter((x) => x.length > 3) }
-              : undefined),
+            ...(params.filterOptions !== undefined && {
+              ...Object.entries(params.filterOptions).reduce(
+                (acc, [key, value]) =>
+                  value !== undefined ? { ...acc, [key]: value } : acc,
+                {}
+              ),
+            }),
           },
         })
         .then((res) => res.data),
@@ -98,6 +121,13 @@ function makeRequests(axios: AxiosInstance) {
         .request({
           method: 'get',
           url: `http://localhost:5001/product/${id}`,
+        })
+        .then((res) => res.data),
+    useGetCartByUserId: (id: string) =>
+      axios
+        .request({
+          method: 'get',
+          url: `http://localhost:5001/get-cart/${id}`,
         })
         .then((res) => res.data),
   };
