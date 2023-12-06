@@ -16,28 +16,28 @@ const Basket = () => {
 
   const items = () =>
     cart?.products?.map((item, index) => (
-        <div key={index} className="flex">
+      <div key={item + index} className="flex">
+        <div>
+          <Button></Button>
+        </div>
+        <figure className="relative">
+          {/* <Image src={} alt="" fill /> */}
+        </figure>
+        <div className="flex">
+          <h1>{item.productName}</h1>
           <div>
-            <Button> </Button>
-          </div>
-          <figure className="relative">
-            {/* <Image src={} alt="" fill /> */}
-          </figure>
-          <div className="flex">
-            <h1>{item.productName}</h1>
-            <div>
-              <p className="price">
-                ${calculateDiscountedPrice(item.price, item.discount)}
-              </p>
-              {item.discount && item.discount > 0 && (
-                <div className="relative flex flex-col justify-center items-center h-[15px]">
-                  <span className="w-[2px] h-[35px] absolute bg-[#d1d1d1] rotate-[110deg]" />
-                  <p className={`discount m-0`}>${item.price}</p>
-                </div>
-              )}
-            </div>
+            <p className="price">
+              ${calculateDiscountedPrice(item.price, item.discount)}
+            </p>
+            {item.discount && item.discount > 0 && (
+              <div className="relative flex flex-col justify-center items-center h-[15px]">
+                <span className="w-[2px] h-[35px] absolute bg-[#d1d1d1] rotate-[110deg]" />
+                <p className={`discount m-0`}>${item.price}</p>
+              </div>
+            )}
           </div>
         </div>
+      </div>
     ));
 
   return (
@@ -51,7 +51,7 @@ const Basket = () => {
           </div>
           <div className="basket-wrapper">
             <div className="basket-container">
-              {cart ? items : 'Add items to your cart'}
+              {cart ? items : <p>Add items to your cart</p>}
             </div>
           </div>
         </>

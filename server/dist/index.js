@@ -37342,13 +37342,13 @@ var supabase = (0, import_supabase_js.createClient)(supabaseUrl, supabaseKey);
 
 // src/routes/cart.js
 var app = (0, import_express.default)();
-app.post("/add-to-cart", async (req, res) => {
-  const { CustomerId, products } = req.body;
+app.patch("/add/cart", async (req, res) => {
+  const { CustomerId, productId } = req.body;
   try {
-    const { data, error: error2 } = await supabase.from("Carts").upsert([
+    const { data, error: error2 } = await supabase.from("Carts_Products").insert([
       {
         CustomerId,
-        products
+        productId
       }
     ]);
     if (error2) {
@@ -37359,30 +37359,14 @@ app.post("/add-to-cart", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-app.post("/remove-from-cart", async (req, res, next) => {
-  const { CustomerId, productId } = req.body;
-  try {
-    const { data, error: error2 } = supabase.from("Carts");
-    const newdata = data[0].products.filter(
-      (item) => item !== productId.eq("CustomerId", CustomerId)
-    );
-    const { error: updateError } = await supabase.from("Carts").update({ products: newdata }).eq("CustomerId", CustomerId);
-    if (error2) {
-      return res.status(400).json({ error: error2.message });
-    }
-    return res.status(200).json({ message: "Product removed from cart", data });
-  } catch (error2) {
-    next(error2);
-  }
-});
-app.get("/get-cart/:id", async (req, res) => {
+app.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const { data, error: error2 } = await supabase.from("Carts").select().eq("customerId", id).single();
+    const { data, error: error2 } = await supabase.from("Carts").select("*, Carts_Products( Products ( * ) )").eq("customerId", id);
     if (error2) {
       return res.status(400).json({ error: error2.message });
     }
-    return res.status(200).json(data);
+    return res.status(200).json({ data });
   } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -37406,7 +37390,7 @@ app2.post("/register", async (req, res) => {
     return res.status(500).json({ error: error2 });
   }
 });
-app2.post("/login", async (req, res) => {
+app2.get("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const { user: user2, session: session2, error: error2 } = await supabase.auth.signIn({

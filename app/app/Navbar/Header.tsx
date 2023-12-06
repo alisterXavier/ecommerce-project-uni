@@ -67,7 +67,6 @@ export const Account = ({ user }: { user: UserMetadata }) => {
 
   const signOut = async () => {
     if (supabase) await supabase.auth.signOut();
-    console.log('signout');
     router.refresh();
   };
 

@@ -31,7 +31,6 @@ export const useGetCustomerCart = ({ id }: { id?: string }) => {
     }
   }, [isLoading, data, cart?.data.products]);
 
-  console.log(data)
   return {
     cart: cart?.data,
     isLoading,

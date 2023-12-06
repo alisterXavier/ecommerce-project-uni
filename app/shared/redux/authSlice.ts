@@ -3,8 +3,6 @@ import { AppState } from './store';
 import { HYDRATE } from 'next-redux-wrapper';
 import { SupabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import { AuthError } from '@supabase/supabase-js';
-import { components } from '../types/api';
-import axios from 'axios';
 
 export interface AuthState {
   authState: {

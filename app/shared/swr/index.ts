@@ -90,6 +90,13 @@ function makeRequests(axios: AxiosInstance) {
           },
         })
         .then((res) => res.data),
+    useGetProductByProductId: (id: string) =>
+      axios
+        .request({
+          method: 'get',
+          url: `http://localhost:5001/product/${id}`,
+        })
+        .then((res) => res.data),
     useGetCustomerByCustomerId: (id: string | null) =>
       axios
         .request({
@@ -97,13 +104,7 @@ function makeRequests(axios: AxiosInstance) {
           url: `http://localhost:5001/customer/${id}`,
         })
         .then((res) => res.data),
-    useGetOrdersByCustomerId: (id: string) =>
-      axios
-        .request({
-          method: 'get',
-          url: `http://localhost:5001/get-order/${id}`,
-        })
-        .then((res) => res.data),
+    // TODO --- backend endpoint not created
     useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
       axios.request({
         method: 'patch',
@@ -113,21 +114,22 @@ function makeRequests(axios: AxiosInstance) {
     useUpdateCartByCartId: (id: string, data: CartResponse) =>
       axios.request({
         method: 'patch',
-        url: `http://localhost:5001/update-cart/${id}`,
+        url: `http://localhost:5001/cart/${id}`,
         data: data,
       }),
-    useGetProductByProductId: (id: string) =>
-      axios
-        .request({
-          method: 'get',
-          url: `http://localhost:5001/product/${id}`,
-        })
-        .then((res) => res.data),
     useGetCartByUserId: (id: string) =>
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/get-cart/${id}`,
+          url: `http://localhost:5001/cart/${id}`,
+        })
+        .then((res) => res.data),
+    // TODO --- backend endpoint not created
+    useGetOrdersByCustomerId: (id: string) =>
+      axios
+        .request({
+          method: 'get',
+          url: `http://localhost:5001/order/${id}`,
         })
         .then((res) => res.data),
   };
