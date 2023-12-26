@@ -19,7 +19,7 @@ export const fetchUser = createAsyncThunk(
   async (auth: SupabaseClient<any, 'public', any> | null) => {
     if (auth) {
       const user = await auth.auth.getUser();
-      return user;
+      return user.data.user ? user : null;
     }
     return null;
   }

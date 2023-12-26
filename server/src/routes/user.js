@@ -63,7 +63,7 @@ app.get('/login', async (req, res) => {
 
 app.get('/customer/:id', async (req, res) => {
   const { id } = req.params;
-
+  
   if (id.length > 5)
     try {
       if (error) {

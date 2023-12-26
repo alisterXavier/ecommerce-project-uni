@@ -5,38 +5,31 @@ import { calculateDiscountedPrice } from '@/shared/helpers/utils';
 import { SkeletonContainer } from '@/app/Components/SkeletonComp';
 import { IconChevronRight } from '@tabler/icons-react';
 import { Filter } from '@/app/Components/Filter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { cache } from 'swr/_internal';
+import { ProductsResponse } from '@/shared/types/responseTypes';
 
 const Category = ({ params }: { params: { category: string } }) => {
-  const [filterByType, setFilterByType] = useState<string>('');
+  const [filterByType, setFilterByType] = useState<string[]>([]);
   const [filterByPrice, setFilterByPrice] = useState<string>('');
-  const [filterByPriceRange, setFilterByPriceRange] = useState<number[]>([10, 2000]);
-  const [parameters, setParameters] = useState({
+  // const [filterByPriceRange, setFilterByPriceRange] = useState<number[]>([10, 2000]);
+
+  const parameters = {
     category: params.category,
     filterOptions: {
       type: filterByType,
       price: filterByPrice,
-      priceMin: filterByPriceRange[0],
-      priceMax: filterByPriceRange[1],
+      // priceMin: filterByPriceRange[0],
+      // priceMax: filterByPriceRange[1],
+    },
+  };
+  const { data, productsIsLoading, productsError } = useProducts({
+    category: params.category,
+    filterOptions: {
+      type: filterByType,
+      price: filterByPrice,
     },
   });
-  const { data, productsIsLoading, productsError } = useProducts({
-    ...parameters,
-  });
-
-  const onFilter = (e) => {
-    setParameters((prev) => {
-      return {
-        ...prev,
-        filterOptions: {
-          type: filterByType,
-          price: filterByPrice,
-          priceMin: filterByPriceRange[0],
-          priceMax: filterByPriceRange[1],
-        },
-      };
-    });
-  };
 
   return (
     <div className="p-[10px]">
@@ -48,14 +41,14 @@ const Category = ({ params }: { params: { category: string } }) => {
         <h2 className="m-0 uppercase h-[25px]">{params.category}</h2>
       </div>
       <div className="flex flex-wrap justify-between relative pt-5">
-        <Filter
+        {/* <Filter
           type={params.category}
           filterByTypeFn={{ filterByType, setFilterByType }}
           filterByPriceFn={{ filterByPrice, setFilterByPrice }}
-          filterByPriceRangeFn={{ filterByPriceRange, setFilterByPriceRange }}
-        />
-        {/* <div className="small-products-container">
-          {productsIsLoading || productsError ? (
+          // filterByPriceRangeFn={{ filterByPriceRange, setFilterByPriceRange }}
+        /> */}
+        <div className="small-products-container">
+          {(!data && productsIsLoading) || productsError ? (
             <SkeletonContainer
               w={262}
               h={400}
@@ -64,14 +57,14 @@ const Category = ({ params }: { params: { category: string } }) => {
               mb={5}
               wrap={true}
             />
-          ) : data.data.length === 0 ? (
+          ) : !data ? (
             <p>No products to display.</p>
           ) : (
             data.data.map((product, index) => (
               <Small id={product.id} key={index} product={product} />
             ))
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );

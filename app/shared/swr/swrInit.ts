@@ -6,9 +6,9 @@ const axiosInstance = axios.create({
 });
 
 export const useSwrInstance = () => {
-  const { requests } = initilize(axiosInstance);
+  const { requests, queries } = initilize(axiosInstance);
 
   return {
-    requests,
+    requests, queries
   };
 };

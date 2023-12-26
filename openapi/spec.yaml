@@ -23,7 +23,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Products"
-  
   /customer/{id}:
     get:
       responses:
@@ -136,7 +135,7 @@ components:
         price:
           type: number
         discount:
-          type: number 
+          type: number
     Customers:
       type: object
       properties:
@@ -159,15 +158,17 @@ components:
       properties:
         id:
           type: string
-        userId:
+        customerId:
           type: string
         products:
           type: array
-          items: string
+          items:
+            type: object
+            $ref: "#/components/schemas/Products"
         created_at:
           type: string
         total:
-          type: number | null
+          type: number
     Orders:
       type: object
       properties:

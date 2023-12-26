@@ -13,27 +13,24 @@ import { useSwrInstance } from '../swr/swrInit';
 type useProductsProps = {
   category: string;
   filterOptions?: {
-    type: string;
+    type: string[];
     price: string;
-    priceMin: number;
-    priceMax: number;
   };
 };
 export const useProducts = (parameters: useProductsProps) => {
-  const [data, setData] = useState<ProductsResponse>({
-    data: [],
-  });
-  const { requests } = useSwrInstance();
-  
+  const [data, setData] = useState<ProductsResponse | null>();
+  const { queries } = useSwrInstance();
+
   const {
     data: productsGetData,
     error: productsError,
     isLoading: productsIsLoading,
-  } = requests.useGetProducts(parameters);
+  } = queries.useGetProducts(parameters);
 
   useEffect(() => {
     if (!productsIsLoading) {
       if (productsError || !productsGetData) throw new Error(productsError);
+      else if (productsGetData.data.length === 0) setData(null);
       else setData(productsGetData);
     }
   }, [productsGetData, productsIsLoading, productsError]);
@@ -45,34 +42,8 @@ export const useProducts = (parameters: useProductsProps) => {
   };
 };
 
-export const useGetUser = (id: string | undefined) => {
-  const [data, setData] = useState<CustomerResponse>({
-    data: {},
-  });
-  const { requests } = useSwrInstance();
-
-  const {
-    data: customerGetData,
-    error: customerError,
-    isLoading: customerIsLoading,
-  } = requests.useGetCustomerByCustomerId(id ?? null);
-
-  useEffect(() => {
-    if (!customerIsLoading) {
-      if (customerError || !customerGetData) return;
-      else setData(customerGetData);
-    }
-  }, [customerError, customerGetData, customerIsLoading]);
-
-  return {
-    data,
-    customerError,
-    customerIsLoading,
-  };
-};
-
 export const useProduct = (id: string) => {
-  const { requests } = useSwrInstance();
+  const { queries } = useSwrInstance();
   const [data, setData] = useState<SingleProductResponse['data']>(
     {} as SingleProductResponse['data']
   );
@@ -80,7 +51,7 @@ export const useProduct = (id: string) => {
     data: productGetData,
     isLoading: productIsLoading,
     error: productError,
-  } = requests.useGetProductByProductId(id);
+  } = queries.useGetProductByProductId(id);
 
   useEffect(() => {
     if (!productIsLoading) {

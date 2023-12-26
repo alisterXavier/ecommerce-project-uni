@@ -7,7 +7,7 @@
 }
 .navbar-container {
   height: 100%;
-  background-color: var(--offWhite);
+  background-color: var(--navColor);
   display: flex;
 }
 .navbar-items {

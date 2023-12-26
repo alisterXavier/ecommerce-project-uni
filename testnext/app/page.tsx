@@ -1,23 +1,57 @@
 import Image from 'next/image';
 import product from '@/public/productList.json';
 
-// Example Data
-// {
-//   "title": "Rose Back Graphic T-shirt",
-//   "image": "https://media.boohoo.com/i/boohoo/bmm50924_sage_xl/male-sage-plus-oversized-rose-back-graphic-t-shirt?w=450&qlt=default&fmt.jp2.qlt=70&fmt=auto&sm=fit",
-//   "description": "Your tee collection just got an upgrade with this plus size tshirt for men from our latest collection. Cut with additional room for the perfect fit, this style has serious add-to-bag potential. With short sleeves and a classic neckline, this is a wardrobe staple we can't get enough of. Wear with jeans and trainers for a casual fit or layer under an open shirt for weekend plans.,
-//   "price": "$50"
-// }
-
 export default function Home() {
   return (
-    <div className="w-[250px] h-[300px] border border-black">
-      <figure className="relative w-[100px] h-[200px]">
-        {/* product image change the height of the figure tag and the image size will change automatically */}
-        {/* <Image src={product.image} fill /> */}
-      </figure>
-      <div className="">
-        {/* Use html tag to add the price description title and whatever needed to be displayed in here */}
+    <div className="">
+      <div
+        className="border-transparent border  hover:border-black cursor-pointer"
+        style={{
+          width: '270px',
+          height: '450px',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '10px',
+          borderRadius: '3px',
+        }}
+      >
+        <figure
+          style={{
+            width: '250px',
+            height: 360,
+            position: 'relative',
+          }}
+        >
+          {product.image.map((image, index) => {
+            return (
+              <Image
+                key={index}
+                className={` transition-all duration-200 ${index === 1 && 'hover:opacity-0'}`}
+                alt="asdsad"
+                src={image}
+                fill
+              />
+            );
+          })}
+        </figure>
+        <p
+          className="RelaxedFitSweatshirt"
+          style={{
+            color: 'black',
+            fontSize: 20,
+          }}
+        >
+          {product.title}
+        </p>
+        <p
+          className="Gel"
+          style={{
+            color: 'black',
+            fontSize: 24,
+          }}
+        >
+          ${product.price}
+        </p>
       </div>
     </div>
   );

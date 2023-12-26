@@ -7,20 +7,51 @@ import Link from 'next/link';
 import { selectAuthState } from '@/shared/redux/authSlice';
 import { useSelector } from 'react-redux';
 import { IconSearch, IconShoppingCart } from '@tabler/icons-react';
-import { TextInput } from '@mantine/core';
+import { Text, TextInput } from '@mantine/core';
 import { motion } from 'framer-motion';
+import { useCustomerCart } from '@/shared/hooks/cart';
+
+type NavbarCarttype = {
+  path: string;
+  onMouseEnter: (e: React.MouseEvent) => void;
+  onMouseLeave: (e: React.MouseEvent) => void;
+  user: UserMetadata;
+};
+
+const NavbarCart = ({
+  path,
+  onMouseEnter,
+  onMouseLeave,
+  user,
+}: NavbarCarttype) => {
+  const { cart, isLoading } = useCustomerCart(user.id);
+  return (
+    <Buttons
+      customClassName={'navbar-right-item'}
+      type={path === '/basket'}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <Link className="armyText relative" id="cart" href={`/cart`}>
+        {cart?.products?.length && cart?.products?.length > 0 && (
+          <span className="absolute flex justify-center items-center w-[20px] h-[20px] bg-[var(--testColor)] -top-2 -right-2 rounded-[50%]">
+            <Text c={'white'} m={0} p={0} h={20}>
+              {cart?.products?.length}
+            </Text>
+          </span>
+        )}
+        <IconShoppingCart size={30} />
+      </Link>
+    </Buttons>
+  );
+};
 
 export const Navbar = () => {
   const path = usePathname();
   const sliderRef = useRef(null);
-  const pathArr = path.split('/');
   const authState = useSelector(selectAuthState);
   const [user, setUser] = useState<UserMetadata | null>();
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
-  const getUser = async () => {
-    const user = authState?.data.user?.user_metadata;
-    setUser(user);
-  };
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const { id } = e.currentTarget.querySelector('a') as HTMLElement;
@@ -41,40 +72,40 @@ export const Navbar = () => {
   };
 
   const onMouseLeave = (e: React.MouseEvent) => {
-    if (pathArr) navChangeOnPath.current();
+    if (path) navChangeOnPath.current(path);
     else if (sliderRef.current) {
       (sliderRef.current as HTMLElement).removeAttribute('style');
     }
   };
 
-  const navChangeOnPath = useRef(() => {
-    if (pathArr) {
-      var translate;
-      pathArr.map((i) => {
-        translate =
-          i === 'Electronics'
-            ? '360px 0px'
-            : i === 'Men'
-            ? '90px 0px'
-            : i === 'Women'
-            ? '180px 0px'
-            : i === 'Kids'
-            ? '270px 0px'
-            : '0px';
-      });
-      if (sliderRef.current && translate) {
-        (sliderRef.current as HTMLElement).style.translate = translate;
-      }
+  const navChangeOnPath = useRef((path: string) => {
+    const translateMap = {
+      Electronics: '360px 0px',
+      Men: '90px 0px',
+      Women: '180px 0px',
+      Kids: '270px 0px',
+      default: '0px',
+    };
+    var translate = path.split('/').reduce((acc, seg) => {
+      return (translateMap as Record<string, string>)[seg] || acc;
+    }, translateMap['default']);
+    
+    if (sliderRef.current && translate) {
+      (sliderRef.current as HTMLElement).style.translate = translate;
     }
   });
 
   useEffect(() => {
+    const getUser = async () => {
+      const user = authState?.data.user;
+      setUser(user);
+    };
     getUser();
   }, [authState]);
 
   useEffect(() => {
-    navChangeOnPath.current();
-  }, [navChangeOnPath]);
+    navChangeOnPath.current(path);
+  }, [path]);
 
   return (
     <>
@@ -138,7 +169,7 @@ export const Navbar = () => {
               <div className="py-[4px] px-[10px]">
                 <IconSearch
                   size={30}
-                  color='black'
+                  color="black"
                   cursor={'pointer'}
                   onClick={() => setSearchToggle(!searchToggle)}
                 />
@@ -146,16 +177,12 @@ export const Navbar = () => {
             </div>
             {user ? (
               <>
-                <Buttons
-                  customClassName={'navbar-right-item'}
-                  type={path === '/basket'}
+                <NavbarCart
+                  path={path}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
-                >
-                  <Link className="armyText" id="basket" href={`/cart`}>
-                    <IconShoppingCart size={30} />
-                  </Link>
-                </Buttons>
+                  user={user}
+                />
                 <Account user={user} />
               </>
             ) : (

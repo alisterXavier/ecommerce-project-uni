@@ -6,9 +6,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/shared/supabaseConfig';
-import { useGetUser } from '@/shared/hooks/products';
-import { useEffect, useState } from 'react';
-import { User, UserMetadata } from '@supabase/supabase-js';
+import { UserMetadata } from '@supabase/supabase-js';
 
 interface IButton {
   customClassName?: string;
@@ -48,8 +46,7 @@ export const Buttons = ({
 };
 
 export const Account = ({ user }: { user: UserMetadata }) => {
-  const { data, customerError, customerIsLoading } = useGetUser(user?.id);
-
+  // const { data, customerError, customerIsLoading } = useGetUser(user?.id);
   const combOptions = [
     {
       name: 'Settings',

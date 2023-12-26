@@ -4,6 +4,7 @@ import { supabase } from '../../supabaseConfig';
 import dayjs from 'dayjs';
 
 const app = express();
+
 // Fetching Men's Products
 // app.get('/men-products', async (req, res) => {
 //   try {
@@ -45,8 +46,7 @@ const app = express();
 
 app.get('/products/:category', async (req, res) => {
   const { category } = req.params;
-  const { filter } = req.query
-  console.log(filter)
+  const { filter } = req.query;
   const currWeek = dayjs().startOf('week').format();
 
   let { data: categoryList, error: categoryListError } = await supabase
@@ -97,7 +97,6 @@ app.get('/products/:category', async (req, res) => {
       if (error) return res.status(500).json({ error: error.message });
       return res.status(200).json({ data: data });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   } else return res.status(400).json({ error: 'Category does not exist' });
@@ -123,7 +122,6 @@ app.get('/product/:productId', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
