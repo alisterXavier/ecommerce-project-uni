@@ -151,6 +151,7 @@ const LoginInputs = ({
           outline: 'none',
           background: 'transparent',
         }}
+        color='black'
         leftSectionPointerEvents="none"
         leftSection={<IconUser />}
         value={email}
@@ -164,6 +165,7 @@ const LoginInputs = ({
       <PasswordInput
         className="my-2 login-input-field"
         w={'100%'}
+        color='black'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         variant="unstyled"
@@ -176,7 +178,7 @@ const LoginInputs = ({
           w={'80%'}
           className="my-2 login-button"
           style={{
-            background: 'var(--nightBlue)',
+            background: 'var(--testColor)',
             border: '1px solid white',
           }}
           variant="Light"
@@ -211,9 +213,9 @@ const Login = () => {
     <div className="login-container w-screen h-screen">
       <div className="login-wrapper relative w-full h-full flex items-center justify-around">
         <div className="login-form-container relative z-10 rounded-sm w-[70%] h-[80%] overflow-hidden">
-          <div className="relative transition flex items-center justify-start w-full h-full">
+          <div className="relative transition flex items-center justify-start w-full h-full bg-white">
             <motion.div className="absolute w-[45%] h-full" ref={imageRef}>
-              <figure className="absolute w-full h-full ">
+              <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
                 <Image alt="" src={womenLogin} className="absolute" fill />
               </figure>
             </motion.div>
@@ -222,7 +224,7 @@ const Login = () => {
               className="absolute w-[45%] h-full right-0"
               ref={imageRef}
             >
-              <figure className="absolute w-full h-full opacity-50">
+              <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
                 <Image alt="" src={mensLogin} className="absolute" fill />
               </figure>
             </motion.div>
@@ -235,11 +237,11 @@ const Login = () => {
               variants={LoginSwitch}
             >
               <div className="w-fit">
-                <h1 className=" text-[30px] uppercase text-white">Login</h1>
+                <h1 className=" text-[30px] uppercase text-black">Sign In</h1>
                 <LoginInputs isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
                 <div>
                   <p
-                    className=" my-5 flex items-end text-white uppercase cursor-pointer"
+                    className=" my-5 flex items-end text-black uppercase cursor-pointer"
                     onClick={() => setIsSignUp(true)}
                   >
                     <IconChevronsLeft />
@@ -250,7 +252,7 @@ const Login = () => {
             </motion.div>
 
             <motion.div
-              className="bg-[var(--nightBlue)] z-[1] absolute right-0 h-full w-[50%] p-10 flex justify-center items-center"
+              className="bg-white z-[1] absolute right-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
               animate={isSignUp ? 'switchToReg' : 'default'}
               variants={BoxSwitch}
@@ -258,18 +260,18 @@ const Login = () => {
 
             {/* Sign In */}
             <motion.div
-              className="bg-[var(--nightBlue)] absolute left-0 h-full w-[50%] p-10 flex justify-center items-center"
+              className="bg-white absolute left-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
               initial={{ opacity: 0 }}
               animate={!isSignUp ? 'default' : 'switchToReg'}
               variants={RegSwitch}
             >
               <div className="w-fit flex flex-col justify-center items-start">
-                <h1 className=" text-[30px] uppercase text-white">Sign Up</h1>
+                <h1 className=" text-[30px] uppercase text-black">Sign Up</h1>
                 <LoginInputs isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
                 <div>
                   <p
-                    className=" my-5 flex items-end text-white uppercase cursor-pointer"
+                    className=" my-5 flex items-end text-black uppercase cursor-pointer"
                     onClick={() => setIsSignUp(false)}
                   >
                     <span className="text-[15px]">Sign In</span>

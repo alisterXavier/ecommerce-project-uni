@@ -7,20 +7,19 @@ import {
   ProductsResponse,
   SingleProductResponse,
 } from '../types/responseTypes';
+import { CartUpdate } from '../types/requestTypes';
 
-export type Requests = ReturnType<typeof makeRequests>;
+export type Requests = ReturnType<typeof makeQueries>;
 export type Response<Test extends keyof Requests> = Awaited<
   ReturnType<Requests[Test]>
 >;
 
 type productFilterOption = {
-  type: string;
+  type: string[];
   price: string;
-  priceMin: number;
-  priceMax: number;
 };
 
-function request(requests: Requests) {
+function queries(requests: Requests) {
   return {
     useGetProducts: (
       params: {
@@ -29,7 +28,9 @@ function request(requests: Requests) {
       },
       options?: SWRConfiguration
     ): SWRResponse<ProductsResponse> => {
-      return useSwr(['useGetProducts'], () => requests.useGetProducts(params));
+      return useSwr(['useGetProducts' + params.category], () =>
+        requests.useGetProducts(params)
+      );
     },
     useGetCustomerByCustomerId: (
       id: string | null
@@ -41,16 +42,6 @@ function request(requests: Requests) {
     useGetOrdersByCustomerId: (id: string): SWRResponse<OrderResponse> => {
       return useSwr(['getOrderByOrderId'], () =>
         requests.useGetOrdersByCustomerId(id)
-      );
-    },
-    useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) => {
-      return useSwr(['useUpdateCustomerByCustomerId'], () =>
-        requests.useUpdateCustomerByCustomerId(id, data)
-      );
-    },
-    useUpdateCartByCartId: (id: string, data: CartResponse) => {
-      return useSwr(['useUpdateCartByCartId'], () =>
-        requests.useUpdateCartByCartId(id, data)
       );
     },
     useGetProductByProductId: (
@@ -69,7 +60,7 @@ function request(requests: Requests) {
   };
 }
 
-function makeRequests(axios: AxiosInstance) {
+function makeQueries(axios: AxiosInstance) {
   return {
     useGetProducts: (params: {
       category: string;
@@ -105,18 +96,20 @@ function makeRequests(axios: AxiosInstance) {
         })
         .then((res) => res.data),
     // TODO --- backend endpoint not created
-    useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
-      axios.request({
-        method: 'patch',
-        url: `http://localhost:5001/customer/${id}`,
-        data: data,
-      }),
-    useUpdateCartByCartId: (id: string, data: CartResponse) =>
-      axios.request({
-        method: 'patch',
-        url: `http://localhost:5001/cart/${id}`,
-        data: data,
-      }),
+    // useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
+    //   axios.request({
+    //     method: 'patch',
+    //     url: `http://localhost:5001/customer/${id}`,
+    //     data: data,
+    //   }),
+    // useUpdateCartByCartId: (data: CartResponse['data']) =>
+    //   axios
+    //     .request({
+    //       method: 'patch',
+    //       url: `http://localhost:5001/cart`,
+    //       data: data,
+    //     })
+    //     .then((res) => res.data),
     useGetCartByUserId: (id: string) =>
       axios
         .request({
@@ -135,10 +128,30 @@ function makeRequests(axios: AxiosInstance) {
   };
 }
 
-export function initilize(axios: AxiosInstance) {
-  const requestInit = makeRequests(axios);
-
+function makeRequests(axios: AxiosInstance) {
   return {
-    requests: request(requestInit),
+    useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
+      axios.request({
+        method: 'patch',
+        url: `http://localhost:5001/customer/${id}`,
+        data: data,
+      }),
+    useUpdateCartByCartId: (data: CartUpdate) =>
+      axios
+        .request({
+          method: 'patch',
+          url: `http://localhost:5001/cart`,
+          data: data,
+        })
+        .then((res) => res.data),
+  };
+}
+
+export function initilize(axios: AxiosInstance) {
+  const queriesInit = makeQueries(axios);
+  const requestInit = makeRequests(axios);
+  return {
+    queries: queries(queriesInit),
+    requests: requestInit,
   };
 }

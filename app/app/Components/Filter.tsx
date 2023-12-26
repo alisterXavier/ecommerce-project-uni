@@ -5,34 +5,45 @@ import {
   Slider,
   TextInput,
 } from '@mantine/core';
-import { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 type FilterProps = {
   type: string;
   filterByTypeFn: {
-    filterByType: string;
-    setFilterByType: (type: string) => void;
+    filterByType: string[];
+    setFilterByType: (type: string[]) => void;
   };
   filterByPriceFn: {
     filterByPrice: string;
     setFilterByPrice: (type: string) => void;
   };
-  filterByPriceRangeFn: {
-    filterByPriceRange: number[];
-    setFilterByPriceRange: (type: number[]) => void;
-  };
+  // filterByPriceRangeFn: {
+  //   filterByPriceRange: number[];
+  //   setFilterByPriceRange: (type: number[]) => void;
+  // };
 };
 
 export const Filter = ({
   type,
   filterByTypeFn: { filterByType, setFilterByType },
   filterByPriceFn: { filterByPrice, setFilterByPrice },
-  filterByPriceRangeFn: { filterByPriceRange, setFilterByPriceRange },
 }: FilterProps) => {
-  const minPrice = 10;
-  const maxPrice = 2000;
+
+  const filterType = (e: Event) => {
+    const { value } = (e.currentTarget as HTMLInputElement)
+
+    if (filterByType.includes(value)){
+      const qwerty = filterByType.filter(i => i !== value)
+      setFilterByType(qwerty)
+    }
+    else{
+      const qwerty = [...filterByType, value]
+      setFilterByType(qwerty);
+    }
+
+  }
   return (
-    <div className="sticky top-[11%] w-[200px] bg-[var(--nightBlue)] text-[white] rounded p-5 h-[80vh]">
+    <div className="sticky top-[11%] w-[200px] bg-[var(--testColor)] text-[white] rounded p-5 h-[80vh]">
       <h1 className="text-[white] mt-0">Filter</h1>
       {type.toLowerCase() === 'electronics' ? (
         <></>
@@ -41,55 +52,61 @@ export const Filter = ({
           <div>
             <CheckboxGroup label="By Type" p={5}>
               <Checkbox
-                radius={3}
+                radius={2}
                 label="Jeans"
                 value={'jeans'}
-                onClick={(e) => setFilterByType(e.currentTarget.value)}
+                onClick={(e) => {filterType(e as unknown as Event)}}
                 mt={4}
-                color="#bab4af"
+                color="var(--testColor)"
               />
               <Checkbox
-                radius={3}
+                radius={2}
                 className=""
                 label="T-shirts"
-                value={'t-shirts'}
-                onClick={(e) => setFilterByType(e.currentTarget.value)}
+                value={'tshirts'}
+                onClick={(e) => {filterType(e as unknown as Event)}}
                 mt={4}
-                color="#bab4af"
+                color="var(--testColor)"
               />
               <Checkbox
-                radius={3}
+                radius={2}
                 label="Shoes"
                 value={'shoes'}
-                onClick={(e) => setFilterByType(e.currentTarget.value)}
+                onClick={(e) => {filterType(e as unknown as Event)}}
                 mt={4}
-                color="#bab4af"
+                color="var(--testColor)"
               />
             </CheckboxGroup>
           </div>
           <div className="my-5">
-            <CheckboxGroup label="By Price" p={5}>
+            <CheckboxGroup value={[filterByPrice]} label="By Price" p={5}>
               <Checkbox
                 radius={3}
                 label="Low To High"
                 value={'asc'}
-                onClick={(e) => setFilterByPrice(e.currentTarget.value)}
+                onClick={(e) => {
+                  if (filterByPrice === 'asc') setFilterByPrice('');
+                  else setFilterByPrice(e.currentTarget.value);
+                }}
                 mt={4}
-                color="#bab4af"
+                color="var(--testColor)"
               />
               <Checkbox
                 radius={3}
                 label="High to Low"
                 value={'desc'}
-                onClick={(e) => setFilterByPrice(e.currentTarget.value)}
+                onClick={(e) => {
+                  if (filterByPrice === 'desc') setFilterByPrice('');
+                  else setFilterByPrice(e.currentTarget.value);
+                }}
                 mt={4}
-                color="#bab4af"
+                color="var(--testColor)"
               />
             </CheckboxGroup>
           </div>
           <div className="w-full h-[50px]">
             {/* <Slider color={'blue'} min={10} max={2000} /> */}
-            <RangeSlider
+            {/* <RangeSlider
               mt={50}
               step={1}
               min={minPrice}
@@ -102,9 +119,7 @@ export const Filter = ({
                 setFilterByPriceRange(e);
               }}
               // label={valueLabelFormat}
-            />
-
-
+            /> */}
 
             {/* TODO create a min and max input for price */}
             {/* <div className="flex">
@@ -133,7 +148,6 @@ export const Filter = ({
                 value={filterByPriceRange[1]}
               />
             </div> */}
-            
           </div>
         </div>
       )}

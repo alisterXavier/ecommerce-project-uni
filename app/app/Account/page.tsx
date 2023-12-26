@@ -1,6 +1,6 @@
-import { UserResponse } from '@supabase/supabase-js';
 
-const Account = ({ auth }: { auth: UserResponse }) => {
+
+const Account = () => {
   return (
     <div>
       <h2>Account</h2>
