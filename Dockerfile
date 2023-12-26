@@ -40,7 +40,7 @@ COPY --from=BUILD /app/frontend/.env.production /app/frontend/.env.production
 ## Copying Contents from BUILD -> server to PRODUCTION -> server
 COPY --from=BUILD /app/server/package.json /app/server/
 COPY --from=BUILD /app/server/dist /app/server/dist
-COPY --from=BUILD /app/server/.env /app/server/.env
+COPY --from=BUILD /app/server/.env.test /app/server/.env
 COPY --from=BUILD /app/package*.json /app/
 
 ## Installing pnpm and deps in PRODUCTION STAGE
