@@ -17,10 +17,8 @@ COPY ./package.json /app
 RUN sed -i 's/\/app/\/frontend/g' /app/package.json
 
 ## Copying frontend and server from local system to docker image
-COPY ./app/ /app/frontend/
-COPY ./app/package.json /app/frontend
+COPY ./app/ /app/frontend
 COPY ./server/ /app/server
-COPY ./server/package.json /app/server
 
 ## Installing all deps and creating a build IN BUILD STAGE
 RUN yarn install

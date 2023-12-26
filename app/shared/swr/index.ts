@@ -69,7 +69,7 @@ function makeQueries(axios: AxiosInstance) {
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/products/${params.category.toLowerCase()}`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${params.category.toLowerCase()}`,
           params: {
             ...(params.filterOptions !== undefined && {
               ...Object.entries(params.filterOptions).reduce(
@@ -85,28 +85,28 @@ function makeQueries(axios: AxiosInstance) {
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/product/${id}`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/product/${id}`,
         })
         .then((res) => res.data),
     useGetCustomerByCustomerId: (id: string | null) =>
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/customer/${id}`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/${id}`,
         })
         .then((res) => res.data),
     // TODO --- backend endpoint not created
     // useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
     //   axios.request({
     //     method: 'patch',
-    //     url: `http://localhost:5001/customer/${id}`,
+    //     url: `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/${id}`,
     //     data: data,
     //   }),
     // useUpdateCartByCartId: (data: CartResponse['data']) =>
     //   axios
     //     .request({
     //       method: 'patch',
-    //       url: `http://localhost:5001/cart`,
+    //       url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
     //       data: data,
     //     })
     //     .then((res) => res.data),
@@ -114,7 +114,7 @@ function makeQueries(axios: AxiosInstance) {
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/cart/${id}`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/${id}`,
         })
         .then((res) => res.data),
     // TODO --- backend endpoint not created
@@ -122,7 +122,7 @@ function makeQueries(axios: AxiosInstance) {
       axios
         .request({
           method: 'get',
-          url: `http://localhost:5001/order/${id}`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/${id}`,
         })
         .then((res) => res.data),
   };
@@ -133,14 +133,14 @@ function makeRequests(axios: AxiosInstance) {
     useUpdateCustomerByCustomerId: (id: string, data: CustomerResponse) =>
       axios.request({
         method: 'patch',
-        url: `http://localhost:5001/customer/${id}`,
+        url: `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/${id}`,
         data: data,
       }),
     useUpdateCartByCartId: (data: CartUpdate) =>
       axios
         .request({
           method: 'patch',
-          url: `http://localhost:5001/cart`,
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
           data: data,
         })
         .then((res) => res.data),

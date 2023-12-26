@@ -107,7 +107,7 @@ const LoginInputs = ({
               color: '#fff',
             },
           });
-          router.push('http://localhost:3000');
+          router.push('/');
         }
         if (res.error) {
           if (res.error.message == 'Email not confirmed')
@@ -125,7 +125,7 @@ const LoginInputs = ({
 
   const onSignUp = async () => {
     axios
-      .post('http://localhost:5001/register', {
+      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/register`, {
         email: email,
         password: password,
       })
