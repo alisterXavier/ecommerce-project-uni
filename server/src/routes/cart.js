@@ -25,30 +25,35 @@ const app = express();
 //   }
 // });
 
-app.patch('/add/cart', async (req, res) => {
-  const { CustomerId, productId } = req.body;
+app.patch('/cart', async (req, res) => {
+  const { customerId, products, id, total } = req.body;
 
   try {
-    const { data, error } = await supabase.from('Carts_Products').insert([
-      {
-        CustomerId,
-        productId,
-      },
-    ]);
-
-    if (error) {
-      return res.status(400).json({ error: error.message });
+    const { data: cartData, error: CartError } = await supabase
+      .from('Carts')
+      .upsert(
+        {
+          id: id,
+          products: products,
+          customerId: customerId,
+          total: total ?? 0,
+        },
+        { ignoreDuplicates: false }
+      )
+      .select().single();
+    if (CartError) {
+      return res.status(400).json({ error: CartError.message });
     }
 
-    return res.status(200).json({ message: 'Product added to cart', data });
+    return res.status(200).json({ data: cartData });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Remove items from the cart 
+// Remove items from the cart
 // -- might be useless since it can also be updated instead of deleted
-// app.delete('/cart', async (req, res, next) => {
+// app.post('/remove-from-cart', async (req, res, next) => {
 //   const { CustomerId, productId } = req.body;
 
 //   try {
@@ -70,26 +75,6 @@ app.patch('/add/cart', async (req, res) => {
 //   }
 // });
 
-// Get user's cart
-// app.get('/get-cart/:id', async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const { data, error } = await supabase
-//       .from('Carts')
-//       .select()
-//       .eq('customerId', id);
-
-//     if (error) {
-//       return res.status(400).json({ error: error.message });
-//     }
-
-//     return res.status(200).json({data: data});
-//   } catch (error) {
-//     return res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
 app.get('/cart/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -98,9 +83,9 @@ app.get('/cart/:id', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('Carts')
-      .select('*, Carts_Products( Products ( * ) )')
-      .eq('customerId', id);
-
+      .select('id, customerId, products: Carts_Products(...Products(*)), total')
+      .eq('customerId', id).single();
+      
     if (error) {
       return res.status(400).json({ error: error.message });
     }
