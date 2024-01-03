@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  cypress: cypress-io/cypress@3
 
 jobs:
   install_git:
@@ -14,18 +16,13 @@ jobs:
           paths:
             - usr/
 
-  publishFrontendToDockerHub:
+  changes_in_frontend:
     docker:
       - image: docker:20.10.11
     steps:
       - attach_workspace:
           at: /
-
-      - setup_remote_docker
       - checkout
-      - run:
-          name: Login to Docker Hub
-          command: echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
 
       - run:
           name: Check for changes in folder
@@ -37,60 +34,124 @@ jobs:
               echo "Changes detected continuing with build";
             fi
 
+  changes_in_server:
+    docker:
+      - image: docker:20.10.11
+    steps:
+      - attach_workspace:
+          at: /
+      - checkout
+
       - run:
-          name: Build docker image
+          name: Check for changes in folder
           command: |
-            cd ./app
-            docker build -t $DOCKER_HUB_USERNAME/ecom-frontend:front:v1.0 ./
-      - run:
-          name: Push docker image
-          command: docker push $DOCKER_HUB_USERNAME/ecom-frontend:front:v1.0
-
-  publishServerToDockerHub:
-      docker:
-        - image: docker:20.10.11
-
-      steps:
-        - attach_workspace:
-            at: /
-        - setup_remote_docker
-        - checkout
-
-        - run:
-            name: Check for changes in folder
-            command: |
-              if git diff --quiet HEAD^..HEAD ./server; then
-              echo "No changes in specified folder.";
+            if git diff --quiet HEAD^..HEAD ./server; then 
+              echo "No changes in specified folder."
               circleci-agent step halt
-              else 
-                echo "Changes detected continuing with build";
-              fi
+            else 
+              echo "Changes detected continuing with build";
+            fi
+            
+  run_frontend_test:
+    docker:
+      - image: node:latest
+    steps:
+      - checkout
 
-        - run:
-            name: Build docker image
-            command: |
-              cd ./server
-              docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+      - run:
+          name: install deps
+          command: 'npm i'
 
-        - run:
-            name: Push to docker hub
-            command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+      - run:
+          name: update apt
+          command: apt-get update
+         
+      - run:
+          name: install system deps
+          command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+          
+      - cypress/run-tests:
+          cypress-command: 'npx cypress run --component'
+
+      - run:
+          name: Run app
+          command: 'npm start'
+          background: true
+            
+      - run:
+          name: Wait for app
+          command: sleep 10
+
+      - cypress/run-tests:
+          cypress-command: 'npx cypress run'
+
+  # push_frontend_to_production:
+  #   docker:
+  #     - image: docker:20.10.11
+  #   steps:
+  #     - attach_workspace:
+  #         at: /
+  #     - checkout
+      
+  #     - run:
+  #         name: Push to main2.0 - Production branch
+  #         command: git push origin main2.0-dev:main2.0
+
+  # publish_server_to_dockerhub:
+  #     docker:
+  #       - image: docker:20.10.11
+
+  #     steps:
+  #       - setup_remote_docker
+  #       - checkout
+
+  #       - run:
+  #           name: Check for changes in folder
+  #           command: |
+  #             if git diff --quiet HEAD^..HEAD ./server; then
+  #             echo "No changes in specified folder.";
+  #             circleci-agent step halt
+  #             else 
+  #               echo "Changes detected continuing with build";
+  #             fi
+
+  #       - run:
+  #           name: Build docker image
+  #           command: |
+  #             cd ./server
+  #             docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+
+  #       - run:
+  #           name: Push to docker hub
+  #           command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
 
 workflows:
   the_great_gatsby:
     jobs:
       - install_git
-      - publishFrontendToDockerHub:
+      - changes_in_frontend:
           requires:
             - install_git
-          filters:
-            branches:
-              only:
-                - Home-page2.0
-      - publishServerToDockerHub:
+      - changes_in_server:
           requires:
             - install_git
-          filters:
-            branches:
-              only:
-                - Home-page2.0
+      - run_frontend_test:
+          requires:
+            - changes_in_frontend
+      # - push_frontend_to_production:
+      #     requires:
+      #       - changes_in_frontend
+      #       - run_frontend_unit_test
+      #       - run_frontend_e2e_test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main2.0-dev
+      # - publish_server_to_dockerhub:
+      #     requires:
+      #       - changes_in_server
+      #       - push_frontend_to_production
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main2.0
