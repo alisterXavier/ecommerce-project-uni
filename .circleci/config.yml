@@ -57,14 +57,14 @@ jobs:
         - checkout
 
         - run:
-          name: Check for changes in folder
-          command: |
-            if git diff --quiet HEAD^..HEAD ./server; then
-             echo "No changes in specified folder.";
-             circleci-agent step halt
-            else 
-              echo "Changes detected continuing with build";
-            fi
+            name: Check for changes in folder
+            command: |
+              if git diff --quiet HEAD^..HEAD ./server; then
+              echo "No changes in specified folder.";
+              circleci-agent step halt
+              else 
+                echo "Changes detected continuing with build";
+              fi
 
         - run:
             name: Build docker image
