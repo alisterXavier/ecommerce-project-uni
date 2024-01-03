@@ -2,7 +2,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Navbar } from './Navbar/Navbar';
+import { NavbarComponent } from './Navbar/Navbar';
 import { usePathname } from 'next/navigation';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { AppDispatch, store } from '@/shared/redux/store';
@@ -32,7 +32,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
                   .some((i) => i === 'Login' || i === 'SignUp') ? (
                   <></>
                 ) : (
-                  <Navbar></Navbar>
+                  <NavbarComponent />
                 )}
                 {children}
               </>
@@ -44,7 +44,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-const InnerRoot = ({ children }: { children: React.ReactNode }) => {
+export const InnerRoot = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

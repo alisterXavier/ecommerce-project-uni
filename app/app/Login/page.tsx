@@ -62,7 +62,6 @@ const LoginInputs = ({
   isSignUp: boolean;
   setIsSignUp: (temp: boolean) => void;
 }) => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>();
@@ -92,7 +91,7 @@ const LoginInputs = ({
   //   );
   // };
 
-  const onLogin = async () => {
+  const onSignIn = async () => {
     await supabase.auth
       .signInWithPassword({
         email: email,
@@ -151,7 +150,7 @@ const LoginInputs = ({
           outline: 'none',
           background: 'transparent',
         }}
-        color='black'
+        color="black"
         leftSectionPointerEvents="none"
         leftSection={<IconUser />}
         value={email}
@@ -161,17 +160,18 @@ const LoginInputs = ({
         className="my-2 login-input-field"
         w={'100%'}
         h={'45px'}
+        data-cy={`test-email-input`}
       />
       <PasswordInput
         className="my-2 login-input-field"
         w={'100%'}
-        color='black'
+        color="black"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         variant="unstyled"
         leftSection={<IconLock />}
         placeholder="Password"
-        defaultValue=""
+        data-cy={`test-password-input`}
       />
       <div className="w-full flex flex-col items-center justify-center">
         <Button
@@ -182,9 +182,10 @@ const LoginInputs = ({
             border: '1px solid white',
           }}
           variant="Light"
-          onClick={isSignUp ? onSignUp : onLogin}
+          onClick={isSignUp ? onSignUp : onSignIn}
+          data-cy={`test-confirm-btn`}
         >
-          {isSignUp ? 'Sign up' : 'Login'}
+          {isSignUp ? 'Sign up' : 'Sign In'}
         </Button>
 
         {/* ToDo Create support for google auth */}
@@ -229,12 +230,13 @@ const Login = () => {
               </figure>
             </motion.div>
 
-            {/* Sign Up */}
+            {/* Sign In */}
             <motion.div
               className="bg-transparent absolute right-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
               animate={isSignUp ? 'switchToReg' : 'default'}
               variants={LoginSwitch}
+              data-cy="test-signIn-container"
             >
               <div className="w-fit">
                 <h1 className=" text-[30px] uppercase text-black">Sign In</h1>
@@ -243,6 +245,7 @@ const Login = () => {
                   <p
                     className=" my-5 flex items-end text-black uppercase cursor-pointer"
                     onClick={() => setIsSignUp(true)}
+                    data-cy="test-signUp-btn"
                   >
                     <IconChevronsLeft />
                     <span className="text-[15px]">Sign UP</span>
@@ -258,13 +261,14 @@ const Login = () => {
               variants={BoxSwitch}
             ></motion.div>
 
-            {/* Sign In */}
+            {/* Sign Up */}
             <motion.div
               className="bg-white absolute left-0 h-full w-[50%] p-10 flex justify-center items-center"
               ref={credentialsRef}
               initial={{ opacity: 0 }}
               animate={!isSignUp ? 'default' : 'switchToReg'}
               variants={RegSwitch}
+              data-cy="test-signUp-container"
             >
               <div className="w-fit flex flex-col justify-center items-start">
                 <h1 className=" text-[30px] uppercase text-black">Sign Up</h1>
@@ -273,6 +277,7 @@ const Login = () => {
                   <p
                     className=" my-5 flex items-end text-black uppercase cursor-pointer"
                     onClick={() => setIsSignUp(false)}
+                    data-cy="test-signIn-btn"
                   >
                     <span className="text-[15px]">Sign In</span>
                     <IconChevronsRight />

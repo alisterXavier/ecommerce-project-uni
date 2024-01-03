@@ -1,27 +1,95 @@
 version: 2.1
 
 jobs:
-  publishToDockerHub:
+  install_git:
     docker:
       - image: docker:20.10.11
     steps:
+      - run:
+          name: Adding git
+          command: apk add git
+
+      - persist_to_workspace:
+          root: /
+          paths:
+            - usr/
+
+  publishFrontendToDockerHub:
+    docker:
+      - image: docker:20.10.11
+    steps:
+      - attach_workspace:
+          at: /
+
       - setup_remote_docker
       - checkout
-
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+
+      - run:
+          name: Check for changes in folder
+          command: |
+            if git diff --quiet HEAD^..HEAD ./app; then 
+              echo "No changes in specified folder."
+              circleci-agent step halt
+            else 
+              echo "Changes detected continuing with build";
+            fi
+
       - run:
           name: Build docker image
-          command: docker build -t $DOCKER_HUB_USERNAME/ecommerce:v1.0 ./
+          command: |
+            cd ./app
+            docker build -t $DOCKER_HUB_USERNAME/ecom-frontend:front:v1.0 ./
       - run:
           name: Push docker image
-          command: docker push $DOCKER_HUB_USERNAME/ecommerce:v1.0
+          command: docker push $DOCKER_HUB_USERNAME/ecom-frontend:front:v1.0
+
+  publishServerToDockerHub:
+      docker:
+        - image: docker:20.10.11
+
+      steps:
+        - attach_workspace:
+            at: /
+        - setup_remote_docker
+        - checkout
+
+        - run:
+          name: Check for changes in folder
+          command: |
+            if git diff --quiet HEAD^..HEAD ./server; then
+             echo "No changes in specified folder.";
+             circleci-agent step halt
+            else 
+              echo "Changes detected continuing with build";
+            fi
+
+        - run:
+            name: Build docker image
+            command: |
+              cd ./server
+              docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+
+        - run:
+            name: Push to docker hub
+            command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
 
 workflows:
   the_great_gatsby:
     jobs:
-      - publishToDockerHub:
+      - install_git
+      - publishFrontendToDockerHub:
+          requires:
+            - install_git
+          filters:
+            branches:
+              only:
+                - Home-page2.0
+      - publishServerToDockerHub:
+          requires:
+            - install_git
           filters:
             branches:
               only:

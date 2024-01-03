@@ -33,7 +33,7 @@ const Category = ({ params }: { params: { category: string } }) => {
 
   return (
     <div className="p-[10px]">
-      <div className="flex items-end h-[25px]">
+      <div className="flex items-end h-[25px]" data-cy="test-category-title">
         <h2 className="m-0 h-[25px]">HOME</h2>
         <div className="h-[23px]">
           <IconChevronRight />

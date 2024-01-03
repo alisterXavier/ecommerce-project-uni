@@ -142,6 +142,101 @@ h6 {
   );
 }
 
+/* Navbar */
+.navbar-wrapper {
+  position: sticky;
+  z-index: 99;
+  top: 0%;
+  width: 100%;
+  height: var(--nav-height) !important;
+}
+.navbar-container {
+  height: 100%;
+  background-color: var(--navColor);
+  display: flex;
+}
+.navbar-items {
+  position: relative;
+  display: flex;
+}
+.navbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  padding: 4px 10px;
+  box-sizing: border-box;
+}
+.navbar-right-item {
+  width: 70px;
+}
+.navbar-item-slider {
+  position: absolute;
+  top: 100%;
+  width: 90px;
+  height: 2px;
+  background-color: var(--army);
+  transition: all 200ms ease;
+}
+.navbar-item:nth-child(1):hover ~ .navbar-item-slider,
+.navbar-item:nth-child(1)[data-active='true'] ~ .navbar-item-slider {
+  translate: 0px 0px;
+}
+.navbar-item:nth-child(2):hover ~ .navbar-item-slider,
+.navbar-item:nth-child(2)[data-active='true'] ~ .navbar-item-slider {
+  translate: 90px 0px;
+}
+.navbar-item:nth-child(3):hover ~ .navbar-item-slider,
+.navbar-item:nth-child(3)[data-active='true'] ~ .navbar-item-slider {
+  translate: 180px 0px;
+}
+.navbar-item:nth-child(4):hover ~ .navbar-item-slider,
+.navbar-item:nth-child(4)[data-active='true'] ~ .navbar-item-slider {
+  translate: 270px 0px;
+}
+.navbar-item:nth-child(5):hover ~ .navbar-item-slider,
+.navbar-item:nth-child(5)[data-active='true'] ~ .navbar-item-slider {
+  translate: 360px 0px;
+}
+.navbar-item-header {
+  font-size: 30px;
+}
+.navbar-item-account {
+  margin-left: auto;
+  transition: all 300ms ease;
+}
+.navbar-item-account .armyText:hover {
+  color: var(--army);
+}
+.navbar-account-logo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--nightBlue);
+  border-radius: 50%;
+}
+.mantine-Combobox-dropdown {
+  width: 300px;
+}
+.navbar-wrapper .mantine-Input-input {
+  border: none !important;
+  color: var(--nightBlue) !important;
+  height: 70px !important;
+  font-size: 25px !important;
+}
+.mantine-Input-input:focus {
+  outline: none;
+  border: none;
+}
+.nav-wrapper .mantine-Input-input::placeholder {
+  color: var(--nightBlue) !important;
+}
+
 /* Small Products */
 .small-products-container {
   display: flex;
@@ -301,13 +396,10 @@ h6 {
 }
 
 /* Image hover transition */
-transition-all duration-200 $ {
-}
-
 .image-transition {
   transition: all 200ms ease;
   &:hover {
-    figure:nth-child(1) {
+    figure img:last-of-type {
       opacity: 0;
     }
   }

@@ -18,6 +18,11 @@ type NavbarCarttype = {
   user: UserMetadata;
 };
 
+type NavbarType = {
+  path: string;
+  user?: UserMetadata | null;
+};
+
 const NavbarCart = ({
   path,
   onMouseEnter,
@@ -32,8 +37,13 @@ const NavbarCart = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Link className="armyText relative" id="cart" href={`/cart`}>
-        {cart?.products?.length && cart?.products?.length > 0 && (
+      <Link
+        className="armyText relative"
+        id="cart"
+        href={`/cart`}
+        data-cy={'test-cart'}
+      >
+        {cart?.products && (
           <span className="absolute flex justify-center items-center w-[20px] h-[20px] bg-[var(--testColor)] -top-2 -right-2 rounded-[50%]">
             <Text c={'white'} m={0} p={0} h={20}>
               {cart?.products?.length}
@@ -46,11 +56,9 @@ const NavbarCart = ({
   );
 };
 
-export const Navbar = () => {
-  const path = usePathname();
+export const Navbar = ({ user, path }: NavbarType) => {
   const sliderRef = useRef(null);
-  const authState = useSelector(selectAuthState);
-  const [user, setUser] = useState<UserMetadata | null>();
+
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
 
   const onMouseEnter = (e: React.MouseEvent) => {
@@ -77,7 +85,6 @@ export const Navbar = () => {
       (sliderRef.current as HTMLElement).removeAttribute('style');
     }
   };
-
   const navChangeOnPath = useRef((path: string) => {
     const translateMap = {
       Electronics: '360px 0px',
@@ -89,11 +96,125 @@ export const Navbar = () => {
     var translate = path.split('/').reduce((acc, seg) => {
       return (translateMap as Record<string, string>)[seg] || acc;
     }, translateMap['default']);
-    
+
     if (sliderRef.current && translate) {
       (sliderRef.current as HTMLElement).style.translate = translate;
     }
   });
+  useEffect(() => {
+    navChangeOnPath.current(path);
+  }, [path]);
+
+  return (
+    <motion.nav className="navbar-wrapper">
+      <div className="navbar-container relative z-[2]">
+        <div className="navbar-items" data-cy={'test-nav-items'}>
+          <Buttons
+            type={path === '/'}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <Link className="armyText" id="home" href="/">
+              Home
+            </Link>
+          </Buttons>
+          <Buttons
+            type={path === '/Men'}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <Link id="men" className="armyText" href="/Category/Men">
+              Men
+            </Link>
+          </Buttons>
+          <Buttons
+            type={path === '/Women'}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <Link className="armyText" id="women" href="/Category/Women">
+              Women
+            </Link>
+          </Buttons>
+          <Buttons
+            type={path === '/Kids'}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <Link className="armyText" id="kids" href="/Category/Kids">
+              Kids
+            </Link>
+          </Buttons>
+          <Buttons
+            type={path === '/Electronics'}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            <Link
+              className="armyText"
+              id="electronics"
+              href="/Category/Electronics"
+            >
+              Electronics
+            </Link>
+          </Buttons>
+          <span className="navbar-item-slider" ref={sliderRef} />
+        </div>
+        <Logo />
+        <div className="flex">
+          <div className="flex items-center justify-center">
+            <div className="py-[4px] px-[10px]">
+              <IconSearch
+                size={30}
+                color="black"
+                cursor={'pointer'}
+                onClick={() => setSearchToggle(!searchToggle)}
+                data-cy={'test-search'}
+              />
+            </div>
+          </div>
+          {user ? (
+            <>
+              <NavbarCart
+                path={path}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                user={user}
+              />
+              <Account user={user} />
+            </>
+          ) : (
+            <LoginSignUp />
+          )}
+        </div>
+      </div>
+      <motion.div
+        className="z-[1] relative shadow-xl"
+        initial={{
+          translateY: '-100%',
+        }}
+        transition={{ type: 'tween' }}
+        animate={
+          searchToggle
+            ? {
+                translateY: '0%',
+              }
+            : {
+                translateY: '-100%',
+              }
+        }
+        data-cy={'test-search-input'}
+      >
+        <TextInput placeholder="Search for products" height={50} radius={0} />
+      </motion.div>
+    </motion.nav>
+  );
+};
+
+export const NavbarComponent = () => {
+  const path = usePathname();
+  const authState = useSelector(selectAuthState);
+  const [user, setUser] = useState<UserMetadata | null>();
 
   useEffect(() => {
     const getUser = async () => {
@@ -103,112 +224,5 @@ export const Navbar = () => {
     getUser();
   }, [authState]);
 
-  useEffect(() => {
-    navChangeOnPath.current(path);
-  }, [path]);
-
-  return (
-    <>
-      <motion.nav className="navbar-wrapper">
-        <div className="navbar-container relative z-[2]">
-          <div className="navbar-items">
-            <Buttons
-              type={path === '/'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
-              <Link className="armyText" id="home" href="/">
-                Home
-              </Link>
-            </Buttons>
-            <Buttons
-              type={path === '/Men'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
-              <Link id="men" className="armyText" href="/Category/Men">
-                Men
-              </Link>
-            </Buttons>
-            <Buttons
-              type={path === '/Women'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
-              <Link className="armyText" id="women" href="/Category/Women">
-                Women
-              </Link>
-            </Buttons>
-            <Buttons
-              type={path === '/Kids'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
-              <Link className="armyText" id="kids" href="/Category/Kids">
-                Kids
-              </Link>
-            </Buttons>
-            <Buttons
-              type={path === '/Electronics'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
-              <Link
-                className="armyText"
-                id="electronics"
-                href="/Category/Electronics"
-              >
-                Electronics
-              </Link>
-            </Buttons>
-            <span className="navbar-item-slider" ref={sliderRef} />
-          </div>
-          <Logo />
-          <div className="flex">
-            <div className="flex items-center justify-center">
-              <div className="py-[4px] px-[10px]">
-                <IconSearch
-                  size={30}
-                  color="black"
-                  cursor={'pointer'}
-                  onClick={() => setSearchToggle(!searchToggle)}
-                />
-              </div>
-            </div>
-            {user ? (
-              <>
-                <NavbarCart
-                  path={path}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                  user={user}
-                />
-                <Account user={user} />
-              </>
-            ) : (
-              <LoginSignUp />
-            )}
-          </div>
-        </div>
-        <motion.div
-          className="z-[1] relative shadow-xl"
-          initial={{
-            translateY: '-100%',
-          }}
-          transition={{ type: 'tween' }}
-          animate={
-            searchToggle
-              ? {
-                  translateY: '0%',
-                }
-              : {
-                  translateY: '-100%',
-                }
-          }
-        >
-          <TextInput placeholder="Search for products" height={50} radius={0} />
-        </motion.div>
-      </motion.nav>
-    </>
-  );
+  return <Navbar path={path} user={user} />;
 };

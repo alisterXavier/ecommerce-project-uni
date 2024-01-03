@@ -65,13 +65,14 @@ const Small = ({ product, id }: SmallProps) => {
   };
   return (
     <div
-      className="small-product-container"
+      className="small-product-container image-transition"
       onClick={() => {
         handleClick();
       }}
+      data-cy="test-small-product-card"
     >
       <div
-        className="border-transparent border  hover:border-black cursor-pointer"
+        className="border-transparent border hover:border-black cursor-pointer"
         style={{
           width: '270px',
           height: '450px',
@@ -82,6 +83,7 @@ const Small = ({ product, id }: SmallProps) => {
         }}
       >
         <figure
+          className=''
           style={{
             width: '250px',
             height: 360,

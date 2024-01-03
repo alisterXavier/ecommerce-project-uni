@@ -4,7 +4,6 @@ import { Combobox, useCombobox } from '@mantine/core';
 import { IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/shared/supabaseConfig';
 import { UserMetadata } from '@supabase/supabase-js';
 
@@ -18,7 +17,7 @@ interface IButton {
 
 export const Logo = () => {
   return (
-    <div className="navbar-item ml-auto mr-auto">
+    <div className="navbar-item ml-auto mr-auto" data-cy={'test-logo'}>
       <a href="/" className="navbar-item-header armyText">
         Store
       </a>
@@ -57,14 +56,13 @@ export const Account = ({ user }: { user: UserMetadata }) => {
       url: '',
     },
   ];
-  const router = useRouter();
+  // const router = useRouter();
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
   const signOut = async () => {
     if (supabase) await supabase.auth.signOut();
-    router.refresh();
   };
 
   const options = combOptions.map((item, index) => (
@@ -75,13 +73,17 @@ export const Account = ({ user }: { user: UserMetadata }) => {
       onClick={() => {
         if (item.name === 'Sign Out') signOut();
       }}
+      data-cy={'test-user-options-item'}
     >
       {item.name === 'signOut' ? <p>{item.name}</p> : <p>{item.name}</p>}
     </Combobox.Option>
   ));
 
   return (
-    <div className="navbar-item navbar-right-item navbar-item-account w-[400px]">
+    <div
+      className="navbar-item navbar-right-item navbar-item-account w-[400px]"
+      data-cy={'test-user'}
+    >
       <Combobox
         variant=""
         width={'200px'}
@@ -103,7 +105,7 @@ export const Account = ({ user }: { user: UserMetadata }) => {
           </figure>
         </Combobox.Target>
 
-        <Combobox.Dropdown w={'200px'}>
+        <Combobox.Dropdown w={'200px'} data-cy={'test-user-options'}>
           <Combobox.Options w={'200px'}>{options}</Combobox.Options>
         </Combobox.Dropdown>
       </Combobox>
@@ -113,7 +115,7 @@ export const Account = ({ user }: { user: UserMetadata }) => {
 
 export const LoginSignUp = () => {
   return (
-    <div className="navbar-item navbar-item-account">
+    <div className="navbar-item navbar-item-account" data-cy={'test-nav-items'}>
       <a href="/Login">Login</a>
     </div>
   );

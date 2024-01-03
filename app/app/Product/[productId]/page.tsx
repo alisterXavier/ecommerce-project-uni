@@ -13,15 +13,13 @@ import { useEffect, useState } from 'react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 const SingleProduct = ({ params }: { params: { productId: string } }) => {
-  const router = useRouter();
   const user = useSelector(selectAuthState);
   const { data, productIsLoading, productError } = useProduct(params.productId);
-  const { cart, isLoading, error, updateCart } = useCustomerCart(
-    user?.data.user?.id
-  );
+  const { updateCart } = useCustomerCart(user?.data.user?.id);
   const [selectedImage, setSelectedImage] = useState<
     string | null | StaticImport
   >(null);
+  console.log(data)
   // const { data: products, productIsLoading, productError} = useProducts()
 
   const similarProducts = products.map((product, index) => (
@@ -38,7 +36,6 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
 
   useEffect(() => {
     if (data && data.productImages) setSelectedImage(data?.productImages?.[0]);
-    return;
   }, [data]);
 
   return (
@@ -68,68 +65,10 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
                       fill
                       quality={100}
                       objectFit="contain"
+                      data-cy="test-product-image"
                     />
                   </figure>
                 )}
-                <div className="flex w-fit h-fit">
-                  {data.productImages?.map((item, index) => {
-                    return (
-                      <figure
-                        key={index}
-                        className="relative mx-1 w-[90px] h-fit p-1 border-4 rounded  border-[var(--testColor)]"
-                      >
-                        <Image
-                          alt=""
-                          src={
-                            data && data.productImages
-                              ? data.productImages[0]
-                              : ''
-                          }
-                          width={100}
-                          height={100}
-                          quality={100}
-                          objectFit="contain"
-                        />
-                      </figure>
-                    );
-                  })}
-                  <figure className="relative w-[90px] mx-1 h-fit p-1 border-4 rounded  border-[var(--testColor)]">
-                    <Image
-                      alt=""
-                      src={
-                        data && data.productImages ? data.productImages[0] : ''
-                      }
-                      width={100}
-                      height={100}
-                      quality={100}
-                      objectFit="contain"
-                    />
-                  </figure>
-                  <figure className="relative w-[90px] mx-1 h-fit p-1 border-4 rounded  border-[var(--testColor)]">
-                    <Image
-                      alt=""
-                      src={
-                        data && data.productImages ? data.productImages[0] : ''
-                      }
-                      width={100}
-                      height={100}
-                      quality={100}
-                      objectFit="contain"
-                    />
-                  </figure>
-                  <figure className="relative w-[90px] mx-1 h-fit p-1 border-4 rounded  border-[var(--testColor)]">
-                    <Image
-                      alt=""
-                      src={
-                        data && data.productImages ? data.productImages[0] : ''
-                      }
-                      width={100}
-                      height={100}
-                      quality={100}
-                      objectFit="contain"
-                    />
-                  </figure>
-                </div>
               </>
             )}
           </div>
@@ -142,8 +81,8 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
             </>
           ) : (
             <>
-              <h1 className="text-[30px] my-5 underline">{data.productName}</h1>
-              <p className="">{data.description}</p>
+              <h1 className="text-[30px] my-5 underline" data-cy="test-product-name">{data.productName}</h1>
+              <p className="" data-cy="test-product-description">{data.description}</p>
             </>
           )}
           <div className="my-10 flex justify-between items-center">
@@ -154,10 +93,11 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
               </>
             ) : (
               <>
-                <p className="price">${data.price}</p>
+                <p className="price" data-cy="test-product-price">${data.price}</p>
                 <button
                   className="add-to-cart-button"
                   onClick={() => addToCart()}
+                  data-cy="test-add-product"
                 >
                   <p>Add to cart</p>
                 </button>

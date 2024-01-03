@@ -39,13 +39,18 @@ app.patch('/cart', async (req, res) => {
           total: total ?? 0,
         },
         { ignoreDuplicates: false }
-      )
-      .select().single();
+      );
+
+    const { data } = await supabase
+      .from('Carts')
+      .select('id, customerId, products: Carts_Products(...Products(*)), total')
+      .eq('customerId', customerId).single()
+      
     if (CartError) {
       return res.status(400).json({ error: CartError.message });
     }
 
-    return res.status(200).json({ data: cartData });
+    return res.status(200).json({ data: data });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -84,8 +89,9 @@ app.get('/cart/:id', async (req, res) => {
     const { data, error } = await supabase
       .from('Carts')
       .select('id, customerId, products: Carts_Products(...Products(*)), total')
-      .eq('customerId', id).single();
-      
+      .eq('customerId', id)
+      .single();
+
     if (error) {
       return res.status(400).json({ error: error.message });
     }

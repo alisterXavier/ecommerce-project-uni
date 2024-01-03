@@ -11,6 +11,8 @@ import { IconTrash } from '@tabler/icons-react';
 import { components } from '@/shared/types/api';
 import { useCounter } from '@mantine/hooks';
 import { TableBody } from '@mui/material';
+import { UserMetadata } from '@supabase/supabase-js';
+import { CartResponse, ProductsResponse } from '@/shared/types/responseTypes';
 
 // const BasketItem = (data: { data: components['schemas']['Products'] }) => {
 //   const product = data.data;
@@ -98,55 +100,64 @@ import { TableBody } from '@mui/material';
 //   );
 // };
 
-const BasketItem = ({
+const CartItem = ({
   data,
   index,
+  removeItem,
 }: {
   data: components['schemas']['Products'];
   index: number;
+  removeItem: (product: components['schemas']['Products']) => void;
 }) => {
   const product = data;
   const [count, handler] = useCounter(0, { min: 0, max: 10 });
-
   return (
     <Table.Tr
       key={`wrapper ${product.id + index}`}
-      className="image-transition cursor-pointer"
+      className="cursor-pointer image-transition"
     >
       <Table.Td>
         <div className="relative flex items-center">
-          {product.productImages.map((image, index) => {
-            return (
-              <figure
-                key={image + index}
-                className={`relative w-[100px] h-[100px]`}
-              >
+          <figure className={`relative w-[100px] h-[100px]`}>
+            {product?.productImages.map((image, index) => {
+              return (
                 <Image
+                  data-cy={`test-cart-item-image-${product.id}`}
                   key={index}
-                  className={``}
-                  alt="asdsad"
+                  alt={product.productName}
+                  className={`transition-all duration-200 ${
+                    index === 1 && 'hover:opacity-0'
+                  }`}
                   src={image}
                   fill
                   quality={100}
                   objectFit="contain"
                 />
-              </figure>
-            );
-          })}
-          <h1 className="small-product-title w-[500px] !h-[20px] ml-3 text-[15px]">
+              );
+            })}
+          </figure>
+          <h1
+            className="small-product-title w-[500px] !h-[20px] ml-3 text-[15px]"
+            data-cy={`test-cart-item-title-${product.id}`}
+          >
             {product.productName}
           </h1>
         </div>
       </Table.Td>
       <Table.Td>
         <div className="flex justify-center items-center">
-          <p className="text-[var(--testColor)] p-1">
+          <p
+            className="text-[var(--testColor)] p-1"
+            data-cy={`test-cart-item-discount-${product.id}`}
+          >
             {product.discount > 0 ? `-${product.discount}%` : ''}
           </p>
         </div>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
-        ${calculateDiscountedPrice(product.price, product.discount)}
+        <p data-cy={`test-cart-item-price-${product.id}`}>
+          ${calculateDiscountedPrice(product.price, product.discount)}
+        </p>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
         <div className="flex items-center justify-center my-1">
@@ -160,6 +171,7 @@ const BasketItem = ({
               bg={'transparent'}
               color="var(--testColor)"
               onClick={handler.decrement}
+              data-cy={`test-cart-item-decrement-${product.id}`}
             >
               -
             </Button>
@@ -168,6 +180,7 @@ const BasketItem = ({
               w={30}
               h={30}
               className="flex items-center justify-center"
+              data-cy={`test-cart-item-qty-${product.id}`}
             >
               {count}
             </Text>
@@ -180,6 +193,7 @@ const BasketItem = ({
               bg={'transparent'}
               color="var(--testColor)"
               onClick={handler.increment}
+              data-cy={`test-cart-item-increment-${product.id}`}
             >
               +
             </Button>
@@ -187,7 +201,12 @@ const BasketItem = ({
         </div>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
-        <Button variant="transparent" color="red">
+        <Button
+          variant="transparent"
+          color="red"
+          onClick={() => removeItem(data)}
+          data-cy={`test-cart-item-remove-${product.id}`}
+        >
           <IconTrash />
         </Button>
       </Table.Td>
@@ -195,11 +214,17 @@ const BasketItem = ({
   );
 };
 
-const Basket = () => {
-  const user = useSelector(selectAuthState);
-  const { cart, isLoading, error, updateCart } = useCustomerCart(
-    user?.data.user?.id ?? undefined
-  );
+type CartType = {
+  user: UserMetadata | null;
+  cart: components['schemas']['Carts'] | undefined;
+  updateCart: {
+    removeCartItem: (product: components['schemas']['Products']) => void;
+    addCartItem: (product: components['schemas']['Products']) => void;
+  };
+  isLoading: boolean;
+};
+
+export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
   const items = () => (
     <Table>
       <Table.Thead>
@@ -222,7 +247,11 @@ const Basket = () => {
       <TableBody>
         {cart?.products?.map((item, index) => (
           <>
-            <BasketItem index={index} data={item} />
+            <CartItem
+              index={index}
+              data={item}
+              removeItem={updateCart.removeCartItem}
+            />
           </>
         ))}
       </TableBody>
@@ -239,31 +268,43 @@ const Basket = () => {
           <>
             <div className="basket-wrapper w-[70%] pr-4">
               <div className="basket-container relative">
-                {!isLoading ? (
+                {!isLoading && cart && cart.products.length > 0 ? (
                   items()
                 ) : !cart ? (
                   <></>
                 ) : (
-                  <p>Add items to your cart</p>
+                  <p data-cy="test-add-cart-items">Add items to your cart.</p>
                 )}
               </div>
             </div>
-            <div className="checkout w-[30%] sticky top-[var(--nav-height)] h-fit p-5">
+            <div
+              className="checkout w-[30%] sticky top-[var(--nav-height)] h-fit p-5"
+              data-cy="test-checkout"
+            >
               <div className="w-full">
                 {/* <h1 className="uppercase">Checkout</h1> */}
                 {cart ? (
                   <>
                     <p className=" text-[18px] my-0 flex items-center uppercase">
                       Selected items
-                      <span className={'ml-1 text-[var(--testColor)]'}>
+                      <span
+                        className={'ml-1 text-[var(--testColor)]'}
+                        data-cy="test-selected-items"
+                      >
                         ({cart?.products?.length})
                       </span>
                     </p>
                     <div className="flex">
                       <p>Total:</p>
-                      <p className="ml-1">${cart.total}</p>
+                      <p className="ml-1" data-cy="test-total">
+                        ${cart.total}
+                      </p>
                     </div>
-                    <Button w={'100%'} variant="light" color={'black'}>
+                    <Button
+                      w={'100%'}
+                      variant="light"
+                      color={'var(--testColor)'}
+                    >
                       <a href={user ? '#' : '/Login'}>Pay</a>
                     </Button>
                   </>
@@ -274,11 +315,35 @@ const Basket = () => {
             </div>
           </>
         ) : (
-          <></>
+          <div className="mt-5">
+            <Button
+              variant="light"
+              color="var(--testColor)"
+              data-cy={'test-login-btn'}
+            >
+              <a href="/Login">Log in</a>
+            </Button>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default Basket;
+const CartComponent = () => {
+  const user = useSelector(selectAuthState);
+  const { cart, isLoading, error, updateCart } = useCustomerCart(
+    user?.data.user?.id ?? undefined
+  );
+
+  return (
+    <Cart
+      user={user}
+      cart={cart}
+      updateCart={updateCart}
+      isLoading={isLoading}
+    />
+  );
+};
+
+export default CartComponent;

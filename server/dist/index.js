@@ -39932,11 +39932,12 @@ app.patch("/cart", async (req, res) => {
         total: total ?? 0
       },
       { ignoreDuplicates: false }
-    ).select().single();
+    );
+    const { data } = await supabase.from("Carts").select("id, customerId, products: Carts_Products(...Products(*)), total").eq("customerId", customerId).single();
     if (CartError) {
       return res.status(400).json({ error: CartError.message });
     }
-    return res.status(200).json({ data: cartData });
+    return res.status(200).json({ data });
   } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

@@ -28,13 +28,15 @@ export const useCustomerCart = (id?: string) => {
       total: total,
     };
     const res = await requests.useUpdateCartByCartId(cartData);
-    mutate(res);
+    mutate(await res);
   };
 
-  const removeCartItem = async (product: components['schemas']['Products']) => {
+  const removeCartItem = async (product: components['schemas']['Products'] ) => {
     const total =
-      (cart?.data.total ?? 0) -
-      parseFloat(calculateDiscountedPrice(product.price, product.discount));
+      cart?.data.products.length > 0
+        ? (cart?.data.total ?? 0) -
+          parseFloat(calculateDiscountedPrice(product.price, product.discount))
+        : 0;
 
     const productList: string[] =
       cart?.data.products
@@ -47,7 +49,8 @@ export const useCustomerCart = (id?: string) => {
       products: productList,
       total: total,
     };
-    const res = requests.useUpdateCartByCartId(cartData);
+    const res = await requests.useUpdateCartByCartId(cartData);
+    mutate(await res);
   };
 
   const cartHasData = cart && cart.data;

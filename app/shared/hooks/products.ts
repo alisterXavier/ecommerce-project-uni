@@ -29,7 +29,11 @@ export const useProducts = (parameters: useProductsProps) => {
 
   useEffect(() => {
     if (!productsIsLoading) {
-      if (productsError || !productsGetData) throw new Error(productsError);
+      if (productsError || !productsGetData)
+        console.log(
+          '🚀 ~ file: products.ts:36 ~ useEffect ~ productsError:',
+          productsError
+        );
       else if (productsGetData.data.length === 0) setData(null);
       else setData(productsGetData);
     }

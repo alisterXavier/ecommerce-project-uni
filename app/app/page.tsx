@@ -23,13 +23,7 @@ import 'swiper/css/pagination';
 import { useRouter } from 'next/navigation';
 import Masonry from '@mui/lab/Masonry';
 
-const MainSection = () => {
-  const router = useRouter();
-
-  const handleClick = (url: string) => {
-    // router.push(url);
-  };
-
+export const MainSection = () => {
   const HeaderCarousel = () => (
     <Swiper
       className="large-carousel"
@@ -54,7 +48,7 @@ const MainSection = () => {
                   Explore Men's Fashion
                 </h1>
                 <button className="shop-now-btn">
-                  <p onClick={() => handleClick('/Category/Men')}>Explore</p>
+                  <a href="/Category/Men">Explore</a>
                 </button>
               </div>
             </div>
@@ -88,7 +82,7 @@ const MainSection = () => {
                   Fresh new start
                 </h1>
                 <button className="shop-now-btn mr-1">
-                  <p onClick={() => handleClick('/Category/Womens')}>Start</p>
+                  <a href="/Category/Womens">Start</a>
                 </button>
               </div>
             </div>
@@ -107,12 +101,9 @@ const MainSection = () => {
                   </h1>
                 </div>
                 <button className="large-carousel-btn mr-1">
-                  <p
-                    onClick={() => handleClick('/Category/Electronics')}
-                    className="text-white"
-                  >
+                  <a href="/Category/Electronics" className="text-white">
                     Discover
-                  </p>
+                  </a>
                 </button>
               </div>
             </div>
@@ -192,12 +183,12 @@ const MainSection = () => {
   const Section3 = () => {
     return (
       <div className="bg-[var(--testColor)] flex justify-center items-center w-full h-full">
-        <div className='w-[50%] h-full '>
+        <div className="w-[50%] h-full ">
           <figure className="relative w-[60%] h-[60%]">
             <Image src={image6} alt="image" fill />
           </figure>
         </div>
-        <div className='w-[50%] h-full'>
+        <div className="w-[50%] h-full">
           <figure className="relative w-[60%] h-[70%]">
             <Image src={image7} alt="image" layout="fill" />
           </figure>
