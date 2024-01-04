@@ -14,8 +14,6 @@ workflows:
             app/.* run-tests true
           base-revision: main2.0
           config-path: .circleci/frontend_config.yml
-  to-kill-a-mockingbird:
-    jobs:
       - path-filtering/filter:
           name: Check for updates in server
           mapping: |
