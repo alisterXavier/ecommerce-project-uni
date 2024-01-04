@@ -62,16 +62,16 @@ jobs:
           command: git push origin main2.0-dev:main2.0
 
 workflows:
-  when: << pipeline.parameter.run-tests >>
   the-great-gatsby:
+    when: << pipeline.parameter.run-tests >>
     jobs:
       - publish-to-production
-      # - path-filtering/filter:
-      #     name: Check for updates in server
-      #     mapping: |
-      #       server/.* run-create-image-and-publish true
-      #     base-revision: main2.0
-      #     config-path: .circleci/server_config.yml
+      - path-filtering/filter:
+          name: Check for updates in server
+          mapping: |
+            server/.* run-create-image-and-publish true
+          base-revision: main2.0
+          config-path: .circleci/server_config.yml
       # - component-and-e2e-tests:
       #     filters:
       #       branches:

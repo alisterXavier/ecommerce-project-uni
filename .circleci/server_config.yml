@@ -24,8 +24,8 @@ jobs:
           command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
 
 workflows:
-  when: << pipeline.parameter.run-create-image-and-publish >>
   the-great-depression:
+    when: << pipeline.parameter.run-create-image-and-publish >>
     jobs:
       - create-docker-image-and-publish-to-dockerhub:
           filters:
