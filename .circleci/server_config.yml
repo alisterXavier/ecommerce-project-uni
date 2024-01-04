@@ -25,7 +25,7 @@ jobs:
 
 workflows:
   the-great-depression:
-    when: << pipeline.parameter.run-create-image-and-publish >>
+    when: << pipeline.parameters.run-create-image-and-publish >>
     jobs:
       - create-docker-image-and-publish-to-dockerhub:
           filters:

@@ -63,7 +63,7 @@ jobs:
 
 workflows:
   the-great-gatsby:
-    when: << pipeline.parameter.run-tests >>
+    when: << pipeline.parameters.run-tests >>
     jobs:
       - publish-to-production
       - path-filtering/filter:
