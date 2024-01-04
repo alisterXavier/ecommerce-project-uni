@@ -11,6 +11,6 @@ workflows:
       - path-filtering/filter:
           name: Check for updates in frontend
           mapping: |
-            app/.* run-tests true .circleci/frontend_config.yml
-            server/.* run-create-image-and-publish true .circleci/server_config.yml
+            app/.* run-tests true
           base-revision: main2.0
+          config-path: .circleci/frontend_config.yml

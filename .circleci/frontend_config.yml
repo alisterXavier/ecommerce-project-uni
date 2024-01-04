@@ -7,6 +7,7 @@ parameters:
 
 orbs:
   cypress: cypress-io/cypress@3
+  path-filtering: circleci/path-filtering@0.1.1
 
 jobs:
   component-and-e2e-tests:
@@ -63,10 +64,16 @@ workflows:
   the-great-gatsby:
     jobs:
       - publish-to-production
+      - path-filtering/filter:
+          name: Check for updates in server
+          mapping: |
+            server/.* run-create-image-and-publish true
+          base-revision: main2.0
+          config-path: .circleci/server_config.yml
       # - component-and-e2e-tests:
       #     filters:
       #       branches:
       #         only:
       #           - main2.0-dev
-          # require:
-          #   - component-and-e2e-tests
+      # require:
+      #   - component-and-e2e-tests
