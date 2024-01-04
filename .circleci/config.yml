@@ -73,6 +73,9 @@ jobs:
       - cypress/run-tests:
           cypress-command: 'cd ./app && npx cypress run --component'
 
+      - store_artifacts:
+          path: ./app/cypress/screenshots
+
       - run:
           name: Run app
           command: 'npm start'
