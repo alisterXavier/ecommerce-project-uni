@@ -62,7 +62,7 @@ workflows:
   when: << pipeline.parameter.run-tests >>
   the-great-gatsby:
     jobs:
-      - publish-to-production:
+      - publish-to-production
       # - component-and-e2e-tests:
       #     filters:
       #       branches:
