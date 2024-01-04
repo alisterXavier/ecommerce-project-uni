@@ -11,6 +11,7 @@ import { selectAuthState } from '@/shared/redux/authSlice';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { calculateDiscountedPrice } from '@/shared/helpers/utils';
 
 const SingleProduct = ({ params }: { params: { productId: string } }) => {
   const user = useSelector(selectAuthState);
@@ -19,7 +20,7 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
   const [selectedImage, setSelectedImage] = useState<
     string | null | StaticImport
   >(null);
-  console.log(data)
+
   // const { data: products, productIsLoading, productError} = useProducts()
 
   const similarProducts = products.map((product, index) => (
@@ -41,15 +42,25 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
   return (
     <main className="relative w-screen bg-white p-5">
       <div className="flex items-end h-[25px]">
-        <h2 className="m-0 h-[25px]">HOME</h2>
+        <h2 className="m-0 h-[25px] text-[var(--testColor)]">
+          <a href="/">HOME</a>
+        </h2>
         <div className="h-[23px]">
           <IconChevronRight />
         </div>
-        {/* <h2 className="m-0 uppercase h-[25px]">{params.category}</h2> */}
+        <h2 className="m-0 uppercase h-[25px] text-[var(--testColor)]">
+          <a href={`/Category/${data.category}`}>{data.category}</a>
+        </h2>
+        <div className="h-[23px]">
+          <IconChevronRight />
+        </div>
+        <h2 className="m-0 uppercase h-[25px] text-[var(--testColor)]">
+          {data.productName}
+        </h2>
       </div>
       <div className="main-header flex flex-wrap justify-center items-center">
         <div className="w-[500px] h-[80%] border-solid border-gray-300 border-r mr-10 flex justify-center items-center">
-          <div className="relative flex flex-col items-center w-[100%] h-[100%]">
+          <div className="relative flex flex-col items-center justify-end w-[100%] h-[100%]">
             {productIsLoading || productError || !data ? (
               <>
                 <SkeletonContainer w={270} h={220} repeat={1} mb={5} />
@@ -57,18 +68,45 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
               </>
             ) : (
               <>
-                {selectedImage && (
-                  <figure className="relative w-[100%] h-[300px] my-5">
-                    <Image
-                      alt=""
-                      src={selectedImage}
-                      fill
-                      quality={100}
-                      objectFit="contain"
-                      data-cy="test-product-image"
-                    />
-                  </figure>
-                )}
+                <div className="w-full h-[450px]">
+                  {selectedImage && (
+                    <figure className="relative w-[100%] h-full my-5">
+                      <Image
+                        alt=""
+                        src={selectedImage}
+                        fill
+                        quality={100}
+                        objectFit="contain"
+                        data-cy="test-product-image"
+                      />
+                    </figure>
+                  )}
+                </div>
+                <div className="w-fit h-[100px] flex my-5">
+                  {data.productImages?.map((item) => {
+                    return (
+                      <figure
+                        key={item}
+                        className={`relative w-[68px] h-full mt-5 m-1 cursor-pointer`}
+                        onClick={() => setSelectedImage(item)}
+                      >
+                        <Image
+                          className={`border-2 ${
+                            selectedImage === item
+                              ? 'border-[var(--testColor)]'
+                              : 'border-transparent'
+                          }`}
+                          alt=""
+                          src={item}
+                          fill
+                          quality={100}
+                          objectFit="contain"
+                          data-cy="test-product-image"
+                        />
+                      </figure>
+                    );
+                  })}
+                </div>
               </>
             )}
           </div>
@@ -81,8 +119,15 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
             </>
           ) : (
             <>
-              <h1 className="text-[30px] my-5 underline" data-cy="test-product-name">{data.productName}</h1>
-              <p className="" data-cy="test-product-description">{data.description}</p>
+              <h1
+                className="text-[30px] my-5 underline"
+                data-cy="test-product-name"
+              >
+                {data.productName}
+              </h1>
+              <p className="" data-cy="test-product-description">
+                {data.description}
+              </p>
             </>
           )}
           <div className="my-10 flex justify-between items-center">
@@ -93,7 +138,25 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
               </>
             ) : (
               <>
-                <p className="price" data-cy="test-product-price">${data.price}</p>
+                <div className="flex items-center">
+                  <p
+                    className="small-product-price"
+                    style={{
+                      color: 'black',
+                      fontSize: 24,
+                    }}
+                  >
+                    ${calculateDiscountedPrice(data.price, data.discount)}
+                  </p>
+                  {data.discount && data.discount > 0 ? (
+                    <div className="relative ml-2 flex flex-col justify-center items-center h-[15px]">
+                      <span className="w-[1.5px] h-[35px] absolute bg-[var(--testColor)] rotate-[110deg]" />
+                      <p className={`discount m-0`}>${data.price}</p>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <button
                   className="add-to-cart-button"
                   onClick={() => addToCart()}

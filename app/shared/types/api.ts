@@ -144,7 +144,7 @@ export interface components {
       discount: number;
     };
     Customers: {
-      id?: string;
+      id: string;
       created_at?: string;
       displayName?: string;
       cart?: string[];
@@ -152,17 +152,17 @@ export interface components {
       email?: string;
     };
     Carts: {
-      id?: string;
-      customerId?: string;
+      id: string;
+      customerId: string;
       products: components["schemas"]["Products"][];
       created_at?: string;
-      total?: number;
+      total: number;
     };
     Orders: {
-      id?: string;
-      userId?: string;
-      products?: string[];
-      total?: Record<string, never>;
+      id: string;
+      userId: string;
+      products: string[];
+      total: Record<string, never>;
       created_at?: string;
     };
   };

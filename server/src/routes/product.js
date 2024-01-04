@@ -5,45 +5,6 @@ import dayjs from 'dayjs';
 
 const app = express();
 
-// Fetching Men's Products
-// app.get('/men-products', async (req, res) => {
-//   try {
-//     const { data, error } = await supabase.from('men_products').select('*');
-//     if (error) {
-//       return res.status(500).json({ error: error.message });
-//     }
-//     return res.status(200).json(data);
-//   } catch (error) {
-//     return res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
-// Fetching Women's Products
-// app.get('/women-products', async (req, res) => {
-//   try {
-//     const { data, error } = await supabase.from('women_products').select('*');
-//     if (error) {
-//       return res.status(500).json({ error: error.message });
-//     }
-//     return res.status(200).json(data);
-//   } catch (error) {
-//     return res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
-// Fetching Jewelry Products
-// app.get('/jewelry-products', async (req, res) => {
-//   try {
-//     const { data, error } = await supabase.from('jewelry_products').select('*');
-//     if (error) {
-//       return res.status(500).json({ error: error.message });
-//     }
-//     return res.status(200).json(data);
-//   } catch (error) {
-//     return res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
 app.get('/products/:category', async (req, res) => {
   const { category } = req.params;
   const { filter } = req.query;
@@ -54,10 +15,10 @@ app.get('/products/:category', async (req, res) => {
     .select()
     .eq('type', category);
 
+      
   if (categoryList && categoryList.length > 0) {
     try {
-      let data, error;
-
+      let data, error;  
       switch (category) {
         case 'new': {
           let { data: newArrival, error: newArrivalError } = await supabase
@@ -102,7 +63,7 @@ app.get('/products/:category', async (req, res) => {
   } else return res.status(400).json({ error: 'Category does not exist' });
 });
 
-//endpoint for a specific product
+//endpoint for a single product
 app.get('/product/:productId', async (req, res) => {
   const { productId } = req.params;
 

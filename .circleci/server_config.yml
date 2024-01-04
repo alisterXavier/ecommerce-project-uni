@@ -1,0 +1,35 @@
+version: 2.1
+
+parameters:
+  run-create-image-and-publish:
+    type: boolean
+    default: false
+
+jobs:
+  create-docker-image-and-publish-to-dockerhub:
+    docker:
+      - image: docker:20.10.11
+    steps:
+      - setup_remote_docker
+      - checkout
+
+      - run:
+          name: Build docker image
+          command: |
+            cd ./server
+            docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+
+      - run:
+          name: Push to docker hub
+          command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+
+workflows:
+  when: << pipeline.parameter.run-create-image-and-publish >>
+  the-great-depression:
+    jobs:
+      - create-docker-image-and-publish-to-dockerhub:
+          filters:
+            branches:
+              only:
+                - main2.0-dev
+      -

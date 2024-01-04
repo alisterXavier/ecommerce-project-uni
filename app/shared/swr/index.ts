@@ -47,7 +47,7 @@ function queries(requests: Requests) {
     useGetProductByProductId: (
       id: string
     ): SWRResponse<SingleProductResponse> => {
-      return useSwr(['useGetProductByProductId'], () =>
+      return useSwr(['useGetProductByProductId'+id], () =>
         requests.useGetProductByProductId(id)
       );
     },

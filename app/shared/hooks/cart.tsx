@@ -1,10 +1,10 @@
 'use client';
 import { useSwrInstance } from '../swr/swrInit';
 import { useEffect, useState } from 'react';
-import { CartResponse, ProductsResponse } from '../types/responseTypes';
+import { CartResponse } from '../types/responseTypes';
 import { components } from '../types/api';
 import { calculateDiscountedPrice } from '../helpers/utils';
-import { arraysEqual, objectsEqual } from '../helpers/debounce';
+import { arraysEqual } from '../helpers/debounce';
 import { CartUpdate } from '../types/requestTypes';
 
 export const useCustomerCart = (id?: string) => {
@@ -31,9 +31,9 @@ export const useCustomerCart = (id?: string) => {
     mutate(await res);
   };
 
-  const removeCartItem = async (product: components['schemas']['Products'] ) => {
+  const removeCartItem = async (product: components['schemas']['Products']) => {
     const total =
-      cart?.data.products.length > 0
+      cart && cart.data.products.length > 0
         ? (cart?.data.total ?? 0) -
           parseFloat(calculateDiscountedPrice(product.price, product.discount))
         : 0;

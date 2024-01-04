@@ -2,13 +2,7 @@
 
 const urls = [
   'media.boohoo.com',
-  'm.media-amazon.com',
-  'cdn-images.farfetch-contents.com',
-  'lh3.googleusercontent.com',
-  'kujowares.com',
-  'i.ebayimg.com',
-  'img.kwcdn.com',
-  'images.asos-media.com',
+  'lp2.hm.com'
 ];
 
 const nextConfig = {

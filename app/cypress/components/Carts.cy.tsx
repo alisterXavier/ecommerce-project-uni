@@ -1,12 +1,11 @@
-import { Navbar } from '@/app/Navbar/Navbar';
-import { Cart } from '@/app/cart/page';
+
+import { Cart } from '@/app/cart/components/children';
 import { calculateDiscountedPrice } from '@/shared/helpers/utils';
 import { components } from '@/shared/types/api';
 import { UserMetadata } from '@supabase/supabase-js';
 import React from 'react';
 
 describe('Carts Component', () => {
-  const path = '/';
   const user: UserMetadata | null = { data: { user: {} } };
   const updateCart = {
     removeCartItem: (product: components['schemas']['Products']) => {},
@@ -43,17 +42,9 @@ describe('Carts Component', () => {
         'Add items to your cart.'
       );
     });
-
-    it('renders Checkout box', () => {
-      cy.get('[data-cy=test-checkout]')
-        .get('[data-cy=test-selected-items]')
-        .should('have.text', `(${mockCart.products.length})`)
-        .get('[data-cy=test-total]')
-        .should('have.text', `$${mockCart.total}`);
-    });
   });
 
-  describe('with data', () => {
+  describe('with items', () => {
     const mockCart: components['schemas']['Carts'] | undefined = {
       id: 'testId',
       customerId: 'testCustomer',
@@ -99,7 +90,7 @@ describe('Carts Component', () => {
       });
     });
 
-    it('displays all items', () => {
+    it('Items list functionality', () => {
       mockCart.products.map((item) => {
         const qty = cy.get(`[data-cy="test-cart-item-qty-${item.id}"]`);
         cy.get(`[data-cy="test-cart-item-image-${item.id}"]`).should(

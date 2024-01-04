@@ -3,9 +3,7 @@ import { useSwrInstance } from "../swr/swrInit";
 import { CustomerResponse } from "../types/responseTypes";
 
 export const useGetUser = (id: string | undefined) => {
-    const [data, setData] = useState<CustomerResponse>({
-      data: {},
-    });
+    const [data, setData] = useState<CustomerResponse>();
     const { queries } = useSwrInstance();
   
     const {

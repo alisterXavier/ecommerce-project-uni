@@ -1,14 +1,8 @@
-import { Navbar } from '@/app/Navbar/Navbar';
-import { Cart } from '@/app/cart/page';
-import { MainSection } from '@/app/page';
-import { calculateDiscountedPrice } from '@/shared/helpers/utils';
-import { components } from '@/shared/types/api';
-import { UserMetadata } from '@supabase/supabase-js';
-import React, { useState } from 'react';
+
+import { HeaderCarousel } from '@/app/Components/Mainsection/headerCarousel';
+import React from 'react';
 
 describe('Carousel Component', () => {
-  const path = '/';
-
   beforeEach(() => {
     cy.get('body');
     cy.viewport(window.screen.width, window.screen.height);
@@ -22,7 +16,7 @@ describe('Carousel Component', () => {
           headers: { 'Content-Type': 'image/png' },
           body: img.buffer,
         });
-        cy.mount(<MainSection />);
+        cy.mount(<HeaderCarousel />);
       });
     });
 

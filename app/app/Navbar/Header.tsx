@@ -45,7 +45,6 @@ export const Buttons = ({
 };
 
 export const Account = ({ user }: { user: UserMetadata }) => {
-  // const { data, customerError, customerIsLoading } = useGetUser(user?.id);
   const combOptions = [
     {
       name: 'Settings',

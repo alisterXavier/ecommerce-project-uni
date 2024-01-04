@@ -1,0 +1,72 @@
+version: 2.1
+
+parameters:
+  run-tests:
+    type: boolean
+    default: false
+
+orbs:
+  cypress: cypress-io/cypress@3
+
+jobs:
+  component-and-e2e-tests:
+    docker:
+      - image: node:latest
+    steps:
+      - checkout
+
+      - run:
+          name: install deps
+          command: "npm i"
+
+      - run:
+          name: update apt
+          command: apt-get update
+
+      - run:
+          name: install system deps
+          command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+
+      - cypress/run-tests:
+          cypress-command: "cd ./app && npx cypress run --component"
+
+      - run:
+          name: Run app
+          command: "npm start"
+          background: true
+
+      - run:
+          name: Wait for app
+          command: sleep 10
+
+      - cypress/run-tests:
+          cypress-command: "cd ./app && npx cypress run"
+
+      - store_artifacts:
+          path: ./app/cypress/screenshots
+          when: on_fail
+
+  publish-to-production:
+    docker:
+      - image: cimg/base:2024.01
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: "53:c2:26:cb:81:a9:9f:7b:5d:03:8b:70:9c:67:37:d6"
+
+      - run:
+          name: Push to production branch
+          command: git push origin main2.0-dev:main2.0
+
+workflows:
+  when: << pipeline.parameter.run-tests >>
+  the-great-gatsby:
+    jobs:
+      - publish-to-production:
+      # - component-and-e2e-tests:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main2.0-dev
+          # require:
+          #   - component-and-e2e-tests
