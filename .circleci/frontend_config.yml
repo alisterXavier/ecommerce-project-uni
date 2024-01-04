@@ -66,12 +66,12 @@ workflows:
   the-great-gatsby:
     jobs:
       - publish-to-production
-      - path-filtering/filter:
-          name: Check for updates in server
-          mapping: |
-            server/.* run-create-image-and-publish true
-          base-revision: main2.0
-          config-path: .circleci/server_config.yml
+      # - path-filtering/filter:
+      #     name: Check for updates in server
+      #     mapping: |
+      #       server/.* run-create-image-and-publish true
+      #     base-revision: main2.0
+      #     config-path: .circleci/server_config.yml
       # - component-and-e2e-tests:
       #     filters:
       #       branches:
