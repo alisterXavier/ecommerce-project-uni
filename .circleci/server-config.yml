@@ -12,7 +12,7 @@ jobs:
           name: Build docker image
           command: |
             cd ./server
-            docker push $DOCKER_HUB_USERNAME/ecom-server:v1.0
+            docker build ./ -t $DOCKER_HUB_USERNAME/ecom-server:v1.0
 
       - run:
           name: Push to docker hub
