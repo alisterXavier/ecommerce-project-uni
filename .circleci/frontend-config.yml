@@ -1,15 +1,7 @@
 version: 2.1
 
-setup: true
-
-parameters:
-  run-tests:
-    type: boolean
-    default: false
-
 orbs:
   cypress: cypress-io/cypress@3
-  path-filtering: circleci/path-filtering@0.1.1
 
 jobs:
   component-and-e2e-tests:
@@ -63,15 +55,9 @@ jobs:
 
 workflows:
   the-great-gatsby:
-    when: << pipeline.parameters.run-tests >>
     jobs:
       - publish-to-production
-      - path-filtering/filter:
-          name: Check for updates in server
-          mapping: |
-            server/.* run-create-image-and-publish true
-          base-revision: main2.0
-          config-path: .circleci/server_config.yml
+
       # - component-and-e2e-tests:
       #     filters:
       #       branches:
