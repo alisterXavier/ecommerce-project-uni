@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Push to docker hub
-          command: docker push $DOCKER_HUB_USERNAME/ecom-server:server:v1.0
+          command: docker push $DOCKER_HUB_USERNAME/ecom-server:v1.0
 
 workflows:
   the-great-depression:
