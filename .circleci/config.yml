@@ -90,4 +90,4 @@ orbs:
 workflows:
   the_great-gatsby:
     jobs:
-      - the_great/the-greatest-showman
+      - the-great/the-greatest-showman
