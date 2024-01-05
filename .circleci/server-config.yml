@@ -21,4 +21,4 @@ jobs:
 workflows:
   the-great-depression:
     jobs:
-      - create-docker-image-and-publish-to-dockerhub:
+      - create-docker-image-and-publish-to-dockerhub
