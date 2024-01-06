@@ -83,9 +83,9 @@ workflows:
     jobs:
       - publish-to-main-branch
       - deploy-to-vercel:
-          - require:
+          - requires:
               - publish-to-main-branch
-              
+
       # - component-and-e2e-tests:
       #     filters:
       #       branches:
