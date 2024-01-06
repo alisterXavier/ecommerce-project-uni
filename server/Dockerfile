@@ -2,7 +2,7 @@
 
 # BUILD STAGE
 # Use latest node image as base image in build stage
-FROM node:latest AS BUILD
+FROM node:16-alpine AS BUILD
 
 # Create the required directories
 RUN mkdir -p /app/dist
@@ -15,11 +15,11 @@ COPY ./ /app
 
 # Installing all deps and creating a build IN BUILD STAGE
 RUN yarn install
-RUN npm run build
+RUN yarn build
 
 # PRODUCTION STAGE
 # Use latest node image as base image in production stage
-FROM node:latest AS PRODUCTION
+FROM node:16-alpine AS PRODUCTION
 WORKDIR /app
 
 # Copying Contents from BUILD -> server to PRODUCTION -> server
@@ -35,3 +35,4 @@ EXPOSE 5001
 
 # Start the application
 CMD ["npm", "start"]
+# dop_v1_a740bd201b90e4d3bf818339d0c0515ce9b3c74525afd8bbbcd03669860d94c5

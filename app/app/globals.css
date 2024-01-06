@@ -86,9 +86,7 @@ h6 {
   color: black !important;
   box-shadow: 20px 20px 53px #252e28, -20px -20px 53px #597062;
 }
-.login-form-container .login-input-field input,
-.mantine-PasswordInput-input,
-.login-button {
+.login-input-field input {
   font-size: 12px !important;
   outline: none !important;
   color: black;

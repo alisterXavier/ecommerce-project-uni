@@ -7,6 +7,7 @@ import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
+import { Button } from '@mantine/core';
 export const HeaderCarousel = () => (
   <Swiper
     className="large-carousel"
@@ -30,9 +31,9 @@ export const HeaderCarousel = () => (
               <h1 className="text-[50px] text-white capitalize ">
                 Explore Men&apos;s Fashion
               </h1>
-              <button className="shop-now-btn">
+              <Button w={125} h={40} radius={2} variant='white' className="shop-now-btn">
                 <a href="/Category/Men">Explore</a>
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -64,9 +65,9 @@ export const HeaderCarousel = () => (
               <h1 className="text-[50px] text-white capitalize ">
                 Fresh new start
               </h1>
-              <button className="shop-now-btn mr-1">
+              <Button variant='white' radius={2} w={125} h={40} className="shop-now-btn mr-1">
                 <a href="/Category/Womens">Start</a>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -83,11 +84,11 @@ export const HeaderCarousel = () => (
                   Discover the Latest Gadgets.
                 </h1>
               </div>
-              <button className="large-carousel-btn mr-1">
+              <Button variant='transparent' className="large-carousel-btn mr-1">
                 <a href="/Category/Electronics" className="text-white">
                   Discover
                 </a>
-              </button>
+              </Button>
             </div>
           </div>
           <figure className="absolute right-0 top-0 w-[60%] h-[90%]">

@@ -29,6 +29,11 @@ export const createServer = () => {
       return res.json({
         ok: true,
       });
+    })
+    .get('/digital-check', (req, res) => {
+      return res.json({
+        ok: true,
+      });
     });
   return app;
 };

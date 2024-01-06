@@ -41,7 +41,7 @@ jobs:
           path: ./app/cypress/screenshots
           when: on_fail
 
-  publish-to-production:
+  publish-to-main-branch:
     docker:
       - image: cimg/base:2024.01
     steps:
@@ -53,11 +53,39 @@ jobs:
           name: Push to production branch
           command: git push origin main2.0-dev:main2.0
 
+  deploy-to-vercel:
+    docker:
+      - image: node:latest
+        environment:
+          VERCEL_ORG_ID: $VERCEL_ORG_ID
+          VERCEL_PASSWORD_ID: $VERCEL_PASSWORD_ID
+    steps:
+      - checkout
+
+      - run:
+          name: Install vercel
+          command: npm i -g vercel@latest
+
+      - run:
+          name: DEPLOY TO VERCEL
+          command: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - run:
+          name: BUILD PROJECT
+          command: vercel build --prod --token=$VERCEL_TOKEN
+
+      - run:
+          name: DEPLOY PROJECT
+          command: vercel deploy --pre-built --prod --token=$VERCEL_TOKEN
+
 workflows:
   the-great-gatsby:
     jobs:
-      - publish-to-production
-
+      - publish-to-main-branch
+      - deploy-to-vercel:
+          - require:
+              - publish-to-main-branch
+              
       # - component-and-e2e-tests:
       #     filters:
       #       branches:

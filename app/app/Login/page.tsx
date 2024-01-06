@@ -176,7 +176,7 @@ const LoginInputs = ({
       <div className="w-full flex flex-col items-center justify-center">
         <Button
           w={'80%'}
-          className="my-2 login-button"
+          className="my-2"
           style={{
             background: 'var(--testColor)',
             border: '1px solid white',
@@ -185,7 +185,7 @@ const LoginInputs = ({
           onClick={isSignUp ? onSignUp : onSignIn}
           data-cy={`test-confirm-btn`}
         >
-          {isSignUp ? 'Sign up' : 'Sign In'}
+          <p className='text-white'>{isSignUp ? 'Sign up' : 'Sign In'}</p>
         </Button>
 
         {/* ToDo Create support for google auth */}
@@ -248,7 +248,7 @@ const Login = () => {
                     data-cy="test-signUp-btn"
                   >
                     <IconChevronsLeft />
-                    <span className="text-[15px]">Sign UP</span>
+                    <span className="text-[15px]">Sign Up</span>
                   </p>
                 </div>
               </div>
