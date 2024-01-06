@@ -76,7 +76,7 @@ jobs:
 
       - run:
           name: DEPLOY PROJECT
-          command: vercel deploy --pre-built --prod --token=$VERCEL_TOKEN
+          command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
 workflows:
   the-great-gatsby:
