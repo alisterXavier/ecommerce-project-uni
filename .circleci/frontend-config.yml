@@ -64,7 +64,7 @@ jobs:
 
       - run:
           name: Install vercel
-          command: npm i -g vercel@latest
+          command: npm i -g vercel@latest pnpm
 
       - run:
           name: DEPLOY TO VERCEL
