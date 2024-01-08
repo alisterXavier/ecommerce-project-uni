@@ -67,7 +67,7 @@ jobs:
           command: npm i -g vercel@latest pnpm
 
       - run:
-          name: DEPLOY TO VERCEL
+          name: PULL VERCEL ENVIRONMENT
           command: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
       - run:

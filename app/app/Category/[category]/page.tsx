@@ -50,11 +50,13 @@ const Category = ({ params }: { params: { category: string } }) => {
         <div className="small-products-container">
           {(!data && productsIsLoading) || productsError ? (
             <SkeletonContainer
-              w={262}
-              h={400}
+              w={250}
+              h={500}
               repeat={8}
               mr={5}
+              ml={5}
               mb={5}
+              mt={5}
               wrap={true}
             />
           ) : !data ? (

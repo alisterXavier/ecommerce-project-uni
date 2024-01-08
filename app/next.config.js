@@ -2,7 +2,13 @@
 
 const urls = [
   'media.boohoo.com',
-  'lp2.hm.com'
+  'lp2.hm.com',
+
+  'm.media-amazon.com',
+  'media.veli.store',
+  'www.bhphotovideo.com',
+  'static.bhphoto.com',
+  'zoommer.ge'
 ];
 
 const nextConfig = {
