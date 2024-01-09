@@ -12,13 +12,14 @@ import { supabase } from '@/shared/supabaseConfig';
 import { useEffect } from 'react';
 import { fetchUser } from '@/shared/redux/authSlice';
 import { Toaster } from 'react-hot-toast';
+import { useSmallDeviceSize } from '@/shared/hooks/smallScreen';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const theme = createTheme({});
 function RootLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname();
-
+  const device = useSmallDeviceSize();
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -27,9 +28,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
           <MantineProvider theme={theme}>
             <InnerRoot>
               <>
-                {path
-                  .split('/')
-                  .some((i) => i === 'Login' || i === 'SignUp') ? (
+                {path.split('/').some((i) => i === 'Login' || i === 'SignUp') ||
+                device ? (
                   <></>
                 ) : (
                   <NavbarComponent />

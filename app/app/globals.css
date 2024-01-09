@@ -52,6 +52,16 @@
   /* font-size: large; */
 }
 
+
+@media screen and (max-width: 1358px) {
+  .header-carousel-wrapper{
+    background-color: #3f4f45f2 !important;
+  }
+  .masonry{
+    
+  }
+}
+
 body {
   min-height: 100vh;
   background-color: white !important;
@@ -89,10 +99,15 @@ h6 {
 .login-input-field input {
   font-size: 12px !important;
   outline: none !important;
-  color: black;
-  outline: none !important;
+  color: black !important;
+  border: none;
   border-bottom: 1px solid rgb(0, 0, 0);
-  border-radius: 0px;
+  border-radius: 0px !important;
+}
+.login-input-field input:focus {
+  outline: none !important;
+  border: none;
+  border-bottom: 1px solid rgb(0, 0, 0);
 }
 .main-header,
 .main-section {

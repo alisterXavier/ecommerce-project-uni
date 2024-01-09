@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import { supabase } from '@/shared/supabaseConfig';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useSmallDeviceSize } from '@/shared/hooks/smallScreen';
 
 const GoogleIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return (
@@ -146,10 +147,6 @@ const LoginInputs = ({
     <div className="w-[300px] h-[45%] flex flex-col items-start justify-center">
       <InputError h={'10px'}>{error}</InputError>
       <TextInput
-        style={{
-          outline: 'none',
-          background: 'transparent',
-        }}
         color="black"
         leftSectionPointerEvents="none"
         leftSection={<IconUser />}
@@ -185,7 +182,7 @@ const LoginInputs = ({
           onClick={isSignUp ? onSignUp : onSignIn}
           data-cy={`test-confirm-btn`}
         >
-          <p className='text-white'>{isSignUp ? 'Sign up' : 'Sign In'}</p>
+          <p className="text-white">{isSignUp ? 'Sign up' : 'Sign In'}</p>
         </Button>
 
         {/* ToDo Create support for google auth */}
@@ -209,30 +206,45 @@ const Login = () => {
   const credentialsRef = useRef<null | HTMLDivElement>(null);
   const imageRef = useRef<null | HTMLDivElement>(null);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const isSmallScreen = useSmallDeviceSize();
 
   return (
     <div className="login-container w-screen h-screen">
       <div className="login-wrapper relative w-full h-full flex items-center justify-around">
-        <div className="login-form-container relative z-10 rounded-sm w-[70%] h-[80%] overflow-hidden">
+        <div
+          className={`login-form-container relative z-10 rounded-sm ${
+            isSmallScreen ? 'w-full h-full' : 'w-[70%] h-[80%]'
+          } overflow-hidden`}
+        >
           <div className="relative transition flex items-center justify-start w-full h-full bg-white">
-            <motion.div className="absolute w-[45%] h-full" ref={imageRef}>
-              <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
-                <Image alt="" src={womenLogin} className="absolute" fill />
-              </figure>
-            </motion.div>
+            {isSmallScreen ? (
+              <></>
+            ) : (
+              <>
+                {/* Signin Image */}
+                <motion.div className="absolute w-[45%] h-full" ref={imageRef}>
+                  <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
+                    <Image alt="" src={womenLogin} className="absolute" fill />
+                  </figure>
+                </motion.div>
 
-            <motion.div
-              className="absolute w-[45%] h-full right-0"
-              ref={imageRef}
-            >
-              <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
-                <Image alt="" src={mensLogin} className="absolute" fill />
-              </figure>
-            </motion.div>
+                {/* Signout Image */}
+                <motion.div
+                  className="absolute w-[45%] h-full right-0"
+                  ref={imageRef}
+                >
+                  <figure className="absolute w-full h-full bg-[var(--nightBlue)]">
+                    <Image alt="" src={mensLogin} className="absolute" fill />
+                  </figure>
+                </motion.div>
+              </>
+            )}
 
             {/* Sign In */}
             <motion.div
-              className="bg-transparent absolute right-0 h-full w-[50%] p-10 flex justify-center items-center"
+              className={`bg-transparent absolute right-0 h-full ${
+                isSmallScreen ? 's-full' : 'w-[50%]'
+              } p-10 flex justify-center items-center`}
               ref={credentialsRef}
               animate={isSignUp ? 'switchToReg' : 'default'}
               variants={LoginSwitch}
@@ -263,7 +275,9 @@ const Login = () => {
 
             {/* Sign Up */}
             <motion.div
-              className="bg-white absolute left-0 h-full w-[50%] p-10 flex justify-center items-center"
+              className={`bg-white absolute  h-full ${
+                isSmallScreen ? 's-full right-0' : 'w-[50%] left-0'
+              } p-10 flex justify-center items-center`}
               ref={credentialsRef}
               initial={{ opacity: 0 }}
               animate={!isSignUp ? 'default' : 'switchToReg'}
