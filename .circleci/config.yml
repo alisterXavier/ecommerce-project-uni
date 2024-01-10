@@ -17,6 +17,12 @@ orbs:
           - checkout
 
           - run:
+              name: Fetch branches
+              command: |
+                git fetch origin
+                for i in `git branch -a | grep remote | grep -v HEAD | grep -v master`; do git branch --track ${i#remotes/origin/} $i; done
+                git branch -a
+          - run:
               name: Frontend diff
               command: |
                 if git diff --quiet main2.0..main2.0-dev -- ./app; then 
@@ -71,7 +77,6 @@ orbs:
                 sed -i -e 's/^/.circleci\//; s/$/-config.yml/g' "<< parameters.modules >>"
 
                 xargs -a "<< parameters.modules >>" yq -y -s 'reduce .[] as $item ({}; . * $item)' | tee "<< parameters.continue-config >>"
-
 
     jobs:
       the-greatest-showman:
