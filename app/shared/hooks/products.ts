@@ -6,9 +6,6 @@ import {
 } from '../types/responseTypes';
 import { useSwrInstance } from '../swr/swrInit';
 
-// const authContext: AuthContext = {
-//   Authorization: `Bearer ${user?.tokenData?.accessToken ?? null}`,
-// }
 
 type useProductsProps = {
   category: string;

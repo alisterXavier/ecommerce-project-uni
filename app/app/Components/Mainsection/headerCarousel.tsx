@@ -127,7 +127,7 @@ export const HeaderCarousel = () => {
               } relative w-full h-full flex flex-col justify-center items-end z-[1] p-4`}
             >
               <div
-                className={`flex flex-col {device ? 'items-start' : 'items-center'} w-[100%]`}
+                className={`flex flex-col ${device ? 'items-start' : 'items-center'} w-[100%]`}
               >
                 <div className="transparent-gradient">
                   <h1

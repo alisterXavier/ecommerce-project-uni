@@ -1,3 +1,7 @@
+# This config file checks for changes in the frontend folder and backend folder and if there are changes in 
+# the frontend folder i will create a new config file to test and upload the frontend to production and the same for the 
+# backend
+
 version: 2.1
 
 setup: true

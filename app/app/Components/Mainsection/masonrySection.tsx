@@ -28,7 +28,7 @@ export const MasonryComp = () => {
             w-[50%] flex justify-center items-center`}
             >
               <h1
-                className={`text-white 'text-[100px] w-full leading-[100px] uppercase`}
+                className={`text-white text-[100px] w-full leading-[100px] uppercase`}
               >
                 {['keep', 'it', 'classy'].map((i, index) => (
                   <span key={index} className={'block'}>
