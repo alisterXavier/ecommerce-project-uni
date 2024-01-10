@@ -1,5 +1,5 @@
-# This config file checks for changes in the frontend folder and backend folder and if there are changes in 
-# the frontend folder i will create a new config file to test and upload the frontend to production and the same for the 
+# This config file checks for changes in the frontend folder and backend folder and if there are changes in
+# the frontend folder i will create a new config file to test and upload the frontend to production and the same for the
 # backend
 
 version: 2.1
@@ -19,7 +19,7 @@ orbs:
           - run:
               name: Frontend diff
               command: |
-                if git diff --quiet main2.0..main2.0-dev ./app; then 
+                if git diff --quiet main2.0..main2.0-dev -- ./app; then 
                   echo "No changes in specified folder."
                 else 
                   echo "frontend" >> ./modules.txt
@@ -29,7 +29,7 @@ orbs:
           - run:
               name: Server diff
               command: |
-                if git diff --quiet main2.0..main2.0-dev ./server; then 
+                if git diff --quiet main2.0..main2.0-dev -- ./server; then 
                   echo "No changes in specified folder."
                 else 
                   echo "server" >> ./modules.txt
@@ -72,10 +72,6 @@ orbs:
 
                 xargs -a "<< parameters.modules >>" yq -y -s 'reduce .[] as $item ({}; . * $item)' | tee "<< parameters.continue-config >>"
 
-          - store_artifacts:
-              path: ./modules.txt
-          - store_artifacts:
-              path: .circleci/continue-config.yml
 
     jobs:
       the-greatest-showman:
