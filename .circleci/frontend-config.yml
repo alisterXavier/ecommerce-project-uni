@@ -6,8 +6,6 @@ orbs:
 
 jobs:
   e2e-tests:
-
-    working-directory: ./app
     docker:
       - image: node:latest
 
@@ -25,10 +23,12 @@ jobs:
       - run:
           name: install pnpm
           command: "npm i -g pnpm && pnpm install"
+          working-directory: app
 
       - cypress/run-tests:
           start-command: pnpm dev
           cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          working-directory: app
 
       - store_artifacts:
           path: ./cypress/screenshots
