@@ -39919,33 +39919,52 @@ var supabaseUrl = "https://louijifajkwpwukxvhda.supabase.co";
 var supabaseKey = process.env.SUPABASE_KEY;
 var supabase = (0, import_supabase_js.createClient)(supabaseUrl, supabaseKey);
 
+// src/middleware.js
+var authUser = async (req, res, next) => {
+  const token = req.get("token");
+  const rtoken = req.get("rtoken");
+  if (!token && !rtoken)
+    return res.status(401).json({ error: "Unauthorized user" });
+  const { data } = await supabase.auth.setSession({
+    access_token: token,
+    refresh_token: rtoken
+  });
+  if (!data)
+    return res.status(401).json({ error: "Unauthorized user" });
+  next();
+};
+
 // src/routes/cart.js
 var app = (0, import_express.default)();
-app.patch("/cart", async (req, res) => {
+app.patch("/cart", authUser, async (req, res) => {
   const { customerId, products, id, total } = req.body;
   try {
     const { data: cartData, error: CartError } = await supabase.from("Carts").upsert(
       {
         id,
-        products,
+        products: [...products],
         customerId,
         total: total ?? 0
       },
       { ignoreDuplicates: false }
     );
-    const { data } = await supabase.from("Carts").select("id, customerId, products: Carts_Products(...Products(*)), total").eq("customerId", customerId).single();
     if (CartError) {
       return res.status(400).json({ error: CartError.message });
     }
+    const { data } = await supabase.from("Carts").select(
+      "id, customerId, products: Carts_Products(...Products(*), quantity), total"
+    ).eq("customerId", customerId).single();
     return res.status(200).json({ data });
   } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-app.get("/cart/:id", async (req, res) => {
+app.get("/cart/:id", authUser, async (req, res) => {
   const { id } = req.params;
   try {
-    const { data, error: error2 } = await supabase.from("Carts").select("id, customerId, products: Carts_Products(...Products(*)), total").eq("customerId", id).single();
+    const { data, error: error2 } = await supabase.from("Carts").select(
+      "id, customerId, products: Carts_Products(...Products(*), quantity), total"
+    ).eq("customerId", id).single();
     if (error2) {
       return res.status(400).json({ error: error2.message });
     }
@@ -39973,22 +39992,7 @@ app2.post("/register", async (req, res) => {
     return res.status(500).json({ error: error2 });
   }
 });
-app2.get("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const { user: user2, session: session2, error: error2 } = await supabase.auth.signIn({
-      email,
-      password
-    });
-    if (error2) {
-      return res.status(400).json({ error: error2.message });
-    }
-    return res.status(200).json({ message: "Login successful", user: user2, session: session2 });
-  } catch (error2) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-app2.get("/customer/:id", async (req, res) => {
+app2.get("/customer/:id", authUser, async (req, res) => {
   const { id } = req.params;
   if (id.length > 5)
     try {
@@ -40064,18 +40068,52 @@ app3.get("/product/:productId", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+app3.get("/search/:searchString", async (req, res) => {
+  const { searchString } = req.params;
+  try {
+    const { data, error: error2 } = await supabase.from("Products").select().ilike("productName", `%${searchString}%`);
+    if (error2 || data.length == 0)
+      return res.status(404).json({ error: "Product not found" });
+    return res.status(200).json({ data });
+  } catch (error2) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // src/routes/order.js
 var import_express4 = __toESM(require_express2());
 var app4 = (0, import_express4.default)();
-app4.post("/orders", async (req, res) => {
-  const { cartId } = req.body;
+app4.post("/order/:customerId/:cartId", authUser, async (req, res) => {
+  const { cartId, customerId } = req.params;
   try {
-    const { data, error: error2 } = await supabase.from("Carts").select().eq("id", cartId);
+    const { data, error: error2 } = await supabase.from("Carts").select().eq("id", cartId).single();
+    if (error2)
+      return res.status(400).json({ function: "Carts get", error: error2.message });
+    const { data: orderData, error: orderError } = await supabase.from("Orders").upsert({
+      customerId: data.customerId,
+      products: data.products,
+      total: data.total
+    });
+    if (orderError)
+      return res.status(400).json({ function: "Orders insert", error: error2.message });
+    const { err: deleteErr } = await supabase.from("Carts").delete().eq("id", cartId);
+    if (deleteErr)
+      return res.status(400).json({ function: "Cart delete", error: error2.message });
+    return res.status(200).json({ message: "Order created", orderData });
+  } catch (error2) {
+    return res.status(500).json({ error: error2 });
+  }
+});
+app4.get("/orders/:id", authUser, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { data, error: error2 } = await supabase.from("Orders").select(
+      "id, customerId, products: Orders_Products(...Products(*), quantity), total, created_at"
+    ).eq("customerId", id);
     if (error2) {
       return res.status(400).json({ error: error2.message });
     }
-    return res.status(200).json({ message: "Order created", data });
+    return res.status(200).json({ data });
   } catch (error2) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

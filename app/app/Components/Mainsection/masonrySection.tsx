@@ -7,6 +7,7 @@ import image9 from '@/public/images/home/home9.jpg';
 import womenSliderImage from '@/public/images/carousel/women-slider-image.jpg';
 import Masonry from '@mui/lab/Masonry';
 import { useSmallDeviceSize } from '@/shared/hooks/smallScreen';
+import Link from 'next/link';
 
 export const MasonryComp = () => {
   const device = useSmallDeviceSize();
@@ -49,9 +50,9 @@ export const MasonryComp = () => {
           </>
         )}
         <div className="w-full text-right">
-          <a className="text-white uppercase hover:underline" href="/discount">
+          <Link className="text-white uppercase hover:underline" href="/discount">
             Check Out now
-          </a>
+          </Link>
         </div>
       </div>
       <div

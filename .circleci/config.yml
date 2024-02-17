@@ -7,6 +7,7 @@ version: 2.1
 setup: true
 
 orbs:
+  
   the-great:
     orbs:
       continuation: circleci/continuation@0.5.0
@@ -21,11 +22,11 @@ orbs:
               command: |
                 git fetch origin
                 git branch -a
-                git checkout -b main2.0 origin/main2.0
+                git checkout -b main origin/main
           - run:
               name: Frontend diff
               command: |
-                if git diff --quiet main2.0..main2.0-dev -- ./app; then 
+                if git diff --quiet main..main2.0 -- ./app; then 
                   echo "No changes in specified folder."
                 else 
                   echo "frontend" >> ./modules.txt
@@ -35,7 +36,7 @@ orbs:
           - run:
               name: Server diff
               command: |
-                if git diff --quiet main2.0..main2.0-dev -- ./server; then 
+                if git diff --quiet main..main2.0 -- ./server; then 
                   echo "No changes in specified folder."
                 else 
                   echo "server" >> ./modules.txt
@@ -99,4 +100,4 @@ workflows:
           filters:
             branches:
               only:
-                - main2.0-dev
+                - main2.0

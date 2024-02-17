@@ -6,6 +6,8 @@ import Image from 'next/image';
 import * as React from 'react';
 import { supabase } from '@/shared/supabaseConfig';
 import { UserMetadata } from '@supabase/supabase-js';
+import logo from '@/public/images/Logo.jpg';
+import Link from 'next/link';
 
 interface IButton {
   customClassName?: string;
@@ -17,10 +19,12 @@ interface IButton {
 
 export const Logo = () => {
   return (
-    <div className="navbar-item ml-auto mr-auto" data-cy={'test-logo'}>
-      <a href="/" className="navbar-item-header armyText">
-        Store
-      </a>
+    <div className="navbar-item ml-auto mr-auto">
+      <Link href="/" className="navbar-item-header armyText">
+        <figure className="relative w-[100px] h-[100px]">
+          <Image alt="logo" src={logo} objectFit="contain" fill data-cy={'test-logo'}/>
+        </figure>
+      </Link>
     </div>
   );
 };
@@ -51,6 +55,10 @@ export const Account = ({ user }: { user: UserMetadata }) => {
       url: '',
     },
     {
+      name: 'Orders',
+      url: '/orders',
+    },
+    {
       name: 'Sign Out',
       url: '',
     },
@@ -74,7 +82,11 @@ export const Account = ({ user }: { user: UserMetadata }) => {
       }}
       data-cy={'test-user-options-item'}
     >
-      {item.name === 'signOut' ? <p>{item.name}</p> : <p>{item.name}</p>}
+      {item.name === 'signOut' ? (
+        <p>{item.name}</p>
+      ) : (
+        <a href={item.url}>{item.name}</a>
+      )}
     </Combobox.Option>
   ));
 
@@ -104,7 +116,7 @@ export const Account = ({ user }: { user: UserMetadata }) => {
           </figure>
         </Combobox.Target>
 
-        <Combobox.Dropdown w={'200px'} data-cy={'test-user-options'}>
+        <Combobox.Dropdown w={'200px'} data-cy={'test-user-options'} mt={15}>
           <Combobox.Options w={'200px'}>{options}</Combobox.Options>
         </Combobox.Dropdown>
       </Combobox>
@@ -115,7 +127,7 @@ export const Account = ({ user }: { user: UserMetadata }) => {
 export const LoginSignUp = () => {
   return (
     <div className="navbar-item navbar-item-account" data-cy={'test-nav-items'}>
-      <a href="/Login">Login</a>
+      <Link href="/login">Login</Link>
     </div>
   );
 };

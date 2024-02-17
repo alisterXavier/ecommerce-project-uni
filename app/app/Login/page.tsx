@@ -21,7 +21,6 @@ import { useRouter } from 'next/navigation';
 import '@mantine/core/styles.css';
 import { useRef, useState } from 'react';
 import { LoginSwitch, BoxSwitch, RegSwitch } from '@/shared/animations';
-import { useDispatch } from 'react-redux';
 import { supabase } from '@/shared/supabaseConfig';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -67,30 +66,29 @@ const LoginInputs = ({
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>();
   const router = useRouter();
-  // const googleAuth = async () => {
-  //   await supabase.auth
-  //     .signInWithOAuth({
-  //       provider: 'google',
-  //       // options: {
-  //       //     // redirectTo: getURL() // function to get your URL
-  //       // }
-  //     })
-  // };
+  const googleAuth = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'localhost:3000/',
+      },
+    });
+  };
 
-  // const GoogleButton = (
-  //   props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
-  // ) => {
-  //   return (
-  //     <Button
-  //       fullWidth
-  //       leftSection={<GoogleIcon />}
-  //       variant="default"
-  //       className="my-2"
-  //       {...props}
-  //       onClick={googleAuth}
-  //     />
-  //   );
-  // };
+  const GoogleButton = (
+    props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
+  ) => {
+    return (
+      <Button
+        fullWidth
+        leftSection={<GoogleIcon />}
+        variant="default"
+        className="my-2"
+        {...props}
+        onClick={googleAuth}
+      />
+    );
+  };
 
   const onSignIn = async () => {
     await supabase.auth
@@ -132,6 +130,13 @@ const LoginInputs = ({
       .then((res) => {
         if (res.data) {
           toast.success('Registered successfully', {
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          });
+          toast('Please verify your email', {
             style: {
               borderRadius: '10px',
               background: '#333',
@@ -184,19 +189,17 @@ const LoginInputs = ({
         >
           <p className="text-white">{isSignUp ? 'Sign up' : 'Sign In'}</p>
         </Button>
-
-        {/* ToDo Create support for google auth */}
-        {/* <div className="w-full">
+        <div className="w-full">
           <Divider
             w={'100%'}
             my="xs"
-            label="Or"
-            variant="dashed"
-            color="white"
+            label="OR"
+            variant="dotted"
+            color="black"
             labelPosition="center"
           />
         </div>
-        <GoogleButton>Continue with Google</GoogleButton> */}
+        <GoogleButton>Continue with Google</GoogleButton>
       </div>
     </div>
   );

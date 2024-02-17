@@ -1,6 +1,9 @@
 export type CartUpdate = {
-    id?: string,
-    customerId?: string,
-    products: string[],
-    total: number,
-}
+  id?: string;
+  customerId?: string;
+  products: {
+    id: string;
+    quantity: number;
+  }[];
+  total: number;
+};

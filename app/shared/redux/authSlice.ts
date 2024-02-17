@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AppState } from './store';
 import { HYDRATE } from 'next-redux-wrapper';
 import { SupabaseClient, User } from '@supabase/auth-helpers-nextjs';
-import { AuthError } from '@supabase/supabase-js';
+import { AuthError, Session } from '@supabase/supabase-js';
 
 export interface AuthState {
   authState: {
@@ -14,6 +14,14 @@ export interface AuthState {
   isLoadingUser: boolean;
 }
 
+export interface SessionState {
+  sessionState: {
+    session: {
+      token: string | null;
+      rtoken: string | null;
+    };
+  } | null;
+}
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
   async (auth: SupabaseClient<any, 'public', any> | null) => {
@@ -25,8 +33,27 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+export const fetchSession = createAsyncThunk(
+  'auth/fetchSession',
+  async (auth: SupabaseClient<any, 'public', any> | null) => {
+    if (auth) {
+      const session = await auth.auth.getSession();
+      // console.log(session)
+      return session.data.session
+        ? {
+            session: {
+              token: session.data.session.access_token,
+              rtoken: session.data.session.refresh_token,
+            },
+          }
+        : null;
+    }
+    return null;
+  }
+);
+
 // Initial state
-const initialState: AuthState = {
+const initialState: AuthState & SessionState = {
   authState: {
     data: {
       user: null,
@@ -34,6 +61,7 @@ const initialState: AuthState = {
     error: null,
   },
   isLoadingUser: false,
+  sessionState: null,
 };
 
 // Actual Slice
@@ -60,12 +88,18 @@ export const authSlice = createSlice({
       state.authState = action.payload;
       state.isLoadingUser = false;
     });
+
+    // Session
+    builder.addCase(fetchSession.fulfilled, (state, action) => {
+      state.sessionState = action.payload;
+    });
   },
 });
 
 // export const { setAuthState } = authSlice.actions;
 
 export const selectAuthState = (state: AppState) => state.auth.authState;
+export const selectSession = (state: AppState) => state.auth.sessionState;
 export const selectUserLoadingState = (state: AppState) =>
   state.auth.isLoadingUser;
 

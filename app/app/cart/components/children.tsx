@@ -1,39 +1,44 @@
-// import cart from './test.json';
 import { IconTrash } from '@tabler/icons-react';
 import { components } from '@/shared/types/api';
 import { useCounter } from '@mantine/hooks';
-import { TableBody } from '@mui/material';
 import { UserMetadata } from '@supabase/supabase-js';
-import { CartResponse, ProductsResponse } from '@/shared/types/responseTypes';
 import { Button, Table, Text } from '@mantine/core';
 import Image from 'next/image';
-import { calculateDiscountedPrice } from '@/shared/helpers/utils';
+import Link from 'next/link';
+
+type cartItemProps = components['schemas']['Products'] & {
+  quantity: number;
+};
 
 const CartItem = ({
   data,
   index,
   removeItem,
+  updateEnabled,
 }: {
-  data: components['schemas']['Products'];
+  data: cartItemProps;
   index: number;
-  removeItem: (product: components['schemas']['Products']) => void;
+  removeItem?: (
+    product: components['schemas']['Products'],
+    quantity: number
+  ) => void;
+  updateEnabled?: boolean;
 }) => {
-  const product = data;
-  const [count, handler] = useCounter(0, { min: 0, max: 10 });
+  const [count, handler] = useCounter(data.quantity, { min: 0, max: 10 });
   return (
     <Table.Tr
-      key={`wrapper ${product.id + index}`}
+      key={`wrapper ${data.id + index}`}
       className="cursor-pointer image-transition"
     >
       <Table.Td>
         <div className="relative flex items-center">
           <figure className={`relative w-[100px] h-[100px]`}>
-            {product?.productImages.map((image, index) => {
+            {data?.productImages.map((image, index) => {
               return (
                 <Image
-                  data-cy={`test-cart-item-image-${product.id}`}
+                  data-cy={`test-cart-item-image-${data.id}`}
                   key={index}
-                  alt={product.productName}
+                  alt={data.productName}
                   className={`transition-all duration-200 ${
                     index === 1 && 'hover:opacity-0'
                   }`}
@@ -47,9 +52,9 @@ const CartItem = ({
           </figure>
           <h1
             className="small-product-title w-fit !h-[20px] ml-3 text-[15px]"
-            data-cy={`test-cart-item-title-${product.id}`}
+            data-cy={`test-cart-item-title-${data.id}`}
           >
-            {product.productName}
+            {data.productName}
           </h1>
         </div>
       </Table.Td>
@@ -57,89 +62,104 @@ const CartItem = ({
         <div className="flex justify-center items-center">
           <p
             className="text-[var(--testColor)] p-1"
-            data-cy={`test-cart-item-discount-${product.id}`}
+            data-cy={`test-cart-item-discount-${data.id}`}
           >
-            {product.discount > 0 ? `-${product.discount}%` : ''}
+            {data.discount > 0 ? `-${data.discount}%` : ''}
           </p>
         </div>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
-        <p data-cy={`test-cart-item-price-${product.id}`}>
-          ${calculateDiscountedPrice(product.price, product.discount)}
-        </p>
+        <p data-cy={`test-cart-item-price-${data.id}`}>${data.price}</p>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
         <div className="flex items-center justify-center my-1">
           <div className="flex items-center justify-center w-fit border">
-            <Button
-              p={0}
-              radius={3}
-              w={30}
-              h={30}
-              variant="light"
-              bg={'transparent'}
-              color="var(--testColor)"
-              onClick={handler.decrement}
-              data-cy={`test-cart-item-decrement-${product.id}`}
-            >
-              -
-            </Button>
+            {updateEnabled && (
+              <Button
+                p={0}
+                radius={3}
+                w={30}
+                h={30}
+                variant="light"
+                bg={'transparent'}
+                color="var(--testColor)"
+                onClick={handler.decrement}
+                data-cy={`test-cart-item-decrement-${data.id}`}
+              >
+                -
+              </Button>
+            )}
             <Text
               m={0}
               w={30}
               h={30}
               className="flex items-center justify-center"
-              data-cy={`test-cart-item-qty-${product.id}`}
+              data-cy={`test-cart-item-qty-${data.id}`}
             >
               {count}
             </Text>
-            <Button
-              p={0}
-              radius={3}
-              w={30}
-              h={30}
-              variant="light"
-              bg={'transparent'}
-              color="var(--testColor)"
-              onClick={handler.increment}
-              data-cy={`test-cart-item-increment-${product.id}`}
-            >
-              +
-            </Button>
+            {updateEnabled && (
+              <Button
+                p={0}
+                radius={3}
+                w={30}
+                h={30}
+                variant="light"
+                bg={'transparent'}
+                color="var(--testColor)"
+                onClick={handler.increment}
+                data-cy={`test-cart-item-increment-${data.id}`}
+              >
+                +
+              </Button>
+            )}
           </div>
         </div>
       </Table.Td>
-      <Table.Td style={{ textAlign: 'center' }}>
-        <Button
-          variant="transparent"
-          color="red"
-          onClick={() => removeItem(data)}
-          data-cy={`test-cart-item-remove-${product.id}`}
-        >
-          <IconTrash />
-        </Button>
-      </Table.Td>
+      {updateEnabled && removeItem && (
+        <Table.Td style={{ textAlign: 'center' }}>
+          <Button
+            variant="transparent"
+            color="red"
+            onClick={() => removeItem(data, count)}
+            data-cy={`test-cart-item-remove-${data.id}`}
+          >
+            <IconTrash />
+          </Button>
+        </Table.Td>
+      )}
     </Table.Tr>
   );
 };
 
 type CartType = {
-  user: UserMetadata | null;
+  user?: UserMetadata | null;
   cart: components['schemas']['Carts'] | undefined;
-  updateCart: {
-    removeCartItem: (product: components['schemas']['Products']) => void;
-    addCartItem: (product: components['schemas']['Products']) => void;
+  updateCart?: {
+    removeCartItem: (
+      product: components['schemas']['Products'],
+      quantity: number
+    ) => void;
+    addCartItem: (
+      product: components['schemas']['Products'],
+      quantity: number
+    ) => void;
+    updateCartItem: (
+      product: components['schemas']['Products'],
+      quantity: number
+    ) => void;
   };
-  isLoading: boolean;
+  isLoading?: boolean;
+  updateEnabled?: boolean;
 };
 
-export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
-  const items = () => (
+export const CartTable = ({ cart, updateCart, updateEnabled }: CartType) => {
+  return (
     <Table>
       <Table.Thead>
         <Table.Tr>
           <Table.Th>
-            <p>Product</p>
+            <p className="uppercase text-center">Product</p>
           </Table.Th>
           <Table.Th>
             <p className="uppercase text-center">Discount</p>
@@ -150,25 +170,28 @@ export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
           <Table.Th>
             <p className="uppercase text-center">Quantity</p>
           </Table.Th>
-          <Table.Th></Table.Th>
+          {updateEnabled && <Table.Th></Table.Th>}
         </Table.Tr>
       </Table.Thead>
-      <TableBody>
+      <Table.Tbody>
         {cart?.products?.map((item, index) => (
           <>
             <CartItem
+              updateEnabled={updateEnabled}
               index={index}
               data={item}
-              removeItem={updateCart.removeCartItem}
+              removeItem={updateCart?.removeCartItem}
             />
           </>
         ))}
-      </TableBody>
+      </Table.Tbody>
     </Table>
   );
+};
 
+export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
   return (
-    <div className="p-[10px]">
+    <div className="main-wrapper">
       <div className="flex items-end h-[25px]">
         <h2 className="m-0 h-[25px] uppercase">Cart</h2>
       </div>
@@ -178,7 +201,13 @@ export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
             {!isLoading && cart && cart.products.length > 0 ? (
               <>
                 <div className="basket-wrapper lg:w-fit w-[100%] pr-4">
-                  <div className="basket-container relative">{items()}</div>
+                  <div className="basket-container relative">
+                    <CartTable
+                      cart={cart}
+                      updateCart={updateCart}
+                      updateEnabled={true}
+                    />
+                  </div>
                 </div>
                 <div
                   className="checkout md:w-[30%] w-full sticky top-[var(--nav-height)] h-fit p-5"
@@ -200,13 +229,15 @@ export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
                         ${cart.total}
                       </p>
                     </div>
-                    <Button
-                      w={'100%'}
-                      variant="light"
-                      color={'var(--testColor)'}
-                    >
-                      <a href={user ? '#' : '/Login'}>Pay</a>
-                    </Button>
+                    <Link href="/checkout" className="w-full h-full" data-cy={'test-checkout-btn'}>
+                      <Button
+                        w={'100%'}
+                        variant="light"
+                        color={'var(--testColor)'}
+                      >
+                        Checkout
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </>
@@ -223,7 +254,7 @@ export const Cart = ({ user, cart, isLoading, updateCart }: CartType) => {
               color="var(--testColor)"
               data-cy={'test-login-btn'}
             >
-              <a href="/Login">Log in</a>
+              <Link href="/login">Log in</Link>
             </Button>
           </div>
         )}

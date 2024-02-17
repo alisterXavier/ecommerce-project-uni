@@ -164,7 +164,11 @@ components:
           type: array
           items:
             type: object
-            $ref: "#/components/schemas/Products"
+            properties:
+              product:
+                $ref: "#/components/schemas/Products"
+              quantity:
+                type: number
         created_at:
           type: string
         total:
@@ -178,8 +182,14 @@ components:
           type: string
         products:
           type: array
-          items: string
+          items:
+            type: object
+            properties:
+              product:
+                $ref: "#/components/schemas/Products"
+              quantity:
+                type: number
         total:
-          type: number | null
+          type: number
         created_at:
           type: string

@@ -1,7 +1,7 @@
 import './styles.css';
 import { useEffect, useRef, useState } from 'react';
 import { Account, Buttons, LoginSignUp, Logo } from './Header';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { UserMetadata } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { selectAuthState } from '@/shared/redux/authSlice';
@@ -30,6 +30,17 @@ const NavbarCart = ({
   user,
 }: NavbarCarttype) => {
   const { cart, isLoading } = useCustomerCart(user.id);
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (cart?.products.length) {
+      const totalProducts = cart?.products.reduce((total, b) => {
+        return total + b.quantity;
+      }, 0);
+      setCount(totalProducts);
+    }
+  }, [cart]);
+
   return (
     <Buttons
       customClassName={'navbar-right-item'}
@@ -46,7 +57,7 @@ const NavbarCart = ({
         {cart?.products && (
           <span className="absolute flex justify-center items-center w-[20px] h-[20px] bg-[var(--testColor)] -top-2 -right-2 rounded-[50%]">
             <Text c={'white'} m={0} p={0} h={20}>
-              {cart?.products?.length}
+              {count}
             </Text>
           </span>
         )}
@@ -58,6 +69,8 @@ const NavbarCart = ({
 
 export const Navbar = ({ user, path }: NavbarType) => {
   const sliderRef = useRef(null);
+
+  const router = useRouter();
 
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
 
@@ -78,7 +91,6 @@ export const Navbar = ({ user, path }: NavbarType) => {
       (sliderRef.current as HTMLElement).style.translate = translate;
     }
   };
-
   const onMouseLeave = (e: React.MouseEvent) => {
     if (path) navChangeOnPath.current(path);
     else if (sliderRef.current) {
@@ -101,6 +113,12 @@ export const Navbar = ({ user, path }: NavbarType) => {
       (sliderRef.current as HTMLElement).style.translate = translate;
     }
   });
+
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      router.push(`/search/${(e.target as HTMLInputElement).value}`);
+    }
+  };
   useEffect(() => {
     navChangeOnPath.current(path);
   }, [path]);
@@ -123,7 +141,7 @@ export const Navbar = ({ user, path }: NavbarType) => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
           >
-            <Link id="men" className="armyText" href="/Category/Men">
+            <Link id="men" className="armyText" href="/category/Men">
               Men
             </Link>
           </Buttons>
@@ -132,7 +150,7 @@ export const Navbar = ({ user, path }: NavbarType) => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
           >
-            <Link className="armyText" id="women" href="/Category/Women">
+            <Link className="armyText" id="women" href="/category/Women">
               Women
             </Link>
           </Buttons>
@@ -141,7 +159,7 @@ export const Navbar = ({ user, path }: NavbarType) => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
           >
-            <Link className="armyText" id="kids" href="/Category/Kids">
+            <Link className="armyText" id="kids" href="/category/Kids">
               Kids
             </Link>
           </Buttons>
@@ -153,7 +171,7 @@ export const Navbar = ({ user, path }: NavbarType) => {
             <Link
               className="armyText"
               id="electronics"
-              href="/Category/Electronics"
+              href="/category/Electronics"
             >
               Electronics
             </Link>
@@ -205,7 +223,12 @@ export const Navbar = ({ user, path }: NavbarType) => {
         }
         data-cy={'test-search-input'}
       >
-        <TextInput placeholder="Search for products" height={50} radius={0} />
+        <TextInput
+          placeholder="Search for products"
+          height={50}
+          radius={0}
+          onKeyDown={handleSearch}
+        />
       </motion.div>
     </motion.nav>
   );
@@ -215,7 +238,6 @@ export const NavbarComponent = () => {
   const path = usePathname();
   const authState = useSelector(selectAuthState);
   const [user, setUser] = useState<UserMetadata | null>();
-
   useEffect(() => {
     const getUser = async () => {
       const user = authState?.data.user;

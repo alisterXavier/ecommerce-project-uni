@@ -10,9 +10,10 @@ import { Provider, useDispatch } from 'react-redux';
 // import { setAuthState } from '@/shared/redux/authSlice';
 import { supabase } from '@/shared/supabaseConfig';
 import { useEffect } from 'react';
-import { fetchUser } from '@/shared/redux/authSlice';
+import { fetchSession, fetchUser } from '@/shared/redux/authSlice';
 import { Toaster } from 'react-hot-toast';
 import { useSmallDeviceSize } from '@/shared/hooks/smallScreen';
+import { FooterSection } from './page';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,6 +21,13 @@ const theme = createTheme({});
 function RootLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const device = useSmallDeviceSize();
+  const notHomePage = path.split('/').some((i) => i.length > 0) ? true : false;
+  const onLoginPage = path
+    .split('/')
+    .some((i) => i === 'login' || i == 'signUp')
+    ? true
+    : false;
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -28,13 +36,9 @@ function RootLayout({ children }: { children: React.ReactNode }) {
           <MantineProvider theme={theme}>
             <InnerRoot>
               <>
-                {path.split('/').some((i) => i === 'Login' || i === 'SignUp') ||
-                device ? (
-                  <></>
-                ) : (
-                  <NavbarComponent />
-                )}
+                {(!onLoginPage || device) && <NavbarComponent />}
                 {children}
+                {!onLoginPage && <FooterSection enableDark={notHomePage} />}
               </>
             </InnerRoot>
           </MantineProvider>
@@ -53,6 +57,7 @@ export const InnerRoot = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
         dispatch(fetchUser(supabase));
+        dispatch(fetchSession(supabase));
       } else if (event === 'SIGNED_OUT') {
         dispatch(fetchUser(null));
       }

@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: install deps
-          command: "npm i"
+          command: "pnpm i"
 
       - run:
           name: update apt
@@ -23,12 +23,9 @@ jobs:
           name: install system deps
           command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
-      - cypress/run-tests:
-          cypress-command: "cd ./app && npx cypress run --component"
-
       - run:
           name: Run app
-          command: "npm start"
+          command: "pnpm dev:client"
           background: true
 
       - run:
@@ -48,11 +45,11 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: "	8d:81:26:dd:de:75:b3:c2:96:f2:c6:47:2f:8f:fb:8f"
+          fingerprints: "8d:81:26:dd:de:75:b3:c2:96:f2:c6:47:2f:8f:fb:8f"
 
       - run:
           name: Push to production branch
-          command: git push origin main2.0-dev:main2.0
+          command: git push origin main2.0:main
 
   deploy-to-vercel:
     docker:
@@ -82,15 +79,13 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
+      - component-and-e2e-tests:
+          filters:
+            branches:
+              only:
+                - main2.0
       - publish-to-main-branch
       - deploy-to-vercel:
           requires:
+            - component-and-e2e-tests
             - publish-to-main-branch
-
-      # - component-and-e2e-tests:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main2.0-dev
-      # require:
-      #   - component-and-e2e-tests

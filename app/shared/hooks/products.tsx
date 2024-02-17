@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import {
-  CustomerResponse,
   ProductsResponse,
   SingleProductResponse,
 } from '../types/responseTypes';
 import { useSwrInstance } from '../swr/swrInit';
-
 
 type useProductsProps = {
   category: string;
