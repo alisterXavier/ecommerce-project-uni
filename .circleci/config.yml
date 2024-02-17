@@ -22,7 +22,7 @@ orbs:
               command: |
                 git fetch origin
                 git branch -a
-                git checkout -b main origin/main
+                git checkout main 
           - run:
               name: Frontend diff
               command: |
