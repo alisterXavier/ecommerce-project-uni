@@ -34,7 +34,7 @@ jobs:
 
       - run:
           name: Wait for app
-          command: sleep 10
+          command: sleep 20
 
       - cypress/run-tests:
           cypress-command: "cd ./app && npx cypress run"
