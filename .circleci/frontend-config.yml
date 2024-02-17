@@ -4,6 +4,8 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
+setup: true
+
 jobs:
   e2e-tests:
     docker:
@@ -25,7 +27,7 @@ jobs:
           command: "cd ./app && npm install"
 
       - run:
-          name: Run app in bg
+          name: Run app in background
           command: "cd ./app && npm run dev"
           background: true
       
