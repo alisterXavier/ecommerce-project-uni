@@ -59,6 +59,9 @@ dependencies:
   primereact:
     specifier: ^10.4.0
     version: 10.4.0(@types/react@18.2.34)(react-dom@18.2.0)(react@18.2.0)
+  punycode:
+    specifier: ^2.3.1
+    version: 2.3.1
   react:
     specifier: latest
     version: 18.2.0
@@ -4077,6 +4080,10 @@ packages:
       once: 1.4.0
     dev: true
 
+  /punycode@2.3.1:
+    resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
+    engines: {node: '>=6'}
+
   /qs@6.10.4:
     resolution: {integrity: sha512-OQiU+C+Ds5qiH91qh/mg0w+8nwQuLjM4F4M/PbmhDOoYehPh+Fb0bDjtR1sOvy7YKxvj28Y/M0PhP5uVX0kB+g==}
     engines: {node: '>=0.6'}
@@ -4878,6 +4885,7 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       psl: 1.9.0
+      punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
     dev: true
@@ -5041,6 +5049,8 @@ packages:
 
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+    dependencies:
+      punycode: 2.3.1
     dev: true
 
   /url-parse@1.5.10:
