@@ -82,8 +82,8 @@ workflows:
   the-great-gatsby:
     jobs:
       - cypress/run:
-          install-command: node -v && sudo npm i -g pnpm && cd ./app && pnpm install
-          start-command: 'pnpm dev'
+          install-command: sudo npm i -g pnpm && cd ./app && pnpm install
+          start-command: 'npm run dev'
           working-directory: app
           cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
 
