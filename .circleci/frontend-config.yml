@@ -25,11 +25,8 @@ jobs:
           command: "npm i -g pnpm && cd ./app && pnpm install"
 
       - run:
-          name: pwd
-          command: "pwd && ls"
-      - run:
-          name: pwd
-          command: "pwdls ./app"
+          name: ls
+          command: "ls ./app"
 
       - cypress/run-tests:
           start-command: pnpm dev
