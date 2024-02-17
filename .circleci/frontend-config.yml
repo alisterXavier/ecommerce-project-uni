@@ -4,17 +4,14 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
-
 jobs:
   e2e-tests:
     docker:
       - image: node:latest
-    steps:
-      - checkout
 
-      - run:
-          name: install pnpm
-          command: "npm i -g pnpm && cd ./app && pnpm install"
+    steps:
+      - checkout:
+          path: app
 
       - run:
           name: update apt
@@ -23,14 +20,18 @@ jobs:
       - run:
           name: install system deps
           command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      
+      - run:
+          name: install pnpm
+          command: "npm i -g pnpm && pnpm install"
+
 
       - cypress/run-tests:
-          start-command: pnpm dev:client
+          start-command: pnpm dev
           cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
-          working-directory: app
 
       - store_artifacts:
-          path: ./app/cypress/screenshots
+          path: ./cypress/screenshots
           when: on_fail
 
   publish-to-main-branch:
@@ -73,7 +74,6 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-
       - publish-to-main-branch:
           requires:
             - e2e-tests
