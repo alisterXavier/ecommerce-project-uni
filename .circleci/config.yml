@@ -26,7 +26,7 @@
 #           - run:
 #               name: Frontend diff
 #               command: |
-#                 if git diff --quiet main..main2.0 -- ./app; then 
+#                 if git diff --quiet main..main-test-branch -- ./app; then 
 #                   echo "No changes in specified folder."
 #                 else 
 #                   echo "frontend" >> ./modules.txt
@@ -36,7 +36,7 @@
 #           - run:
 #               name: Server diff
 #               command: |
-#                 if git diff --quiet main..main2.0 -- ./server; then 
+#                 if git diff --quiet main..main-test-branch -- ./server; then 
 #                   echo "No changes in specified folder."
 #                 else 
 #                   echo "server" >> ./modules.txt
@@ -100,7 +100,7 @@
 #           filters:
 #             branches:
 #               only:
-#                 - main2.0
+#                 - main-test-branch
 
 
 
@@ -163,4 +163,4 @@ workflows:
           filters:
             branches:
               only:
-                - main2.0
+                - main-test-branch
