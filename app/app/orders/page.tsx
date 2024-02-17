@@ -56,7 +56,9 @@ const rowExpansionTemplate = (data: components['schemas']['Orders']) => {
                             src={image}
                             fill
                             quality={100}
-                            objectFit="contain"
+                            style={{
+                              objectFit: 'contain',
+                            }}
                           />
                         );
                       })}

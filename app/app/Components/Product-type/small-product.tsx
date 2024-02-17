@@ -42,7 +42,9 @@ const Small = ({ product, id }: SmallProps) => {
                 src={image}
                 fill
                 quality={100}
-                objectFit="contain"
+                style={{
+                  objectFit: 'contain',
+                }}
               />
             );
           })}

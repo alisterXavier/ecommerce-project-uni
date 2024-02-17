@@ -89,7 +89,9 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
                         src={selectedImage}
                         fill
                         quality={100}
-                        objectFit="contain"
+                        style={{
+                          objectFit: 'contain',
+                        }}
                         data-cy="test-product-image"
                       />
                     </figure>
@@ -115,7 +117,9 @@ const SingleProduct = ({ params }: { params: { productId: string } }) => {
                           src={item}
                           fill
                           quality={100}
-                          objectFit="contain"
+                          style={{
+                            objectFit: 'contain',
+                          }}
                           data-cy="test-product-image"
                         />
                       </figure>

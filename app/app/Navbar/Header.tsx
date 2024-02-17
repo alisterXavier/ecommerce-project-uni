@@ -22,7 +22,9 @@ export const Logo = () => {
     <div className="navbar-item ml-auto mr-auto">
       <Link href="/" className="navbar-item-header armyText">
         <figure className="relative w-[100px] h-[100px]">
-          <Image alt="logo" src={logo} objectFit="contain" fill data-cy={'test-logo'}/>
+          <Image alt="logo" src={logo}    style={{
+              objectFit: 'contain',
+            }} fill data-cy={'test-logo'}/>
         </figure>
       </Link>
     </div>

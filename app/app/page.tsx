@@ -176,7 +176,9 @@ export const FooterSection = ({ enableDark }: { enableDark: boolean }) => (
             src={logo}
             fill
             quality={100}
-            objectFit="contain"
+            style={{
+              objectFit: 'contain',
+            }}
             className="mix-blend-multiply"
           />
         </figure>
