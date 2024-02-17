@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3.3.0
+  cypress: cypress-io/cypress@3
 
 jobs:
   component-and-e2e-tests:
@@ -81,9 +81,8 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-
       - cypress/run:
-          executor: cypress/default
+          executors: cypress/default
           install-command: sudo npm i -g pnpm && cd ./app && pnpm install
           start-command: 'pnpm dev'
           working-directory: app
