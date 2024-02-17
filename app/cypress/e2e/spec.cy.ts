@@ -1,5 +1,4 @@
 import { components } from '@/shared/types/api';
-
 const CateArray = ['Home', 'Women', 'Kids', 'Electronics', 'Men'];
 const mockData = [
   {
