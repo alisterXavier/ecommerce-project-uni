@@ -7,20 +7,27 @@ import { calculateDiscountedPrice } from '../helpers/utils';
 import { arraysEqual } from '../helpers/debounce';
 import { CartUpdate } from '../types/requestTypes';
 
+const calculateTotalPrice = (
+  price: number,
+  discount: number,
+  quantity: number
+) => {
+  const discounted = calculateDiscountedPrice(price, discount);
+  return parseFloat(discounted) * quantity;
+};
+
 export const useCustomerCart = (id?: string) => {
   const { requests, queries } = useSwrInstance();
   const [cart, setCart] = useState<CartResponse>();
   const { data, isLoading, error, mutate } = queries.useGetCartByUserId(id);
 
-  const addCartItem = async (product: components['schemas']['Products']) => {
-    const updatedList = data?.data.products
-      ? [...data?.data.products.map((i) => i.id), product.id]
-      : [product.id];
-
-    const total =
-      (data?.data.total ?? 0) +
-      parseFloat(calculateDiscountedPrice(product.price, product.discount));
-
+  const common = async (
+    updatedList: {
+      id: string;
+      quantity: number;
+    }[],
+    total: number
+  ) => {
     const cartData: CartUpdate = {
       id: data?.data.id,
       customerId: id,
@@ -31,40 +38,78 @@ export const useCustomerCart = (id?: string) => {
     mutate(await res);
   };
 
-  const removeCartItem = async (product: components['schemas']['Products']) => {
+  const addCartItem = async (
+    product: components['schemas']['Products'],
+    quantity: number
+  ) => {
+    const updatedList = data?.data?.products
+      ? [
+          ...data?.data.products.map((i) => {
+            return { id: i.id, quantity: i.quantity };
+          }),
+          { id: product.id, quantity: quantity },
+        ]
+      : [{ id: product.id, quantity: 1 }];
+
+    const total =
+      (data?.data.total ?? 0) +
+      calculateTotalPrice(product.price, product.discount, quantity);
+    common(updatedList, total);
+  };
+
+  const updateCartItem = async (
+    product: components['schemas']['Products'],
+    quantity: number
+  ) => {
+    const updatedList = data?.data.products.map((i) => {
+      if (i.id === product.id) return { id: product.id, quantity: quantity };
+
+      return { id: i.id, quantity: i.quantity };
+    });
+
+    const total =
+      (data?.data.total ?? 0) -
+      calculateTotalPrice(product.price, product.discount, quantity);
+
+    common(updatedList ?? [], total);
+  };
+
+  const removeCartItem = async (
+    product: components['schemas']['Products'],
+    quantity: number
+  ) => {
+    const updatedList: { id: string; quantity: number }[] =
+      cart?.data.products
+        .filter((prod) => prod.id !== product.id)
+        .map((i) => {
+          return {
+            id: i.id,
+            quantity: i.quantity,
+          };
+        }) ?? [];
+
     const total =
       cart && cart.data.products.length > 0
         ? (cart?.data.total ?? 0) -
-          parseFloat(calculateDiscountedPrice(product.price, product.discount))
+          calculateTotalPrice(product.price, product.discount, quantity)
         : 0;
 
-    const productList: string[] =
-      cart?.data.products
-        .filter((prod) => prod.id !== product.id)
-        .map((i) => i.id) ?? [];
-
-    const cartData: CartUpdate = {
-      id: cart?.data.id,
-      customerId: cart?.data.customerId,
-      products: productList,
-      total: total,
-    };
-    const res = await requests.useUpdateCartByCartId(cartData);
-    mutate(await res);
+    common(updatedList, total);
   };
 
-  const cartHasData = cart && cart.data;
+  const existingCartHasData = cart && cart.data;
 
   useEffect(() => {
-    if (!isLoading) {
-      if (data) {
-        if (cartHasData) {
-          if (!arraysEqual(data.data.products, cart.data.products))
-            setCart(data);
-        } else setCart(data);
-      }
+    const shouldUpdateCart =
+      !isLoading &&
+      data &&
+      (!existingCartHasData ||
+        !arraysEqual(data.data.products, cart.data.products));
+
+    if (shouldUpdateCart) {
+      setCart(data);
     }
-  }, [isLoading, data, cart, cartHasData]);
+  }, [isLoading, data, cart, existingCartHasData]);
 
   return {
     cart: cart?.data,
@@ -73,6 +118,7 @@ export const useCustomerCart = (id?: string) => {
     updateCart: {
       addCartItem,
       removeCartItem,
+      updateCartItem,
     },
   };
 };

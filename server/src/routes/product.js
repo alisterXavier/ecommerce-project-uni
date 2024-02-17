@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 const app = express();
 
+
 app.get('/products/:category', async (req, res) => {
   const { category } = req.params;
   const { filter } = req.query;
@@ -15,10 +16,9 @@ app.get('/products/:category', async (req, res) => {
     .select()
     .eq('type', category);
 
-      
   if (categoryList && categoryList.length > 0) {
     try {
-      let data, error;  
+      let data, error;
       switch (category) {
         case 'new': {
           let { data: newArrival, error: newArrivalError } = await supabase
@@ -82,6 +82,25 @@ app.get('/product/:productId', async (req, res) => {
     } else {
       return res.status(404).json({ error: 'Product not found' });
     }
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//Search functionality
+app.get('/search/:searchString', async (req, res) => {
+  const { searchString } = req.params;
+
+  try {
+    const { data, error } = await supabase
+      .from('Products')
+      .select()
+      .ilike('productName', `%${searchString}%`);
+
+    if (error || data.length == 0)
+      return res.status(404).json({ error: 'Product not found' });
+
+    return res.status(200).json({ data });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }

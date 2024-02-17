@@ -1,9 +1,11 @@
 import express from 'express';
 import { supabase } from '../../supabaseConfig';
+import { authUser } from '../middleware';
 
 const app = express();
 
-app.patch('/cart', async (req, res) => {
+// Update Cart
+app.patch('/cart', authUser, async (req, res) => {
   const { customerId, products, id, total } = req.body;
 
   try {
@@ -12,21 +14,24 @@ app.patch('/cart', async (req, res) => {
       .upsert(
         {
           id: id,
-          products: products,
+          products: [...products],
           customerId: customerId,
           total: total ?? 0,
         },
         { ignoreDuplicates: false }
       );
 
-    const { data } = await supabase
-      .from('Carts')
-      .select('id, customerId, products: Carts_Products(...Products(*)), total')
-      .eq('customerId', customerId).single()
-      
     if (CartError) {
       return res.status(400).json({ error: CartError.message });
     }
+
+    const { data } = await supabase
+      .from('Carts')
+      .select(
+        'id, customerId, products: Carts_Products(...Products(*), quantity), total'
+      )
+      .eq('customerId', customerId)
+      .single();
 
     return res.status(200).json({ data: data });
   } catch (error) {
@@ -34,13 +39,15 @@ app.patch('/cart', async (req, res) => {
   }
 });
 
-app.get('/cart/:id', async (req, res) => {
+app.get('/cart/:id', authUser, async (req, res) => {
   const { id } = req.params;
 
   try {
     const { data, error } = await supabase
       .from('Carts')
-      .select('id, customerId, products: Carts_Products(...Products(*)), total')
+      .select(
+        'id, customerId, products: Carts_Products(...Products(*), quantity), total'
+      )
       .eq('customerId', id)
       .single();
 

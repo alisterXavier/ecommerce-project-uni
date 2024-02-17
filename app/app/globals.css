@@ -52,13 +52,11 @@
   /* font-size: large; */
 }
 
-
 @media screen and (max-width: 1358px) {
-  .header-carousel-wrapper{
+  .header-carousel-wrapper {
     background-color: #3f4f45f2 !important;
   }
-  .masonry{
-    
+  .masonry {
   }
 }
 
@@ -84,6 +82,10 @@ h6 {
   color: var(--nightBlue);
 }
 
+.main-wrapper {
+  padding: 10px;
+  min-height: 100%;
+}
 .login-container {
   font-family: 'Montblac-reg' !important;
 }
@@ -99,10 +101,10 @@ h6 {
 .login-input-field input {
   font-size: 12px !important;
   outline: none !important;
-  color: black !important;
+  border-radius: 0px !important;
+  color: black;
   border: none;
   border-bottom: 1px solid rgb(0, 0, 0);
-  border-radius: 0px !important;
 }
 .login-input-field input:focus {
   outline: none !important;
@@ -263,7 +265,7 @@ h6 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 5px 10px 0px 10px; 
+  margin: 5px 10px 0px 10px;
   width: 283px;
   height: 500px;
   cursor: pointer;
@@ -396,6 +398,8 @@ h6 {
 .armyText {
   font-size: 18px;
 }
+
+/* Order */
 
 /* Filter */
 .type-section-title {

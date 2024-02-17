@@ -1,13 +1,10 @@
 'use client';
 import Small from '@/app/Components/Product-type/small-product';
 import { useProducts } from '@/shared/hooks/products';
-import { calculateDiscountedPrice } from '@/shared/helpers/utils';
 import { SkeletonContainer } from '@/app/Components/SkeletonComp';
 import { IconChevronRight } from '@tabler/icons-react';
-import { Filter } from '@/app/Components/Filter';
-import { useEffect, useState } from 'react';
-import { cache } from 'swr/_internal';
-import { ProductsResponse } from '@/shared/types/responseTypes';
+import { useState } from 'react';
+import Link from 'next/link';
 
 const Category = ({ params }: { params: { category: string } }) => {
   const [filterByType, setFilterByType] = useState<string[]>([]);
@@ -32,27 +29,27 @@ const Category = ({ params }: { params: { category: string } }) => {
   });
 
   return (
-    <div className="p-[10px]">
-      <div className="flex items-end h-[25px]" data-cy="test-category-title">
-        <h2 className="m-0 h-[25px]">HOME</h2>
-        <div className="h-[23px]">
-          <IconChevronRight />
+    <div className="main-wrapper">
+      {params && (
+        <div className="flex items-end h-[25px]" data-cy="test-category-title">
+          <h2 className="m-0 h-[25px] text-[var(--testColor)]">
+            <Link href="/">HOME</Link>
+          </h2>
+          <div className="h-[23px]">
+            <IconChevronRight />
+          </div>
+          <h2 className="m-0 uppercase h-[25px] cursor-pointer">
+            {params.category}
+          </h2>
         </div>
-        <h2 className="m-0 uppercase h-[25px]">{params.category}</h2>
-      </div>
+      )}
       <div className="flex flex-wrap justify-between relative pt-5">
-        {/* <Filter
-          type={params.category}
-          filterByTypeFn={{ filterByType, setFilterByType }}
-          filterByPriceFn={{ filterByPrice, setFilterByPrice }}
-          // filterByPriceRangeFn={{ filterByPriceRange, setFilterByPriceRange }}
-        /> */}
         <div className="small-products-container">
           {(!data && productsIsLoading) || productsError ? (
             <SkeletonContainer
               w={250}
               h={500}
-              repeat={8}
+              repeat={10}
               mr={5}
               ml={5}
               mb={5}

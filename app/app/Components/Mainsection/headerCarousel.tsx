@@ -9,10 +9,10 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 import { Button } from '@mantine/core';
 import { useSmallDeviceSize } from '@/shared/hooks/smallScreen';
+import Link from 'next/link';
 
 export const HeaderCarousel = () => {
   const device = useSmallDeviceSize();
-  console.log(device);
   return (
     <Swiper
       className="large-carousel"
@@ -56,7 +56,7 @@ export const HeaderCarousel = () => {
                   variant="white"
                   className="shop-now-btn"
                 >
-                  <a href="/Category/Men">Explore</a>
+                  <Link href="/category/Men">Explore</Link>
                 </Button>
               </div>
             </div>
@@ -110,7 +110,7 @@ export const HeaderCarousel = () => {
                   h={40}
                   className="shop-now-btn mr-1"
                 >
-                  <a href="/Category/Women">Start</a>
+                  <Link href="/category/Women">Start</Link>
                 </Button>
               </div>
             </div>
@@ -142,9 +142,9 @@ export const HeaderCarousel = () => {
                   variant="transparent"
                   className="large-carousel-btn mr-1 !w-fit"
                 >
-                  <a href="/Category/Electronics" className="text-white">
+                  <Link href="/category/Electronics" className="text-white">
                     Discover
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>

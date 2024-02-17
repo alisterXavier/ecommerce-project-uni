@@ -3,39 +3,38 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/products": {
+  '/products': {
     get: {
       responses: {
         /** @description List of Products */
         200: {
           content: {
-            "application/json": components["schemas"]["Products"][];
+            'application/json': components['schemas']['Products'][];
           };
         };
       };
     };
   };
-  "/product/{id}": {
+  '/product/{id}': {
     get: {
       responses: {
         /** @description Get Product by id */
         200: {
           content: {
-            "application/json": components["schemas"]["Products"];
+            'application/json': components['schemas']['Products'];
           };
         };
       };
     };
   };
-  "/customer/{id}": {
+  '/customer/{id}': {
     get: {
       responses: {
         /** @description update user */
         200: {
           content: {
-            "application/json": components["schemas"]["Customers"];
+            'application/json': components['schemas']['Customers'];
           };
         };
       };
@@ -49,7 +48,7 @@ export interface paths {
       /** @description More Updates */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["Customers"];
+          'application/json': components['schemas']['Customers'];
         };
       };
       responses: {
@@ -60,7 +59,7 @@ export interface paths {
       };
     };
   };
-  "/update-cart/{id}": {
+  '/update-cart/{id}': {
     delete: {
       parameters: {
         path: {
@@ -70,7 +69,7 @@ export interface paths {
       };
       requestBody: {
         content: {
-          "application/json": {
+          'application/json': {
             /** @description Cart id */
             id?: string;
           };
@@ -92,7 +91,7 @@ export interface paths {
       /** @description More Updates */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["Carts"];
+          'application/json': components['schemas']['Carts'];
         };
       };
       responses: {
@@ -103,25 +102,25 @@ export interface paths {
       };
     };
   };
-  "/get-cart/{id}": {
+  '/get-cart/{id}': {
     get: {
       responses: {
         /** @description Customer Cart */
         200: {
           content: {
-            "application/json": components["schemas"]["Carts"];
+            'application/json': components['schemas']['Carts'];
           };
         };
       };
     };
   };
-  "/get-orders/{id}": {
+  '/get-orders/{id}': {
     get: {
       responses: {
         /** @description Customer Orders */
         200: {
           content: {
-            "application/json": components["schemas"]["Orders"][];
+            'application/json': components['schemas']['Orders'][];
           };
         };
       };
@@ -135,7 +134,7 @@ export interface components {
   schemas: {
     Products: {
       id: string;
-      created_at: string;
+      created_at?: string;
       productName: string;
       description: string;
       productImages: string[];
@@ -147,22 +146,26 @@ export interface components {
       id: string;
       created_at?: string;
       displayName?: string;
-      cart?: string[];
-      orders?: string[];
+      cart: string[];
+      orders: string[];
       email?: string;
     };
     Carts: {
       id: string;
       customerId: string;
-      products: components["schemas"]["Products"][];
+      products: (components['schemas']['Products'] & {
+        quantity: number;
+      })[];
       created_at?: string;
       total: number;
     };
     Orders: {
       id: string;
-      userId: string;
-      products: string[];
-      total: Record<string, never>;
+      customerId: string;
+      products: (components['schemas']['Products'] & {
+        quantity: number;
+      })[];
+      total: number;
       created_at?: string;
     };
   };

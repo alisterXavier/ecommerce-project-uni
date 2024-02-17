@@ -1,5 +1,6 @@
 import express from 'express';
 import { supabase } from '../../supabaseConfig';
+import { authUser } from '../middleware';
 
 const app = express();
 
@@ -23,27 +24,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Login endpoint
-app.get('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const { user, session, error } = await supabase.auth.signIn({
-      email,
-      password,
-    });
-
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    return res.status(200).json({ message: 'Login successful', user, session });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/customer/:id', async (req, res) => {
+app.get('/customer/:id', authUser, async (req, res) => {
   const { id } = req.params;
   
   if (id.length > 5)
