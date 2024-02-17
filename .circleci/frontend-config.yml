@@ -4,12 +4,6 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
-# executors:
-#   node_latest:
-#     docker:
-#       - image: node:latest
-
-# executor: node:latest
 
 jobs:
   e2e-tests:
@@ -30,10 +24,14 @@ jobs:
           name: install system deps
           command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
-      - cypress/run-tests:
-          start-command: pnpm dev
-          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
-          working-directory: app
+      - run:
+          name: start app
+          command: cd ./app && pnpm dev
+          
+      # - cypress/run-tests:
+      #     start-command: pnpm dev
+      #     cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+      #     working-directory: app
 
       - store_artifacts:
           path: ./app/cypress/screenshots
@@ -79,11 +77,6 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-      # - cypress/run:
-      #     install-command: sudo npm i -g pnpm && cd ./app && pnpm install
-      #     start-command: "pnpm dev"
-      #     working-directory: app
-      #     cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
 
       - publish-to-main-branch:
           requires:
