@@ -29,7 +29,7 @@ jobs:
           command: cd ./app && npm run build
 
       - cypress/run-tests:
-          start-command: npm run dev
+          start-command: npm run start
           cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
           working-directory: ./app
 
