@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3
+  cypress: cypress-io/cypress@3.3.0
 
 jobs:
   component-and-e2e-tests:
@@ -33,7 +33,9 @@ jobs:
           background: true
 
       - cypress/run-tests:
-          cypress-command: "cd ./app && npx cypress run --parallel"
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          working-directory: app
+
 
       - store_artifacts:
           path: ./app/cypress/screenshots
