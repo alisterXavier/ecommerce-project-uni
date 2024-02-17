@@ -23,6 +23,10 @@ jobs:
       - run:
           name: install pnpm
           command: "npm i -g pnpm && cd ./app && pnpm install"
+      
+      - run:
+          name: Precompile Next.js pages
+          command: cd ./app && npm run build
 
       - cypress/run-tests:
           start-command: npm run dev
