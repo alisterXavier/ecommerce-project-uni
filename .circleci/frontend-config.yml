@@ -8,14 +8,9 @@ jobs:
   e2e-tests:
     docker:
       - image: node:latest
-    
-    working_directory: ./app/app
+
     steps:
       - checkout
-
-      - run:
-          name: update apt
-          command: pwd && ls
 
       - run:
           name: update apt
@@ -27,11 +22,11 @@ jobs:
 
       - run:
           name: install pnpm
-          command: "npm i -g pnpm && pnpm install"
+          command: "cd ./app && npm i -g pnpm && pnpm install"
 
       - cypress/run-tests:
-          start-command: pnpm dev
-          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          start-command: pnpm dev:client
+          cypress-command: "cd ./app && npx wait-on@latest http://localhost:3000 && npx cypress run"
 
       - store_artifacts:
           path: ./cypress/screenshots
