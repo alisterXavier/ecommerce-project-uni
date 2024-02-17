@@ -83,7 +83,7 @@ workflows:
     jobs:
 
       - cypress/run:
-          executor: cypress/base-10
+          executor: cypress/default
           install-command: sudo npm i -g pnpm && cd ./app && pnpm install
           start-command: 'pnpm dev'
           working-directory: app
