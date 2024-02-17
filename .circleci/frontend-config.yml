@@ -6,87 +6,82 @@ orbs:
 
 jobs:
   e2e-tests:
+
+    working-directory: ./app
     docker:
       - image: node:latest
 
     steps:
       - checkout
 
-      - run: 
-          name: pwd
-          command: pwd && ls
-      - run: 
-          name: pwd
-          command: ls ~/
-  #     - run:
-  #         name: update apt
-  #         command: apt-get update
+      - run:
+          name: update apt
+          command: apt-get update
 
-  #     - run:
-  #         name: install system deps
-  #         command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-      
-  #     - run:
-  #         name: install pnpm
-  #         command: "npm i -g pnpm && pnpm install"
+      - run:
+          name: install system deps
+          command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
+      - run:
+          name: install pnpm
+          command: "npm i -g pnpm && pnpm install"
 
-  #     - cypress/run-tests:
-  #         start-command: pnpm dev
-  #         cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+      - cypress/run-tests:
+          start-command: pnpm dev
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
 
-  #     - store_artifacts:
-  #         path: ./cypress/screenshots
-  #         when: on_fail
+      - store_artifacts:
+          path: ./cypress/screenshots
+          when: on_fail
 
-  # publish-to-main-branch:
-  #   docker:
-  #     - image: cimg/base:2024.01
-  #   steps:
-  #     - checkout
-  #     - add_ssh_keys:
-  #         fingerprints: "8d:81:26:dd:de:75:b3:c2:96:f2:c6:47:2f:8f:fb:8f"
+  publish-to-main-branch:
+    docker:
+      - image: cimg/base:2024.01
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: "8d:81:26:dd:de:75:b3:c2:96:f2:c6:47:2f:8f:fb:8f"
 
-  #     - run:
-  #         name: Push to production branch
-  #         command: git push origin main2.0:main
+      - run:
+          name: Push to production branch
+          command: git push origin main2.0:main
 
-  # deploy-to-vercel:
-  #   docker:
-  #     - image: node:latest
-  #       environment:
-  #         VERCEL_ORG_ID: $VERCEL_ORG_ID
-  #         VERCEL_PASSWORD_ID: $VERCEL_PASSWORD_ID
-  #   steps:
-  #     - checkout
+  deploy-to-vercel:
+    docker:
+      - image: node:latest
+        environment:
+          VERCEL_ORG_ID: $VERCEL_ORG_ID
+          VERCEL_PASSWORD_ID: $VERCEL_PASSWORD_ID
+    steps:
+      - checkout
 
-  #     - run:
-  #         name: Install vercel
-  #         command: npm i -g vercel@latest pnpm
+      - run:
+          name: Install vercel
+          command: npm i -g vercel@latest pnpm
 
-  #     - run:
-  #         name: PULL VERCEL ENVIRONMENT
-  #         command: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      - run:
+          name: PULL VERCEL ENVIRONMENT
+          command: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
-  #     - run:
-  #         name: BUILD PROJECT
-  #         command: vercel build --prod --token=$VERCEL_TOKEN
+      - run:
+          name: BUILD PROJECT
+          command: vercel build --prod --token=$VERCEL_TOKEN
 
-  #     - run:
-  #         name: DEPLOY PROJECT
-  #         command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+      - run:
+          name: DEPLOY PROJECT
+          command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
 workflows:
   the-great-gatsby:
     jobs:
-      # - publish-to-main-branch:
-      #     requires:
-      #       - e2e-tests
+      - publish-to-main-branch:
+          requires:
+            - e2e-tests
 
-      # - deploy-to-vercel:
-      #     requires:
-      #       - e2e-tests
-      #       - publish-to-main-branch
+      - deploy-to-vercel:
+          requires:
+            - e2e-tests
+            - publish-to-main-branch
 
       - e2e-tests:
           filters:
