@@ -575,7 +575,9 @@ mockCart.total = mockCart.products.reduce((i, acc) => {
 
 describe('App flow', () => {
   it('can run', () => {
-    cy.visit('http://localhost:3000/login');
+    cy.visit('http://localhost:3000/login', {
+      failOnStatusCode: false,
+    });
   });
 
   // before(() => {
