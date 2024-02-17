@@ -84,10 +84,10 @@ workflows:
 
       - cypress/run:
           install-command: npm i -g pnpm && npm install
-          install-browsers: true
+          # install-browsers: true
           start-command: 'pnpm dev'
           working-directory: app
-          cypress-command: 'npx cypress run'
+          cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
 
       - publish-to-main-branch:
           requires:
