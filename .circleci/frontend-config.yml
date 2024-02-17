@@ -4,6 +4,11 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
+executors:
+  node_latest:
+    docker:
+      - image: node:latest
+
 jobs:
   component-and-e2e-tests:
     docker:
@@ -14,7 +19,7 @@ jobs:
       - run:
           name: install pnpm
           command: "npm i -g pnpm"
-          
+
       - run:
           name: install deps
           command: "npm i"
@@ -35,7 +40,6 @@ jobs:
       - cypress/run-tests:
           cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
           working-directory: app
-
 
       - store_artifacts:
           path: ./app/cypress/screenshots
@@ -82,12 +86,11 @@ workflows:
   the-great-gatsby:
     jobs:
       - cypress/run:
-          docker:
-            - image: node:latest
+          executor: node_latest
           install-command: sudo npm i -g pnpm && cd ./app && pnpm install
-          start-command: 'pnpm dev'
+          start-command: "pnpm dev"
           working-directory: app
-          cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
 
       - publish-to-main-branch:
           requires:
