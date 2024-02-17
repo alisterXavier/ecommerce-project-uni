@@ -83,8 +83,7 @@ workflows:
     jobs:
 
       - cypress/run:
-          install-command: sudo npm i -g pnpm && npm install
-          # install-browsers: true
+          install-command: sudo npm i -g pnpm && cd ./app && pnpm install
           start-command: 'pnpm dev'
           working-directory: app
           cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
