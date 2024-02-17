@@ -575,8 +575,10 @@ mockCart.total = mockCart.products.reduce((i, acc) => {
 }, 0);
 
 describe('App flow', () => {
-  cy.visit('http://localhost:3000/login');
-  
+  it('can run', () => {
+    cy.visit('http://localhost:3000/login');
+  });
+
   // before(() => {
   //   cy.viewport(window.screen.width, window.screen.height);
   //   cy.intercept('GET', 'http://localhost:5001/products/men?price=', {
@@ -705,7 +707,6 @@ describe('App flow', () => {
 
   //     // Checkout Page
   //     cy.get('[data-cy="test-checkout-btn"]').click()
-
 
   //     // const userOptions = cy.get('[data-cy="test-user-options"]');
   //     // userOptions.should('not.be.visible');
