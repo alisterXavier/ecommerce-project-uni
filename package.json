@@ -11,7 +11,6 @@
   "scripts": {
     "dev:client": "cd ./app && npm run dev",
     "dev:server": "cd ./server && npm run dev",
-    "dev:test": "cd ./testnext && npm run dev",
     "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\"",
     "generate-types": "openapi-typescript openapi/spec.yaml --output app/shared/types/api.ts",
     "build:server": "cd ./server && npm run build",
