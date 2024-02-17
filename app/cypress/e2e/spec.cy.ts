@@ -576,6 +576,14 @@ mockCart.total = mockCart.products.reduce((i, acc) => {
 describe('App flow', () => {
   before(() => {
     cy.viewport(window.screen.width, window.screen.height);
+    cy.readFile('public/images/Logo.jpg', null).then((img) => {
+      cy.intercept('_next/image*', {
+        statusCode: 200,
+        headers: { 'Content-Type': 'image/png' },
+        body: img.buffer,
+      });
+    });
+
     cy.intercept('GET', 'http://localhost:5001/products/men?price=', {
       data: mockData,
     });
