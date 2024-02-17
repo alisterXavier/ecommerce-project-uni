@@ -86,7 +86,7 @@ workflows:
   the-great-gatsby:
     jobs:
       - cypress/run:
-          executor: node_latest
+          node-version: node:latest
           install-command: sudo npm i -g pnpm && cd ./app && pnpm install
           start-command: "pnpm dev"
           working-directory: app
