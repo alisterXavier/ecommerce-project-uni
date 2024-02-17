@@ -24,17 +24,13 @@ jobs:
           name: Install deps
           command: "cd ./app && npm install"
       
-      - run:
-          name: Precompile Next.js pages
-          command: cd ./app && npm run build
-
       - cypress/run-tests:
-          start-command: npm run start
+          start-command: npm run dev
           cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
           working-directory: ./app
 
       - store_artifacts:
-          path: ./cypress/screenshots
+          path: ./app/cypress/screenshots
           when: on_fail
 
   publish-to-main-branch:
