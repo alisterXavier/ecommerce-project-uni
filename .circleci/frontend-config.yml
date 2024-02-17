@@ -12,6 +12,10 @@ jobs:
       - checkout
 
       - run:
+          name: install pnpm
+          command: "npm i pnpm"
+          
+      - run:
           name: install deps
           command: "pnpm i"
 
