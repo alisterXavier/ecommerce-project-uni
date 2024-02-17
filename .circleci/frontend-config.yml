@@ -13,11 +13,11 @@ jobs:
 
       - run:
           name: install pnpm
-          command: "npm i pnpm"
+          command: "npm i -g pnpm"
           
       - run:
           name: install deps
-          command: "pnpm i"
+          command: "npm i"
 
       - run:
           name: update apt
