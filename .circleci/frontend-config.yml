@@ -82,8 +82,10 @@ workflows:
   the-great-gatsby:
     jobs:
       - cypress/run:
+          docker:
+            - image: node:latest
           install-command: sudo npm i -g pnpm && cd ./app && pnpm install
-          start-command: 'npm run dev'
+          start-command: 'pnpm dev'
           working-directory: app
           cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
 
