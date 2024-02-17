@@ -14,31 +14,29 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import { store } from '@/shared/redux/store';
-import { MantineProvider, createTheme } from '@mantine/core';
-import { Provider } from 'react-redux';
+// import { store } from '@/shared/redux/store';
+// import { MantineProvider, createTheme } from '@mantine/core';
+// import { Provider } from 'react-redux';
+// import { MemoryRouterProps } from 'react-router-dom';
+// import { MountOptions, MountReturn, mount } from 'cypress/react18';
 import './commands';
-import { MountOptions, MountReturn, mount } from 'cypress/react18';
-import { MemoryRouterProps } from 'react-router-dom';
-// import '../tailwind/output.css';
-// import '@mantine/core/styles.css';
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      mount(
-        component: React.ReactNode,
-        options?: MountOptions & { routerProps?: MemoryRouterProps }
-      ): Cypress.Chainable<MountReturn>;
-    }
-  }
-}
-const theme = createTheme({});
+// declare global {
+//   namespace Cypress {
+//     interface Chainable {
+//       mount(
+//         component: React.ReactNode,
+//         options?: MountOptions & { routerProps?: MemoryRouterProps }
+//       ): Cypress.Chainable<MountReturn>;
+//     }
+//   }
+// }
+// const theme = createTheme({});
 
-Cypress.Commands.add('mount', (component, options = {}) => {
-  return mount(component, options);
-});
+// Cypress.Commands.add('mount', (component, options = {}) => {
+//   return mount(component, options);
+// });
