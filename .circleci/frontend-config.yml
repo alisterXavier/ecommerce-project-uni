@@ -27,15 +27,14 @@ jobs:
           name: install system deps
           command: apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
-      - cypress/run-tests:
-          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
-          working-directory: app
-          
       - run:
           name: Run app
           command: "pnpm dev:client"
           background: true
 
+      - cypress/run-tests:
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          working-directory: app
 
 
       - store_artifacts:
@@ -82,12 +81,14 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-      - component-and-e2e-tests:
-          filters:
-            branches:
-              only:
-                - main2.0
-                
+
+      - cypress/run:
+          install-command: npm i -g pnpm && npm install
+          install-browsers: true
+          start-command: 'pnpm dev'
+          working-directory: app
+          cypress-command: 'npx cypress run'
+
       - publish-to-main-branch:
           requires:
             - component-and-e2e-tests
@@ -96,3 +97,9 @@ workflows:
           requires:
             - component-and-e2e-tests
             - publish-to-main-branch
+
+      # - component-and-e2e-tests:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main2.0
