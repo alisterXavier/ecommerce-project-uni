@@ -28,10 +28,14 @@ jobs:
           name: Run app in bg
           command: "cd ./app && npm run dev"
           background: true
+      
+      - run:
+          name: Wait for app to be ready
+          command: npx wait-on@latest http://localhost:3000
 
       - cypress/run-tests:
           # start-command: npm run dev
-          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          cypress-command: "npx cypress run"
           working-directory: ./app
 
       - store_artifacts:
