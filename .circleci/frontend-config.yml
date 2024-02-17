@@ -9,7 +9,7 @@ jobs:
     docker:
       - image: node:latest
     
-    working_directory: ./app
+    working_directory: ./app/app
     steps:
       - checkout
 
