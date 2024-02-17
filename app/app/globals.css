@@ -265,8 +265,8 @@ h6 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 5px 10px 0px 10px;
-  width: 283px;
+  margin: 5px 0px 0px 10px;
+  width: calc(100%/5 - 10px);
   height: 500px;
   cursor: pointer;
   overflow: hidden;
