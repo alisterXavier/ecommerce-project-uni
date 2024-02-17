@@ -1,4 +1,4 @@
-import { components } from '@/shared/types/api';
+// import { components } from '@/shared/types/api';
 const CateArray = ['Home', 'Women', 'Kids', 'Electronics', 'Men'];
 const mockData = [
   {
@@ -560,7 +560,7 @@ const mockData = [
   },
 ];
 
-const mockCart: components['schemas']['Carts'] = {
+const mockCart = {
   id: 'testId',
   customerId: 'testCustomer',
   products: [
