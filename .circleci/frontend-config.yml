@@ -22,7 +22,7 @@ jobs:
 
       - run:
           name: install pnpm
-          command: "cd ./app && npm i -g pnpm && pnpm install"
+          command: "npm i -g pnpm && cd ./app && pnpm install"
 
       - cypress/run-tests:
           start-command: pnpm dev:client
