@@ -24,13 +24,9 @@ jobs:
           name: install pnpm
           command: "npm i -g pnpm && cd ./app && pnpm install"
 
-      - run:
-          name: ls
-          command: "ls ./app"
-
       - cypress/run-tests:
-          start-command: pnpm dev
-          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          start-command: cd ./app && pnpm dev
+          cypress-command: "cd ./app && npx wait-on@latest http://localhost:3000 && cd ./app && npx cypress run"
           # working-directory: ./app
 
       - store_artifacts:
