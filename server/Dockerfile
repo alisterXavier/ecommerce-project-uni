@@ -27,7 +27,7 @@ COPY --from=BUILD /app/package.json /app/
 COPY --from=BUILD /app/dist /app/dist
 COPY --from=BUILD /app/.env.test /app/.env
 
-# Installing pnpm and deps in PRODUCTION STAGE
+# Installing deps in PRODUCTION STAGE
 RUN yarn install --production
 
 # Expose the required port
