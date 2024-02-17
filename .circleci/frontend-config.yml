@@ -10,13 +10,14 @@ jobs:
       - image: node:latest
 
     steps:
-      - checkout:
-          path: ./app
+      - checkout
 
       - run: 
           name: pwd
-          command: pwd
-
+          command: pwd && ls
+      - run: 
+          name: pwd
+          command: ls ~/
   #     - run:
   #         name: update apt
   #         command: apt-get update
