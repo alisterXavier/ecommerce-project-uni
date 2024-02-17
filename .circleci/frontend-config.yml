@@ -15,6 +15,10 @@ jobs:
 
       - run:
           name: update apt
+          command: pwd && ls
+
+      - run:
+          name: update apt
           command: apt-get update
 
       - run:
@@ -73,14 +77,14 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-      - publish-to-main-branch:
-          requires:
-            - e2e-tests
+      # - publish-to-main-branch:
+      #     requires:
+      #       - e2e-tests
 
-      - deploy-to-vercel:
-          requires:
-            - e2e-tests
-            - publish-to-main-branch
+      # - deploy-to-vercel:
+      #     requires:
+      #       - e2e-tests
+      #       - publish-to-main-branch
 
       - e2e-tests:
           filters:
