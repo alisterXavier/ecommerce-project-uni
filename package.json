@@ -9,7 +9,7 @@
     "./server"
   ],
   "scripts": {
-    "dev:client": "cd ./app && pnpm dev",
+    "dev:client": "cd ./app && npm run dev",
     "dev:server": "cd ./server && npm run dev",
     "dev:test": "cd ./testnext && npm run dev",
     "dev": "concurrently \"pnpm dev:client\" \"npm run dev:server\"",

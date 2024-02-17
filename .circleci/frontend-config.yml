@@ -37,7 +37,7 @@ jobs:
           command: sleep 20
 
       - cypress/run-tests:
-          cypress-command: "cd ./app && npx cypress run --browser chrome"
+          cypress-command: "cd ./app && npx cypress run"
 
       - store_artifacts:
           path: ./app/cypress/screenshots
