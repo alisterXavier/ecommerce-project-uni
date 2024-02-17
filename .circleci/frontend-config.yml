@@ -4,10 +4,12 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3
 
-executors:
-  node_latest:
-    docker:
-      - image: node:latest
+# executors:
+#   node_latest:
+#     docker:
+#       - image: node:latest
+
+executor: node:latest
 
 jobs:
   e2e-tests:
@@ -81,24 +83,23 @@ jobs:
 workflows:
   the-great-gatsby:
     jobs:
-      # - cypress/run:
-      #     node-version: node:latest
-      #     install-command: sudo npm i -g pnpm && cd ./app && pnpm install
-      #     start-command: "pnpm dev"
-      #     working-directory: app
-      #     cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+      - cypress/run:
+          install-command: sudo npm i -g pnpm && cd ./app && pnpm install
+          start-command: "pnpm dev"
+          working-directory: app
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
 
       - publish-to-main-branch:
           requires:
-            - e2e-tests
+            - cypress/run
 
       - deploy-to-vercel:
           requires:
-            - e2e-tests
+            - cypress/run
             - publish-to-main-branch
 
-      - e2e-tests:
-          filters:
-            branches:
-              only:
-                - main2.0
+      # - e2e-tests:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main2.0
