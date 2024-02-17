@@ -91,7 +91,7 @@ workflows:
 
       - publish-to-main-branch:
           requires:
-            - component-and-e2e-tests
+            - cypress/run
 
       - deploy-to-vercel:
           requires:
