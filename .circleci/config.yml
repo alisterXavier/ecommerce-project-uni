@@ -98,7 +98,7 @@ orbs:
 
           - store_artifacts:
               path: .circleci/continue-config.yml
-              
+
     jobs:
       the-greatest-showman:
         docker:
