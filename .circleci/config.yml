@@ -12,10 +12,6 @@ orbs:
 
     commands:
       frontend-and-server-diff:
-        parameters:
-          CHANGES_DETECTED:
-            type: boolean
-            default: false
         steps:
           - checkout
 
