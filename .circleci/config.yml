@@ -47,7 +47,7 @@ orbs:
           - run:
               name: add merge file
               command: echo $CHANGES_DETECTED
-          
+
           - run:
               name: add merge file
               command: |
@@ -96,6 +96,9 @@ orbs:
 
                 xargs -a "<< parameters.modules >>" yq -y -s 'reduce .[] as $item ({}; . * $item)' | tee "<< parameters.continue-config >>"
 
+          - store_artifacts:
+              path: .circleci/continue-config.yml
+              
     jobs:
       the-greatest-showman:
         docker:
