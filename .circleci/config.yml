@@ -46,6 +46,9 @@ orbs:
 
           - run:
               name: add merge file
+              command: echo $CHANGES_DETECTED
+          - run:
+              name: add merge file
               command: |
                 if [[ $CHANGES_DETECTED == true ]] ; then 
                   echo "merge" >> ./modules.txt
