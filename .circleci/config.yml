@@ -29,7 +29,7 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "frontend" >> ./modules.txt
-                  export CHANGES_DETECTED=true
+                  echo 'export CHANGES_DETECTED=true'
                   echo "Changes detected continuing with build";
                 fi
 
@@ -40,13 +40,14 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "server" >> ./modules.txt
-                  export CHANGES_DETECTED=true
+                  echo 'export CHANGES_DETECTED=true'
                   echo "Changes detected continuing with build";
                 fi
 
           - run:
               name: add merge file
               command: echo $CHANGES_DETECTED
+          
           - run:
               name: add merge file
               command: |
