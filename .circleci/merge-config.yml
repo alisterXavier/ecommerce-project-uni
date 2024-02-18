@@ -1,0 +1,24 @@
+version: 2.1
+
+jobs:
+  publish-to-main-branch:
+    docker:
+      - image: cimg/base:2024.01
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: "SHA256:h3dWritaS+YZEvEuRDqLwqoyX+gA4PwvAhDh+aFmofw"
+
+      - run:
+          name: Push to production branch
+          command: |
+            if [[ "$FRONTEND" == "false" ]]; then
+              echo "Frontend tests failed. Skipping push to main branch."
+            elif [[ "$FRONTEND" == "true" || "$SERVER" == "true" ]]; then
+              git push origin main-test-branch:main
+            fi
+
+workflows:
+  the-great-gatsby:
+    jobs:
+      - publish-to-main-branch
