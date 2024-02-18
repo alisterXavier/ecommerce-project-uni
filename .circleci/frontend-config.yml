@@ -1,6 +1,5 @@
 # TODO tests are not yet completed
 version: 2.1
-setup: true
 
 jobs:
   e2e-tests:
@@ -15,7 +14,7 @@ jobs:
           command: echo FRONTEND
 
 workflows:
-  the-great-gatsby:
+  the-great-gatsby-test:
     jobs:
       - e2e-tests:
           filters:

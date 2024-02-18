@@ -19,6 +19,6 @@ jobs:
             fi
 
 workflows:
-  the-great-gatsby:
+  the-great-gatsby-merge:
     jobs:
       - publish-to-main-branch
