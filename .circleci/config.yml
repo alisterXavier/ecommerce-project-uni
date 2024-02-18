@@ -29,7 +29,7 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "frontend" >> ./modules.txt
-                  echo 'export CHANGES_DETECTED=true'
+                  echo 'export CHANGES_DETECTED=true' >> "$BASH_ENV"
                   echo "Changes detected continuing with build";
                 fi
 
@@ -40,7 +40,7 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "server" >> ./modules.txt
-                  echo 'export CHANGES_DETECTED=true'
+                  echo 'export CHANGES_DETECTED=true' >> "$BASH_ENV"
                   echo "Changes detected continuing with build";
                 fi
 
