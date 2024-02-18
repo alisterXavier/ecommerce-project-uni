@@ -48,6 +48,14 @@ orbs:
                   echo "Changes detected continuing with build";
                 fi
 
+          - when: 
+              condition: 
+                equal: [true, << parameters.CHANGES_DETECTED >>]
+              steps:
+                - run:
+                    name: add merge file
+                    command:  echo "merge" >> ./modules.txt
+
           - store_artifacts:
               path: ./modules.txt
 
@@ -97,7 +105,7 @@ orbs:
               name: Install yq
               command: pip install yq
           - frontend-and-server-diff
-          - merge-configs:
+          - merge-configs
           - continuation/continue:
               configuration_path: .circleci/continue-config.yml
 
