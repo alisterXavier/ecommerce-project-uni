@@ -50,7 +50,7 @@ orbs:
 
           - when: 
               condition: 
-                equal: [<< parameters.CHANGES_DETECTED >> == true]
+                equal: [42,42]
               steps:
                 - run:
                     name: add merge file
