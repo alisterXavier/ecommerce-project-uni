@@ -12,10 +12,6 @@ orbs:
 
     commands:
       frontend-and-server-diff:
-        parameters:
-          CHANGES_DETECTED:
-            type: boolean
-            default: false
         steps:
           - checkout
 
@@ -33,7 +29,7 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "frontend" >> ./modules.txt
-                  circleci context set my_context CHANGES_DETECTED true
+                  export CHANGES_DETECTED = true
                   echo "Changes detected continuing with build";
                 fi
 
@@ -44,17 +40,16 @@ orbs:
                   echo "No changes in specified folder."
                 else 
                   echo "server" >> ./modules.txt
-                  circleci context set my_context CHANGES_DETECTED true
+                  export CHANGES_DETECTED = true
                   echo "Changes detected continuing with build";
                 fi
 
-          - when: 
-              condition: 
-                equal: [true, << parameters.CHANGES_DETECTED >>]
-              steps:
-                - run:
-                    name: add merge file
-                    command:  echo "merge" >> ./modules.txt
+          - run:
+              name: add merge file
+              command: |
+                if $CHANGES_DETECTED == true ; then 
+                  echo "merge" >> ./modules.txt
+                fi
 
           - store_artifacts:
               path: ./modules.txt
