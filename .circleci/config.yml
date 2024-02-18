@@ -12,6 +12,10 @@ orbs:
 
     commands:
       frontend-and-server-diff:
+        parameters:
+          CHANGES_DETECTED:
+            type: boolean
+            default: false
         steps:
           - checkout
 
@@ -43,14 +47,6 @@ orbs:
                   circleci context set my_context CHANGES_DETECTED true
                   echo "Changes detected continuing with build";
                 fi
-
-          - when: 
-              condition: 
-                equal: [42,42]
-              steps:
-                - run:
-                    name: add merge file
-                    command:  echo "merge" >> ./modules.txt
 
           - store_artifacts:
               path: ./modules.txt
